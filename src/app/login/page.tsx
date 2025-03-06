@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import InputField from "@/components/login/InputFileds";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -66,7 +67,7 @@ const LoginPage = () => {
               required
             />
 
-            {/* ✅ Password Input with Toggle Visibility */}
+            {/* Password Input with Toggle Visibility */}
             <InputField
               id="password"
               type={showPassword ? "text" : "password"}

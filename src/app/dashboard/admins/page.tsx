@@ -2,22 +2,23 @@
 
 import { useEffect, useState } from "react";
 import {
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
-  GridToolbarColumnsButton,
-  GridToolbarFilterButton,
-  GridToolbarExport,
-  GridColumnVisibilityModel,
-} from "@mui/x-data-grid";
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
+  ColumnDef,
+  flexRender,
+  VisibilityState,
+} from "@tanstack/react-table";
+import { Menu, Transition } from "@headlessui/react";
 import {
-  Container,
-  Typography,
-  CircularProgress,
-  Alert,
-  Box,
-  Button,
-} from "@mui/material";
+  FunnelIcon,
+  ArrowDownTrayIcon,
+  Bars3BottomLeftIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
 interface User {
   _id: string;
@@ -31,23 +32,21 @@ const AdminsPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [columnVisibility, setColumnVisibility] =
-    useState<GridColumnVisibilityModel>({
-      fullName: true,
-      email: true,
-      position: true,
-      address: true,
-    });
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    fullName: true,
+    email: true,
+    position: true,
+    address: true,
+  });
+  const [globalFilter, setGlobalFilter] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await fetch("/api/users/get");
         const data = await response.json();
-
         if (!response.ok)
           throw new Error(data.message || "Failed to fetch users");
-
         setUsers(data.data);
       } catch (err) {
         setError((err as Error).message);
@@ -55,78 +54,188 @@ const AdminsPage = () => {
         setLoading(false);
       }
     };
-
     fetchUsers();
   }, []);
 
-  const columns: GridColDef[] = [
-    { field: "fullName", headerName: "Full Name", flex: 1, minWidth: 150 },
-    { field: "email", headerName: "Email", flex: 1, minWidth: 200 },
-    { field: "position", headerName: "Position", flex: 1, minWidth: 150 },
-    { field: "address", headerName: "Address", flex: 1, minWidth: 200 },
+  const columns: ColumnDef<User>[] = [
+    { accessorKey: "fullName", header: "Full Name" },
+    { accessorKey: "email", header: "Email" },
+    { accessorKey: "position", header: "Position" },
+    { accessorKey: "address", header: "Address" },
   ];
 
-  // Reset column visibility to default
-  const handleResetColumns = () => {
-    setColumnVisibility({
-      fullName: true,
-      email: true,
-      position: true,
-      address: true,
-    });
+  const table = useReactTable({
+    data: users,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: { columnVisibility, globalFilter },
+    onColumnVisibilityChange: setColumnVisibility,
+    onGlobalFilterChange: setGlobalFilter,
+  });
+
+  const exportToCSV = () => {
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [
+        Object.keys(users[0]).join(","),
+        ...users.map((user) => Object.values(user).join(",")),
+      ].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "admins.csv");
+    document.body.appendChild(link);
+    link.click();
   };
 
-  // Custom Toolbar for Columns, Filters, and Export
-  const CustomToolbar = () => (
-    <GridToolbarContainer
-      sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
-    >
-      <Box>
-        <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
-        <GridToolbarExport />
-      </Box>
-      <Button onClick={handleResetColumns} variant="contained">
-        Reset Columns
-      </Button>
-    </GridToolbarContainer>
-  );
-
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Users List
-      </Typography>
+    <div className="w-full min-w-full">
+      {/* Breadcrumbs */}
+      <div className="flex items-center justify-between bg-white rounded-lg p-4">
+        <Breadcrumbs
+          items={[
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "All Admins", href: "/dashboard/admins" },
+          ]}
+        />
+      </div>
 
-      {loading && (
-        <Box display="flex" justifyContent="center" mt={2}>
-          <CircularProgress />
-        </Box>
-      )}
+      {/* Loading & Error States */}
+      {loading && <p className="text-center mt-4 text-blue-600">Loading...</p>}
+      {error && <p className="text-center mt-4 text-red-600">{error}</p>}
 
-      {error && <Alert severity="error">{error}</Alert>}
-
+      {/* Toolbar */}
       {!loading && !error && users.length > 0 && (
-        <Box sx={{ height: 500, width: "100%", mt: 2 }}>
-          <DataGrid
-            rows={users.map((user) => ({ ...user, id: user._id }))} // MUI DataGrid requires an 'id' field
-            columns={columns}
-            pageSizeOptions={[5, 10, 20]}
-            pagination
-            columnVisibilityModel={columnVisibility}
-            onColumnVisibilityModelChange={(newModel) =>
-              setColumnVisibility(newModel)
-            }
-            slots={{ toolbar: CustomToolbar }} // Fix: Replace 'components' with 'slots'
-            disableRowSelectionOnClick
-          />
-        </Box>
-      )}
+        <div className="bg-white p-4 rounded-lg mt-4">
+          <div className="flex justify-between items-center mb-4">
+            {/* Toolbar Icons */}
+            <div className="flex space-x-4">
+              {/* Column Visibility */}
+              <Menu as="div" className="relative">
+                <Menu.Button className="flex items-center space-x-2 bg-yellow-300 px-3 py-2 rounded-md">
+                  <Bars3BottomLeftIcon className="h-5 w-5" />
+                  <span>Columns</span>
+                </Menu.Button>
+                <Transition
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Menu.Items className="absolute mt-2 w-48 bg-white shadow-lg rounded-md p-2">
+                    {table.getAllColumns().map((column) =>
+                      column.getCanHide() ? (
+                        <Menu.Item key={column.id}>
+                          <label className="flex items-center space-x-2 p-1">
+                            <input
+                              type="checkbox"
+                              checked={column.getIsVisible()}
+                              onChange={column.getToggleVisibilityHandler()}
+                            />
+                            <span>{column.id}</span>
+                          </label>
+                        </Menu.Item>
+                      ) : null
+                    )}
+                  </Menu.Items>
+                </Transition>
+              </Menu>
 
-      {!loading && !error && users.length === 0 && (
-        <Alert severity="info">No users found.</Alert>
+              {/* Filter Button */}
+              <Menu as="div" className="relative">
+                <Menu.Button className="flex items-center space-x-2 bg-yellow-300 px-3 py-2 rounded-md">
+                  <FunnelIcon className="h-5 w-5" />
+                  <span>Filter</span>
+                </Menu.Button>
+                {/* TODO: Implement filter logic */}
+              </Menu>
+
+              {/* Export Button */}
+              <button
+                onClick={exportToCSV}
+                className="flex items-center space-x-2 bg-yellow-300 px-3 py-2 rounded-md"
+              >
+                <ArrowDownTrayIcon className="h-5 w-5" />
+                <span>Export</span>
+              </button>
+            </div>
+
+            {/* Search Input */}
+            <div className="relative">
+              <MagnifyingGlassIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+              <input
+                type="text"
+                placeholder="Search for an admin"
+                value={globalFilter}
+                onChange={(e) => setGlobalFilter(e.target.value)}
+                className="pl-10 pr-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* Table */}
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse border border-gray-200">
+              <thead>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id} className="bg-gray-100 border-b">
+                    {headerGroup.headers.map((header) => (
+                      <th key={header.id} className="p-2 border">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody>
+                {table.getRowModel().rows.map((row) => (
+                  <tr key={row.id} className="border-b">
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id} className="p-2 border">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="flex justify-between items-center mt-4">
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+            >
+              Prev
+            </button>
+            <span>
+              Page {table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount()}
+            </span>
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
       )}
-    </Container>
+    </div>
   );
 };
 

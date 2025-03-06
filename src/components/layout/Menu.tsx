@@ -145,7 +145,7 @@ const Menu = () => {
         ],
       },
     ];
-  }, [userRole, router]); // ✅ Include `router` as a dependency
+  }, [userRole, router]); // Include `router` as a dependency
 
   return (
     <main className="text-sm min-h-screen">
@@ -169,7 +169,7 @@ const Menu = () => {
                   // Render logout as a button
                   <button
                     onClick={item.action}
-                    className="flex items-center justify-center lg:justify-start gap-4 p-2 md:px-2 w-full rounded-lg mText hover:text-mBlue hover:bg-mHover"
+                    className="flex items-center justify-center lg:justify-start gap-4 p-2 md:px-2 w-full rounded-lg mText hover:text-mBlue hover:bg-mHover cursor-pointer"
                   >
                     <Image
                       src={

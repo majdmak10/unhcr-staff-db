@@ -1,6 +1,4 @@
 @import "tailwindcss";
-@import "tailwindcss/preflight";
-@import "tailwindcss/utilities";
 
 @theme {
   --font-sans: var(--font-geist-sans);
@@ -12,7 +10,7 @@
   --color-mGreen: #14a37f;
   --color-mGreenLight: #89d1bf;
   --color-mRed: #ff4569;
-  --color-mPurple: #512DA8;
+  --color-mPurple: #512da8;
   --color-mText: #344767;
   --color-mMenuText: #6b7280;
   --color-mHover: #d5e5fa;

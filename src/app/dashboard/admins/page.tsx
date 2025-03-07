@@ -1,132 +1,36 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  useReactTable,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  ColumnDef,
-  flexRender,
-  VisibilityState,
-} from "@tanstack/react-table";
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  Transition,
-} from "@headlessui/react";
-import {
-  AdjustmentsHorizontalIcon,
-  ArrowUpTrayIcon,
-  ChartBarIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+import Table from "@/components/table/Table";
+import adminsColumns from "@/constants/columns/adminsColumns";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
-
-interface User {
-  _id: string;
-  fullName: string;
-  email: string;
-  position: string;
-  address: string;
-}
+import { IUser } from "@/types/user.types"; // ✅ Import correct type
 
 const AdminsPage = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [admins, setAdmins] = useState<IUser[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    fullName: true,
-    email: true,
-    position: true,
-    address: true,
-  });
-  const [globalFilter, setGlobalFilter] = useState("");
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchAdmins = async () => {
       try {
         const response = await fetch("/api/users/get");
         const data = await response.json();
         if (!response.ok)
-          throw new Error(data.message || "Failed to fetch users");
-        setUsers(data.data);
+          throw new Error(data.message || "Failed to fetch admins");
+        setAdmins(data.data);
       } catch (err) {
         setError((err as Error).message);
       } finally {
         setLoading(false);
       }
     };
-    fetchUsers();
+
+    fetchAdmins();
   }, []);
 
-  const columns: ColumnDef<User>[] = [
-    { accessorKey: "fullName", header: "Full Name" },
-    { accessorKey: "email", header: "Email" },
-    { accessorKey: "position", header: "Position" },
-    { accessorKey: "address", header: "Address" },
-  ];
-
-  const table = useReactTable({
-    data: users,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    state: { columnVisibility, globalFilter },
-    onColumnVisibilityChange: setColumnVisibility,
-    onGlobalFilterChange: setGlobalFilter,
-  });
-
-  const exportToCSV = () => {
-    const csvContent =
-      "data:text/csv;charset=utf-8," +
-      [
-        Object.keys(users[0]).join(","),
-        ...users.map((user) => Object.values(user).join(",")),
-      ].join("\n");
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "admins.csv");
-    document.body.appendChild(link);
-    link.click();
-  };
-
-  const [columnSearch, setColumnSearch] = useState("");
-  const [defaultVisibility] = useState<VisibilityState>({
-    fullName: true,
-    email: true,
-    position: true,
-    address: true,
-  });
-
-  // Function to toggle all columns
-  const toggleAllColumns = () => {
-    const isAnyHidden = Object.values(columnVisibility).some(
-      (isVisible) => !isVisible
-    );
-    const newVisibility: VisibilityState = {};
-    table.getAllColumns().forEach((column) => {
-      if (column.getCanHide()) {
-        newVisibility[column.id] = isAnyHidden;
-      }
-    });
-    setColumnVisibility(newVisibility);
-  };
-
-  // Function to reset to default column visibility
-  const resetColumns = () => {
-    setColumnVisibility(defaultVisibility);
-  };
-
   return (
-    <div className="w-full min-w-full flex flex-col gap-3">
-      {/* Breadcrumbs */}
+    <div className="w-full min-w-full">
       <div className="flex items-center justify-between bg-white rounded-lg p-4">
         <Breadcrumbs
           items={[
@@ -135,184 +39,8 @@ const AdminsPage = () => {
           ]}
         />
       </div>
-
-      {/* Loading & Error States */}
-      {loading && <p className="text-center mt-4 text-blue-600">Loading...</p>}
-      {error && <p className="text-center mt-4 text-red-600">{error}</p>}
-
-      {!loading && !error && users.length > 0 && (
-        <div className="flex flex-col gap-4 bg-white px-2 py-4 rounded-lg">
-          {/* Toolbar */}
-          <div className="flex justify-between items-center">
-            {/* Toolbar Icons */}
-            <div className="flex">
-              {/* Column Visibility */}
-              <Menu as="div" className="relative">
-                <MenuButton className="flex items-center space-x-2 py-2 px-1">
-                  <div className="bg-mYellow rounded-4xl p-2">
-                    <ChartBarIcon className="h-4 w-4 fill-black cursor-pointer" />
-                  </div>
-                  <span className="text-sm font-medium">Columns</span>
-                </MenuButton>
-                <Transition
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <MenuItems className="absolute mt-2 w-72 bg-white border border-gray-300 shadow-lg rounded p-2 z-10">
-                    {/* Search Bar for Columns */}
-                    <div className="relative mb-2">
-                      <MagnifyingGlassIcon className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
-                      <input
-                        type="text"
-                        placeholder="Search for a column..."
-                        value={columnSearch}
-                        onChange={(e) => setColumnSearch(e.target.value)}
-                        className="w-full pl-8 pr-2 py-1 border rounded-md text-sm focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-
-                    {/* Column List - Filtered by Search */}
-                    {table
-                      .getAllColumns()
-                      .filter((column) =>
-                        column.id
-                          .toLowerCase()
-                          .includes(columnSearch.toLowerCase())
-                      )
-                      .map((column) =>
-                        column.getCanHide() ? (
-                          <MenuItem key={column.id}>
-                            <label className="flex items-center space-x-2 p-1">
-                              <input
-                                type="checkbox"
-                                checked={column.getIsVisible()}
-                                onChange={column.getToggleVisibilityHandler()}
-                                className="mr-2 accent-mBlue"
-                              />
-                              <span>{column.id}</span>
-                            </label>
-                          </MenuItem>
-                        ) : null
-                      )}
-
-                    {/* Footer Buttons */}
-                    <div className="flex justify-between items-center border-t pt-2 mt-2">
-                      <button
-                        onClick={toggleAllColumns}
-                        className="text-blue-600 hover:underline text-sm"
-                      >
-                        Show/Hide All
-                      </button>
-                      <button
-                        onClick={resetColumns}
-                        className="text-red-600 hover:underline text-sm"
-                      >
-                        Reset
-                      </button>
-                    </div>
-                  </MenuItems>
-                </Transition>
-              </Menu>
-
-              {/* Filter Button */}
-              <Menu as="div" className="relative">
-                <MenuButton className="flex items-center space-x-2 py-2 px-1">
-                  <div className="bg-mYellow rounded-4xl p-2">
-                    <AdjustmentsHorizontalIcon className="h-4 w-4 fill-black cursor-pointer" />
-                  </div>
-                  <span className="text-sm font-medium">Filter</span>
-                </MenuButton>
-                {/* TODO: Implement filter logic */}
-              </Menu>
-
-              {/* Export Button */}
-
-              <Menu as="div" className="relative">
-                <MenuButton className="flex items-center space-x-2 py-2 px-1">
-                  <div className="bg-mYellow rounded-4xl p-2 cursor-pointer">
-                    <ArrowUpTrayIcon
-                      className="h-4 w-4"
-                      onClick={exportToCSV}
-                    />
-                  </div>
-                  <span className="text-sm font-medium">Export</span>
-                </MenuButton>
-              </Menu>
-            </div>
-
-            {/* Search Input */}
-            <div className="relative">
-              <MagnifyingGlassIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
-              <input
-                type="text"
-                placeholder="Search for an admin"
-                value={globalFilter}
-                onChange={(e) => setGlobalFilter(e.target.value)}
-                className="pl-10 pr-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-
-          {/* Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-200">
-              <thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id} className="bg-gray-100 border-b">
-                    {headerGroup.headers.map((header) => (
-                      <th key={header.id} className="p-2 border">
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row) => (
-                  <tr key={row.id} className="border-b">
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="p-2 border">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination */}
-          <div className="flex justify-between items-center mt-4">
-            <button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
-            >
-              Prev
-            </button>
-            <span>
-              Page {table.getState().pagination.pageIndex + 1} of{" "}
-              {table.getPageCount()}
-            </span>
-            <button
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-        </div>
+      {!loading && !error && admins.length > 0 && (
+        <Table data={admins} columns={adminsColumns} />
       )}
     </div>
   );

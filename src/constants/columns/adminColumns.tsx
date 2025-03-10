@@ -1,8 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { IUser } from "@/types/user.types";
 import Image from "next/image";
+import Link from "next/link";
 
-const adminsColumns: ColumnDef<IUser>[] = [
+const adminColumns: ColumnDef<IUser>[] = [
   {
     accessorKey: "profilePicture",
     header: "Picture",
@@ -27,19 +28,26 @@ const adminsColumns: ColumnDef<IUser>[] = [
   {
     accessorKey: "fullName",
     header: "Full Name",
-    cell: ({ row }) => <span>{row.original.fullName}</span>, // ✅ Uses row
+    cell: ({ row }) => (
+      <Link
+        href={`/dashboard/admins/${row.original.id}`}
+        className="text-blue-500 hover:underline"
+      >
+        {row.original.fullName}
+      </Link>
+    ),
     size: 200,
   },
   {
     accessorKey: "position",
     header: "Position",
-    cell: ({ row }) => <span>{row.original.position}</span>, // ✅ Uses row
+    cell: ({ row }) => <span>{row.original.position}</span>,
     size: 200,
   },
   {
     accessorKey: "email",
     header: "Email",
-    cell: ({ row }) => <span>{row.original.email}</span>, // ✅ Uses row
+    cell: ({ row }) => <span>{row.original.email}</span>,
     size: 250,
   },
   {
@@ -47,14 +55,14 @@ const adminsColumns: ColumnDef<IUser>[] = [
     header: "Role",
     cell: ({ row }) => (
       <span className="text-blue-500">{row.original.role}</span>
-    ), // ✅ Uses row
+    ),
     size: 150,
   },
   {
     accessorKey: "actions",
     header: "Actions",
     cell: ({ row }) => {
-      const userId = row.original.id; // ✅ Uses row
+      const userId = row.original.id;
       return (
         <div className="space-x-2">
           <button
@@ -76,4 +84,4 @@ const adminsColumns: ColumnDef<IUser>[] = [
   },
 ];
 
-export default adminsColumns;
+export default adminColumns;

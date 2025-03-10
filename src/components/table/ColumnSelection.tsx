@@ -1,9 +1,6 @@
 import { useState } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import {
-  Bars3BottomLeftIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+import { Menu, MenuButton, MenuItems, Transition } from "@headlessui/react";
+import { ChartBarIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Table } from "@tanstack/react-table";
 
 interface ColumnSelectionProps<TData> {
@@ -14,13 +11,16 @@ const ColumnSelection = <TData,>({ table }: ColumnSelectionProps<TData>) => {
   const [columnSearch, setColumnSearch] = useState("");
 
   return (
-    <Menu as="div" className="relative">
-      <Menu.Button className="flex items-center space-x-2 bg-yellow-300 px-3 py-2 rounded-md">
-        <Bars3BottomLeftIcon className="h-5 w-5" />
+    <Menu
+      as="div"
+      className="relative flex items-center justify-center space-x-2"
+    >
+      <MenuButton className="flex items-center space-x-2 bg-mYellow px-3 py-2 rounded-md">
+        <ChartBarIcon className="h-4 w-4 fill-black" />
         <span>Columns</span>
-      </Menu.Button>
+      </MenuButton>
       <Transition>
-        <Menu.Items className="absolute mt-2 w-64 bg-white shadow-lg rounded-md p-2 z-10">
+        <MenuItems className="absolute mt-2 w-64 bg-white shadow-lg rounded-md p-2 z-10">
           <div className="relative mb-2">
             <MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
             <input
@@ -49,7 +49,7 @@ const ColumnSelection = <TData,>({ table }: ColumnSelectionProps<TData>) => {
                 <span>{column.id}</span>
               </label>
             ))}
-        </Menu.Items>
+        </MenuItems>
       </Transition>
     </Menu>
   );

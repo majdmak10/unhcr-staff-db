@@ -11,6 +11,8 @@ import Table from "@/components/table/Table";
 import { Suspense } from "react";
 import userColumns from "@/constants/userColumns";
 import { getProfilePicture } from "@/utils/userUtils";
+import { EyeIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 const UserPage = async () => {
   const user = await getUsers();
@@ -42,20 +44,10 @@ const UserPage = async () => {
     actions: (
       <div className="flex gap-2 justify-start items-center">
         <Link href={`/dashboard/users/${user.id}`}>
-          <Image
-            src="/table_icons/view.png"
-            alt="View"
-            width={20}
-            height={20}
-          />
+          <EyeIcon className="w-5 h-5 stroke-mBlue" />
         </Link>
         <Link href={`/dashboard/users/${user.id}/edit`}>
-          <Image
-            src="/table_icons/edit.png"
-            alt="Edit"
-            width={20}
-            height={20}
-          />
+          <PencilSquareIcon className="w-5 h-5 stroke-mGreen" />
         </Link>
         <DeleteButton id={user.id} type="user" deleteAction={deleteUser} />
       </div>

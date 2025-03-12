@@ -65,13 +65,6 @@ const DeleteSelectedButton: React.FC<DeleteSelectedButtonProps> = ({
         aria-label="Delete Selected"
         disabled={isDeleting}
       >
-        {/* <Image
-          src="/table_icons/delete.png"
-          alt="Delete Selected"
-          width={36}
-          height={36}
-          className="md:w-5 md:h-5"
-        /> */}
         Delete selected
       </button>
 

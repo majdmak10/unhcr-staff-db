@@ -5,6 +5,7 @@ import ConfirmationModal from "./ConfirmModal";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { DeleteActionResult } from "@/lib/actions";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 interface DeleteButtonProps {
   id: string;
@@ -62,13 +63,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
         disabled={isDeleting}
         className="cursor-pointer"
       >
-        <Image
-          src="/table_icons/delete.png"
-          alt="Delete"
-          width={20}
-          height={20}
-          title="Delete"
-        />
+        <TrashIcon className="w-5 h-5 stroke-mRed" />
       </button>
 
       <ConfirmationModal

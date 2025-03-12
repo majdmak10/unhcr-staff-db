@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { Column } from "./Table";
 
 interface TableBodyProps {
-  data: Array<{ [key: string]: string | JSX.Element }>;
+  data: Array<{ [key: string]: string | React.JSX.Element }>;
   columns: Column[];
   selectedRows: number[];
   handleRowSelect: (index: number) => void;

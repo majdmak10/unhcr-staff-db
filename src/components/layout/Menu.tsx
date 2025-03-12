@@ -148,7 +148,7 @@ const Menu = () => {
   }, [userRole, router]); // Include `router` as a dependency
 
   return (
-    <main className="text-sm min-h-screen">
+    <main className="text-sm min-h-screen relative z-[10]">
       {menuItems.map((section, sectionIndex) => (
         <div className="flex flex-col gap-2" key={section.title}>
           <span className="hidden lg:block text-gray-400 font-light mt-4">

@@ -32,7 +32,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
 
       if (result.success) {
         if (type === "user") {
-          window.location.href = "/dashboard/admins";
+          window.location.href = "/dashboard/users";
         } else if (type === "staff") {
           window.location.href = "/dashboard/staff";
         }
@@ -60,6 +60,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
         onClick={() => setModalOpen(true)}
         title="Delete"
         disabled={isDeleting}
+        className="cursor-pointer"
       >
         <Image
           src="/table_icons/delete.png"
@@ -75,7 +76,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
         message={
           errorMessage ||
           `Are you sure you want to delete this ${
-            type === "user" ? "admin" : "staff"
+            type === "user" ? "user" : "staff"
           }?`
         }
         onConfirm={errorMessage ? undefined : handleDelete}

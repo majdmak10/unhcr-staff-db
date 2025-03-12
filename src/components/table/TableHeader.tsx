@@ -11,7 +11,7 @@ interface TableHeaderProps {
     direction: "asc" | "desc" | null;
   };
   handleSort: (key: string) => void;
-  headerCheckboxRef: React.RefObject<HTMLInputElement>;
+  headerCheckboxRef: React.RefObject<HTMLInputElement | null>;
   handleSelectAll: () => void;
   disableSortingFor: string[];
 }

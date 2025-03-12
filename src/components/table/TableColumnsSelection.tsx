@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 interface Column {
   key: string;
-  label: string | JSX.Element;
+  label: string | React.JSX.Element;
 }
 
 interface TableColumnsSelectionProps {
@@ -77,7 +77,7 @@ const TableColumnsSelection: React.FC<TableColumnsSelectionProps> = ({
   return (
     <div
       ref={menuRef}
-      className="absolute top-full left-0 mt-2 p-4 bg-white border rounded shadow-lg w-72 animate-in fade-in duration-200 text-sm z-50"
+      className="absolute top-full left-0 mt-2 p-4 bg-white border-1 border-gray-200 rounded shadow-lg w-72 animate-in fade-in duration-200 text-sm z-50"
     >
       {/* Search Section */}
       <div className="relative mb-2">
@@ -95,7 +95,7 @@ const TableColumnsSelection: React.FC<TableColumnsSelectionProps> = ({
             // Implement search logic here if needed
             console.log("Search event triggered: ", e.target.value);
           }}
-          className="w-full pl-9 pr-3 py-3 text-xs border rounded focus:outline-none focus:ring-1 focus:ring-mBlue focus:border-transparent"
+          className="w-full pl-9 pr-3 py-3 text-xs border-1 border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-mBlue focus:border-transparent"
         />
       </div>
 

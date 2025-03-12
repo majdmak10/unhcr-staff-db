@@ -25,7 +25,7 @@ export interface Column {
 
 export interface TableProps {
   columns: Column[];
-  data: Array<{ [key: string]: string | JSX.Element }>;
+  data: Array<{ [key: string]: string | React.JSX.Element }>;
   deleteAction: (formData: FormData) => Promise<DeleteActionResult>;
   type: "staff" | "user";
   placeholder?: string;
@@ -48,7 +48,7 @@ const Table: React.FC<TableProps> = ({
   >([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [staffPerPage, setStaffPerPage] = useState<number>(10); // Default rows per page
-  const headerCheckboxRef = useRef<HTMLInputElement>(null);
+  const headerCheckboxRef = useRef<HTMLInputElement | null>(null);
 
   const filteredColumns = useMemo(
     () => columns.filter((col) => visibleColumns.includes(col.key)),

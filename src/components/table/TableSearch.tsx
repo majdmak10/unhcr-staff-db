@@ -31,13 +31,18 @@ const TableSearch = ({
           alt="Search Icon"
           width={14}
           height={14}
+          priority // Forces it to load earlier, avoiding hydration issues
+          unoptimized // Removes Next.js optimizations to prevent mismatches
         />
+
         <input
           type="text"
           value={searchValue}
-          placeholder={placeholder} // Use dynamic placeholder
+          placeholder={placeholder}
           className="w-[200px] flex-none p-2 bg-transparent outline-none text-xs"
           onChange={handleInputChange}
+          spellCheck={false} // Avoid external spell checkers modifying the field
+          suppressHydrationWarning
         />
       </div>
 

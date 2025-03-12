@@ -13,14 +13,14 @@ import ResetButton from "../buttons/ResetButton";
 
 interface Column {
   key: string;
-  label: string | JSX.Element;
+  label: string | React.JSX.Element;
   width?: string;
 }
 
 interface TableControlsProps {
   columns: Column[];
   visibleColumns: string[];
-  data: Array<{ [key: string]: string | JSX.Element }>;
+  data: Array<{ [key: string]: string | React.JSX.Element }>;
   selectedRows?: number[];
   onColumnChange: (updatedColumns: string[]) => void;
   onFilterApply: (
@@ -82,7 +82,7 @@ const TableControls: React.FC<TableControlsProps> = ({
           {/* Columns selection */}
           <div className="relative flex items-center gap-2">
             <button
-              className="w-7 h-7 flex items-center justify-center rounded-full bg-mYellow"
+              className="w-7 h-7 flex items-center justify-center rounded-full bg-mYellow cursor-pointer"
               title="Show/Hide Columns"
               aria-label="Show/Hide Columns"
               onClick={() => setShowColumnSelector((prev) => !prev)}
@@ -108,7 +108,7 @@ const TableControls: React.FC<TableControlsProps> = ({
           {/* Filter */}
           <div className="relative flex items-center gap-2" ref={filterRef}>
             <button
-              className="w-7 h-7 flex items-center justify-center rounded-full bg-mYellow"
+              className="w-7 h-7 flex items-center justify-center rounded-full bg-mYellow cursor-pointer"
               title="Filter Data"
               aria-label="Filter Data"
               onClick={() => setShowFilter((prev) => !prev)}
@@ -133,7 +133,7 @@ const TableControls: React.FC<TableControlsProps> = ({
           {/* Export */}
           <div className="relative flex items-center gap-2" ref={exportRef}>
             <button
-              className="w-7 h-7 flex items-center justify-center rounded-full bg-mYellow"
+              className="w-7 h-7 flex items-center justify-center rounded-full bg-mYellow cursor-pointer"
               title="Export Data"
               aria-label="Export Data"
               onClick={() => setShowExport((prev) => !prev)}

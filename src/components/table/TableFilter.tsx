@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 interface Column {
   key: string;
-  label: string | JSX.Element;
+  label: string | React.JSX.Element;
 }
 
 interface Filter {
@@ -54,10 +54,10 @@ const TableFilter: React.FC<TableFilterProps> = ({
   };
 
   return (
-    <div className="absolute top-full left-0 mt-2 p-4 bg-white border rounded shadow-lg w-64 md:w-72 animate-in fade-in duration-200 text-sm z-50">
+    <div className="absolute top-full left-0 mt-2 p-4 bg-white border-1 border-gray-200 rounded shadow-lg w-64 md:w-72 animate-in fade-in duration-200 text-sm z-50">
       <div className="max-h-[300px] overflow-y-auto">
         {filters.map((filter, index) => (
-          <div key={index} className="mb-4 border-b pb-4">
+          <div key={index} className="mb-4 border-b border-gray-200 pb-4">
             <div className="flex items-center mb-3">
               <label className="block text-sm font-medium text-gray-600 mr-2 w-20">
                 Column
@@ -68,7 +68,7 @@ const TableFilter: React.FC<TableFilterProps> = ({
                 onChange={(e) =>
                   handleFilterChange(index, "column", e.target.value)
                 }
-                className="w-full p-1 border rounded"
+                className="w-full p-1 border-1 border-gray-200 rounded"
               >
                 <option value="">Select column</option>
                 {columns.map((col) => (
@@ -89,7 +89,7 @@ const TableFilter: React.FC<TableFilterProps> = ({
                 onChange={(e) =>
                   handleFilterChange(index, "operator", e.target.value)
                 }
-                className="w-full p-1 border rounded"
+                className="w-full p-1 border-1 border-gray-200 rounded"
               >
                 <option value="">Select operator</option>
                 <option value="contains">Contains</option>
@@ -110,7 +110,7 @@ const TableFilter: React.FC<TableFilterProps> = ({
                 onChange={(e) =>
                   handleFilterChange(index, "value", e.target.value)
                 }
-                className="w-full p-1 border rounded"
+                className="w-full p-1 border-1 border-gray-200 rounded"
               />
             </div>
           </div>

@@ -6,14 +6,14 @@ import { saveAs } from "file-saver"; // For saving the file
 
 interface Column {
   key: string;
-  label: string | JSX.Element;
+  label: string | React.JSX.Element;
   width?: string;
 }
 
 interface ExportProps {
   columns: Column[];
   visibleColumns: string[];
-  data: Array<{ [key: string]: string | JSX.Element }>;
+  data: Array<{ [key: string]: string | React.JSX.Element }>;
   selectedRows?: number[];
   onClose: () => void;
 }
@@ -203,7 +203,7 @@ const TableExport: React.FC<ExportProps> = ({
   return (
     <div
       ref={menuRef}
-      className="absolute top-full left-0 mt-2 py-2 bg-white border rounded shadow-lg w-36 animate-in fade-in duration-200 text-sm z-50"
+      className="absolute top-full left-0 mt-2 py-2 bg-white border-1 border-gray-200 rounded shadow-lg w-36 animate-in fade-in duration-200 text-sm z-50"
     >
       <button
         onClick={exportToExcel}

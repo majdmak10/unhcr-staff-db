@@ -35,7 +35,7 @@ const DeleteSelectedButton: React.FC<DeleteSelectedButtonProps> = ({
       if (result.success) {
         router.refresh(); // Ensures the current page's data is reloaded
         if (type === "user") {
-          window.location.href = "/dashboard/admins";
+          window.location.href = "/dashboard/users";
         } else if (type === "staff") {
           window.location.href = "/dashboard/staff";
         }
@@ -80,7 +80,7 @@ const DeleteSelectedButton: React.FC<DeleteSelectedButtonProps> = ({
         message={
           errorMessage ||
           `Are you sure you want to delete the selected ${selectedIds.length} ${
-            type === "user" ? "admin(s)" : "staff"
+            type === "user" ? "user(s)" : "staff"
           }?`
         }
         onConfirm={errorMessage ? undefined : handleDelete}

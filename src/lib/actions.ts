@@ -467,7 +467,7 @@ export const addUser = async (formData: FormData): Promise<void> => {
         "public",
         "uploads",
         "profiles_pictures",
-        "admins"
+        "users"
       );
       await fs.mkdir(uploadDir, { recursive: true });
 
@@ -507,7 +507,7 @@ export const addUser = async (formData: FormData): Promise<void> => {
       await fs.writeFile(fullFilePath, buffer);
 
       // Store relative path for database and frontend
-      profilePicturePath = `/uploads/profiles_pictures/admins/${uniqueFilename}`;
+      profilePicturePath = `/uploads/profiles_pictures/users/${uniqueFilename}`;
     }
 
     const newUser = new User({
@@ -525,14 +525,14 @@ export const addUser = async (formData: FormData): Promise<void> => {
     });
 
     await newUser.save();
-    console.log("Admin added successfully");
+    console.log("User added successfully");
   } catch (err) {
-    console.error("Failed to add admin:", err);
+    console.error("Failed to add user:", err);
     throw err;
   }
 
-  revalidatePath("/dashboard/admins");
-  redirect("/dashboard/admins");
+  revalidatePath("/dashboard/users");
+  redirect("/dashboard/users");
 };
 
 export const updateUser = async (formData: FormData): Promise<void> => {
@@ -555,7 +555,8 @@ export const updateUser = async (formData: FormData): Promise<void> => {
       process.cwd(),
       "public",
       "uploads",
-      "profiles_pictures"
+      "profiles_pictures",
+      "users"
     );
     await fs.mkdir(uploadDir, { recursive: true });
 
@@ -579,7 +580,7 @@ export const updateUser = async (formData: FormData): Promise<void> => {
     const buffer = Buffer.from(await profilePictureFile.arrayBuffer());
     await fs.writeFile(fullPath, buffer);
 
-    profilePicturePath = `/uploads/profiles_pictures/admins/${uniqueFilename}`;
+    profilePicturePath = `/uploads/profiles_pictures/users/${uniqueFilename}`;
   }
 
   try {
@@ -631,8 +632,8 @@ export const updateUser = async (formData: FormData): Promise<void> => {
     console.error("Failed to update user:", err);
   }
 
-  revalidatePath("/dashboard/admins");
-  redirect("/dashboard/admins");
+  revalidatePath("/dashboard/users");
+  redirect("/dashboard/users");
 };
 
 export async function deleteUser(
@@ -659,7 +660,7 @@ export async function deleteUser(
       if (user?.email === "makdessi@unhcr.org") {
         return {
           success: false,
-          error: "This admin cannot be deleted.",
+          error: "This user cannot be deleted.",
         };
       }
 

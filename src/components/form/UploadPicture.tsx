@@ -33,7 +33,7 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
       setFileName(truncatedName);
 
       if (onFileSelect) {
-        onFileSelect(file); // ✅ Pass file to parent component
+        onFileSelect(file); // Pass file to parent component
       }
     } else {
       clearFile();
@@ -46,7 +46,7 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
       fileInputRef.current.value = "";
     }
     if (onFileSelect) {
-      onFileSelect(null); // ✅ Reset file in parent state
+      onFileSelect(null); // Reset file in parent state
     }
   };
 

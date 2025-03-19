@@ -2,17 +2,15 @@ export const dynamic = "force-dynamic";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import AddButton from "@/components/buttons/AddButton";
-import DeleteButton from "@/components/buttons/DeleteButton";
 import Image from "next/image";
 import Link from "next/link";
 import Table from "@/components/table/Table";
 import userColumns from "@/constants/userColumns";
 import { Suspense } from "react";
 import { getProfilePicture } from "@/utils/userUtils";
-import { EyeIcon } from "@heroicons/react/24/outline";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { getUsers } from "@/lib/data";
 import { deleteUser } from "@/lib/actions";
+import TableActions from "@/components/table/TableActions";
 
 const UserPage = async () => {
   const user = await getUsers();
@@ -43,13 +41,7 @@ const UserPage = async () => {
     role: user.role,
     actions: (
       <div className="flex gap-2 justify-start items-center">
-        <Link href={`/dashboard/users/${user.id}`}>
-          <EyeIcon className="w-5 h-5 stroke-mBlue" />
-        </Link>
-        <Link href={`/dashboard/users/${user.id}/edit`}>
-          <PencilSquareIcon className="w-5 h-5 stroke-mGreen" />
-        </Link>
-        <DeleteButton id={user.id} type="user" deleteAction={deleteUser} />
+        <TableActions id={user.id} type="users" deleteAction={deleteUser} />
       </div>
     ),
   }));

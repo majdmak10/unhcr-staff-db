@@ -6,8 +6,7 @@ import InputField from "@/components/form/InputFiled";
 import SelectField from "@/components/form/SelectFiled";
 import UploadPicture from "@/components/form/UploadPicture";
 import { addUser } from "@/lib/actions";
-import AddEditSubmitButton from "@/components/buttons/AddEditSubmitButton";
-import CancelButton from "@/components/buttons/CancelButton";
+import AddEditActions from "@/components/form/AddEditActions";
 
 const AddUser: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -217,8 +216,7 @@ const AddUser: React.FC = () => {
         </div>
 
         <div className="flex justify-center gap-4 mt-4">
-          <AddEditSubmitButton title="Add" />
-          <CancelButton />
+          <AddEditActions submitTitle="Add" />
         </div>
       </form>
     </main>

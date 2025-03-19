@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 interface EditButtonProps {
   id: string;
@@ -10,7 +10,7 @@ interface EditButtonProps {
 const EditButton: React.FC<EditButtonProps> = ({ id, type, className }) => {
   return (
     <Link href={`/dashboard/${type}/${id}/edit`} className={className}>
-      <Image src="/table_icons/edit.png" alt="Edit" width={20} height={20} />
+      <PencilSquareIcon className="w-5 h-5 stroke-mGreen" />
     </Link>
   );
 };

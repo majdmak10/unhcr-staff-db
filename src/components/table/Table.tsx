@@ -38,6 +38,7 @@ const Table: React.FC<TableProps> = ({
   type,
   placeholder = "Search for a staff",
 }) => {
+  const [loading, setLoading] = useState(true); // Loading state
   const [visibleColumns, setVisibleColumns] = useState<string[]>(
     columns.map((col) => col.key)
   );
@@ -192,6 +193,25 @@ const Table: React.FC<TableProps> = ({
       isWidthModified // Column widths modified
     );
   }, [filters, searchValue, sortState, selectedRows, isWidthModified]);
+
+  useEffect(() => {
+    // Simulate data fetching
+    const fetchData = async () => {
+      setLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated delay
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [data]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

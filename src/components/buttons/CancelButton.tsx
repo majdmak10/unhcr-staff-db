@@ -16,7 +16,7 @@ const CancelButton: React.FC<CancelButtonProps> = ({ className }) => {
   return (
     <button
       type="button"
-      className={`bg-mRed text-sm text-white p-2 rounded-md w-16 ${className}`}
+      className={`bg-mRed text-sm text-white p-2 rounded-md w-16 cursor-pointer ${className}`}
       onClick={handleCancel}
     >
       Cancel

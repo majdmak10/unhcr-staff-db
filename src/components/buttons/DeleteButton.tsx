@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import ConfirmationModal from "./ConfirmModal";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { DeleteActionResult } from "@/lib/actions";
 import { TrashIcon } from "@heroicons/react/24/outline";

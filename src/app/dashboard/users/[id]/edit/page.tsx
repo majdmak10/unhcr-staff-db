@@ -88,7 +88,7 @@ const EditUser: React.FC<EditUserProps> = async ({ params }) => {
         <div className="flex justify-center items-center gap-4 mt-4">
           <button
             type="submit"
-            className="bg-mBlue text-sm text-white p-2 rounded-md w-16"
+            className="bg-mBlue text-sm text-white p-2 rounded-md w-16 cursor-pointer"
           >
             Save
           </button>

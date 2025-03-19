@@ -25,14 +25,14 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           {!showOnlyCancel && (
             <button
               onClick={onConfirm}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
             >
               Delete
             </button>
           )}
           <button
             onClick={onCancel}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded cursor-pointer"
           >
             Cancel
           </button>

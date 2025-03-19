@@ -1,9 +1,10 @@
 import { getUserById } from "@/lib/data";
 import { deleteUser } from "@/lib/actions";
-import Image from "next/image";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import DeleteButton from "@/components/buttons/DeleteButton";
-import Link from "next/link";
+import BackButton from "@/components/buttons/BackButton";
+import ProfilePicture from "@/components/profile/ProfilePicture";
+import EditButton from "@/components/buttons/EditButton";
 
 const UserProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
@@ -24,31 +25,20 @@ const UserProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
         ]}
       />
       <div className="flex flex-col gap-3 bg-white rounded-lg w-full p-4">
-        <div className="flex justify-end p-4 gap-3">
-          <Link href={`/dashboard/users/${user.id}/edit`}>
-            <Image
-              src="/table_icons/edit.png"
-              alt="Edit"
-              width={20}
-              height={20}
-            />
-          </Link>
-          <DeleteButton id={user.id} type="user" deleteAction={deleteUser} />
+        <div className="flex justify-between">
+          <BackButton />
+          <div className="flex justify-end p-4 gap-3">
+            <EditButton id={user.id} type="users" />
+            <DeleteButton id={user.id} type="user" deleteAction={deleteUser} />
+          </div>
         </div>
-        <div className="flex flex-col justify-center items-center gap-4 w-full bg-white rounded-lg p-4">
-          <Image
-            src={
-              user.profilePicture ||
-              (user.sex === "Male"
-                ? "/avatars/noProfilePicture_m.png"
-                : "/avatars/noProfilePicture_f.png")
-            }
-            alt={`${user.fullName}'s Profile Picture`}
-            width={200}
-            height={200}
-            className="rounded-full border-2 border-[#eaeaea] object-fill w-60 h-60"
+        <div className="flex flex-col justify-center items-center gap-4 w-full mx-auto md:w-[30%] bg-white rounded-lg p-4 shadow-lg mb-5">
+          <ProfilePicture
+            profilePicture={user.profilePicture}
+            fullName={user.fullName}
+            sex={user.sex}
           />
-          <h1 className="text-xl font-semibold">{user.fullName}</h1>
+          <h1 className="text-2xl font-semibold mt-3">{user.fullName}</h1>
           <p className="font-semibold">
             Position: <span className="font-normal">{user.position}</span>
           </p>

@@ -5,14 +5,14 @@ import AddButton from "@/components/buttons/AddButton";
 import DeleteButton from "@/components/buttons/DeleteButton";
 import Image from "next/image";
 import Link from "next/link";
-import { getUsers } from "@/lib/data";
-import { deleteUser } from "@/lib/actions";
 import Table from "@/components/table/Table";
-import { Suspense } from "react";
 import userColumns from "@/constants/userColumns";
+import { Suspense } from "react";
 import { getProfilePicture } from "@/utils/userUtils";
 import { EyeIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { getUsers } from "@/lib/data";
+import { deleteUser } from "@/lib/actions";
 
 const UserPage = async () => {
   const user = await getUsers();

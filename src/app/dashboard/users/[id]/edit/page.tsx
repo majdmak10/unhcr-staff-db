@@ -5,6 +5,7 @@ import UploadPicture from "@/components/form/UploadPicture";
 import Image from "next/image";
 import { getUserById } from "@/lib/data";
 import { updateUser } from "@/lib/actions";
+import AddEditSubmitButton from "@/components/buttons/AddEditSubmitButton";
 import CancelButton from "@/components/buttons/CancelButton";
 
 interface EditUserProps {
@@ -86,12 +87,7 @@ const EditUser: React.FC<EditUserProps> = async ({ params }) => {
 
         {/* Submit Buttons Section */}
         <div className="flex justify-center items-center gap-4 mt-4">
-          <button
-            type="submit"
-            className="bg-mBlue text-sm text-white p-2 rounded-md w-16 cursor-pointer"
-          >
-            Save
-          </button>
+          <AddEditSubmitButton title="Save" />
           <CancelButton />
         </div>
       </form>

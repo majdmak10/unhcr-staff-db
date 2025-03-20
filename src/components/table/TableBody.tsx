@@ -9,6 +9,14 @@ interface TableBodyProps {
   handleRowSelect: (index: number) => void;
 }
 
+const getWidthClass = (columnKey: string) => {
+  if (columnKey === "fullName") {
+    return "w-[150px] sm:w-[100px]"; // 150px default, but 100px on small screens
+  }
+
+  return ""; // Default case (no specific width)
+};
+
 const TableBody: React.FC<TableBodyProps> = ({
   data,
   columns,
@@ -28,15 +36,22 @@ const TableBody: React.FC<TableBodyProps> = ({
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              handleRowSelect(rowIndex); // Select row on Enter or Space
+              handleRowSelect(rowIndex);
             }
           }}
-          onClick={() => handleRowSelect(rowIndex)} // Select row on click
+          onClick={() => handleRowSelect(rowIndex)}
         >
           {columns.map((column) => (
             <td
               key={column.key}
-              className={clsx("px-3 py-1 border-b border-gray-200")}
+              className={clsx(
+                "px-3 py-1 border-b border-gray-200 bg-white",
+                getWidthClass(column.key), // Apply dynamic width
+                {
+                  "sticky left-0 z-10": column.key === "checkbox",
+                  "sticky left-[50px] z-10": column.key === "fullName",
+                }
+              )}
               tabIndex={-1} // Cells are focusable but not tabbable
             >
               {column.key === "checkbox" ? (

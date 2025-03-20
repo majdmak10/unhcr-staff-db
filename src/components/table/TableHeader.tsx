@@ -16,7 +16,11 @@ interface TableHeaderProps {
   disableSortingFor: string[];
 }
 
-const getWidthClass = (width: number) => {
+const getWidthClass = (columnKey: string, width: number) => {
+  if (columnKey === "fullName") {
+    return "w-[150px] md:w-[250px]";
+  }
+
   if (width <= 50) return "w-[50px]";
   if (width > 50 && width <= 100) return "w-[100px]";
   if (width > 100 && width <= 150) return "w-[150px]";
@@ -45,13 +49,14 @@ const TableHeader: React.FC<TableHeaderProps> = ({
           <th
             key={column.key}
             className={clsx(
-              "group p-3 border-b border-gray-200 text-gray-600 font-semibold text-sm text-left items-center sticky top-0 tracking-wide",
-              getWidthClass(columnWidths[column.key]),
+              "group p-3 border-b border-gray-200 text-gray-600 font-semibold text-sm text-left items-center sticky top-0 tracking-wide bg-white",
+              getWidthClass(column.key, columnWidths[column.key]), // Use updated function
               {
                 "cursor-pointer": !disableSortingFor.includes(column.key),
                 "cursor-default": disableSortingFor.includes(column.key),
                 "bg-blue-50 text-blue-600": sortState?.column === column.key,
-                "hover:border-r": true, // Add hover border
+                "sticky left-0 z-10": column.key === "checkbox",
+                "sticky left-[50px] z-10": column.key === "fullName",
               }
             )}
             onClick={() => {

@@ -8,9 +8,10 @@ import { Suspense } from "react";
 import { getUsers } from "@/lib/data";
 import { deleteUser } from "@/lib/actions";
 import { mapUserData } from "@/utils/usersDataUtils";
+import { IUser } from "@/types/user.types";
 
 const UserPage = async () => {
-  const users = await getUsers();
+  const users: IUser[] = await getUsers();
   const data = mapUserData(users);
 
   return (

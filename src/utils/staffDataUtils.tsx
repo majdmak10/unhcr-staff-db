@@ -6,13 +6,14 @@ import {
   getProfilePicture,
   formatAddress,
 } from "./staffUtils";
+import TableActions from "@/components/table/TableActions";
 import { convertToDMS } from "@/utils/convertToDMS";
-import StaffActions from "@/components/shared/table/StaffActions";
+import { deleteStaff } from "@/lib/actions";
 import { IStaff } from "@/types/staff.types";
 
 export const mapStaffData = (staff: IStaff[]) => {
-  return staff.map((member) => ({
-    id: member._id.toString(), // Convert ObjectId to string
+  return staff.map((staff) => ({
+    id: String(staff.id ?? staff._id ?? "unknown-id"), // Convert to string
     checkbox: (
       <input
         type="checkbox"
@@ -21,10 +22,10 @@ export const mapStaffData = (staff: IStaff[]) => {
       />
     ),
     profilePicture: (
-      <Link href={`/dashboard/staff/${member._id.toString()}`}>
+      <Link href={`/dashboard/staff/${staff.id ?? staff._id ?? "unknown-id"}`}>
         <Image
-          src={getProfilePicture(member.profilePicture, member.sex)}
-          alt={`${member.fullName}'s Profile Picture`}
+          src={getProfilePicture(staff.profilePicture, staff.sex)}
+          alt={`${staff.fullName}'s Profile Picture`}
           width={50}
           height={50}
           className="rounded-full w-[50px] h-[50px] object-fill"
@@ -33,63 +34,74 @@ export const mapStaffData = (staff: IStaff[]) => {
       </Link>
     ),
     fullName: (
-      <Link href={`/dashboard/staff/${member._id.toString()}`}>
-        {member.fullName}
+      <Link
+        href={`/dashboard/staff/${staff.id ?? staff._id ?? "unknown-id"}`}
+        className="hover:underline"
+      >
+        {staff.fullName}
       </Link>
     ),
-    dateOfBirth: formatDate(member.dateOfBirth),
-    sex: member.sex ?? "N/A",
-    nationality: member.nationality ?? "N/A",
-    employmentType: member.employmentType ?? "N/A",
-    position: member.position ?? "N/A",
-    unit: member.unit ?? "N/A",
-    bloodType: member.bloodType ?? "N/A",
-    dependents: member.dependents ?? "N/A",
-    unhcrEmail: member.unhcrEmail ?? "N/A",
-    privateEmail: member.privateEmail ?? "N/A",
-    mobileSyriatel: member.mobileSyriatel ?? "N/A",
-    mobileMtn: member.mobileMtn ?? "N/A",
-    homePhone: member.homePhone ?? "N/A",
-    extension: member.extension ?? "N/A",
-    radio: member.radio ?? "N/A",
-    emergencyContact: member.emergencyContact
-      ? `${member.emergencyContact.fullName} (${member.emergencyContact.relationship}) - ${member.emergencyContact.mobile}`
+    dateOfBirth: formatDate(staff.dateOfBirth),
+    sex: staff.sex ?? "N/A",
+    nationality: staff.nationality ?? "N/A",
+    employmentType: staff.employmentType ?? "N/A",
+    position: staff.position ?? "N/A",
+    unit: staff.unit ?? "N/A",
+    bloodType: staff.bloodType ?? "N/A",
+    dependents: staff.dependents ?? "N/A",
+    unhcrEmail: staff.unhcrEmail ?? "N/A",
+    privateEmail: staff.privateEmail ?? "N/A",
+    mobileSyriatel: staff.mobileSyriatel ?? "N/A",
+    mobileMtn: staff.mobileMtn ?? "N/A",
+    homePhone: staff.homePhone ?? "N/A",
+    extension: staff.extension ?? "N/A",
+    radio: staff.radio ?? "N/A",
+    emergencyContact: staff.emergencyContact
+      ? `${staff.emergencyContact.fullName} (${staff.emergencyContact.relationship}) - ${staff.emergencyContact.mobile}`
       : "N/A",
-    contractType: member.contractType ?? "N/A",
-    contractStartDate: formatDate(member.contractStartDate),
-    contractEndDate: formatDate(member.contractEndDate),
-    nationalIdNumber: member.nationalIdNumber ?? "N/A",
-    passportNumber: member.passportNumber ?? "N/A",
-    passportExpiryDate: formatDate(member.passportExpiryDate),
-    unlpNumber: member.unlpNumber ?? "N/A",
-    unlpExpiryDate: formatDate(member.unlpExpiryDate),
-    criticalStaff: formatBoolean(member.criticalStaff),
-    warden: member.warden ?? "N/A",
-    floorMarshal: member.floorMarshal ?? "N/A",
-    etb: formatBoolean(member.etb),
-    ifak: formatBoolean(member.ifak),
-    advancedDriving: formatBoolean(member.advancedDriving),
-    insideDs: formatBoolean(member.insideDs),
-    outsideDs: formatBoolean(member.outsideDs),
-    address: formatAddress(member.address),
-    latitude: member.address?.latitude
-      ? convertToDMS(parseFloat(member.address.latitude), true)
+    contractType: staff.contractType ?? "N/A",
+    contractStartDate: formatDate(staff.contractStartDate),
+    contractEndDate: formatDate(staff.contractEndDate),
+    nationalIdNumber: staff.nationalIdNumber ?? "N/A",
+    passportNumber: staff.passportNumber ?? "N/A",
+    passportExpiryDate: formatDate(staff.passportExpiryDate),
+    unlpNumber: staff.unlpNumber ?? "N/A",
+    unlpExpiryDate: formatDate(staff.unlpExpiryDate),
+    criticalStaff: formatBoolean(staff.criticalStaff),
+    warden: staff.warden ?? "N/A",
+    floorMarshal: staff.floorMarshal ?? "N/A",
+    etb: formatBoolean(staff.etb),
+    ifak: formatBoolean(staff.ifak),
+    advancedDriving: formatBoolean(staff.advancedDriving),
+    insideDs: formatBoolean(staff.insideDs),
+    outsideDs: formatBoolean(staff.outsideDs),
+    address: formatAddress(staff.address),
+    latitude: staff.address?.latitude
+      ? convertToDMS(parseFloat(staff.address.latitude), true)
       : "N/A",
-    longitude: member.address?.longitude
-      ? convertToDMS(parseFloat(member.address.longitude), false)
+    longitude: staff.address?.longitude
+      ? convertToDMS(parseFloat(staff.address.longitude), false)
       : "N/A",
-    actions: <StaffActions id={member._id.toString()} />, // Ensure id is a string
+    actions: (
+      <div className="flex gap-2 items-center">
+        <TableActions
+          id={String(staff.id ?? staff._id ?? "unknown-id")} // Ensure it's always a string
+          type="staff"
+          deleteAction={deleteStaff}
+        />
+      </div>
+    ),
   }));
 };
 
 export const staffCardTotal = (staff: IStaff[]) => {
-  return staff.map((member) => ({
-    id: member._id.toString(), // Convert ObjectId to string
+  return staff.map((staff) => ({
+    id: String(staff.id ?? staff._id ?? "unknown-id"), // Convert to string
     profilePicture: (
-      <Link href={`/dashboard/staff/${member._id.toString()}`}>
+      <Link href={`/dashboard/staff/${staff.id ?? staff._id ?? "unknown-id"}`}>
         <Image
-          src={getProfilePicture(member.profilePicture, member.sex)}
-          alt={`${member.fullName}'s Profile Picture`}
+          src={getProfilePicture(staff.profilePicture, staff.sex)}
+          alt={`${staff.fullName}'s Profile Picture`}
           width={50}
           height={50}
           className="rounded-full w-[50px] h-[50px] object-fill"
@@ -98,16 +110,16 @@ export const staffCardTotal = (staff: IStaff[]) => {
       </Link>
     ),
     fullName: (
-      <Link href={`/dashboard/staff/${member._id.toString()}`}>
-        {member.fullName}
+      <Link href={`/dashboard/staff/${staff.id ?? staff._id ?? "unknown-id"}`}>
+        {staff.fullName}
       </Link>
     ),
-    employmentType: member.employmentType ?? "N/A",
-    position: member.position ?? "N/A",
-    unit: member.unit ?? "N/A",
-    unhcrEmail: member.unhcrEmail ?? "N/A",
-    mobileSyriatel: member.mobileSyriatel ?? "N/A",
-    mobileMtn: member.mobileMtn ?? "N/A",
-    extension: member.extension ?? "N/A",
+    employmentType: staff.employmentType ?? "N/A",
+    position: staff.position ?? "N/A",
+    unit: staff.unit ?? "N/A",
+    unhcrEmail: staff.unhcrEmail ?? "N/A",
+    mobileSyriatel: staff.mobileSyriatel ?? "N/A",
+    mobileMtn: staff.mobileMtn ?? "N/A",
+    extension: staff.extension ?? "N/A",
   }));
 };

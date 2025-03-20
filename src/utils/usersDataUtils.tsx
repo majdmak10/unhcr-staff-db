@@ -3,21 +3,11 @@ import Link from "next/link";
 import { getProfilePicture } from "@/utils/userUtils";
 import TableActions from "@/components/table/TableActions";
 import { deleteUser } from "@/lib/actions";
+import { IUser } from "@/types/user.types";
 
-// Define the type of users if not already done
-interface User {
-  id: string;
-  fullName: string;
-  position?: string;
-  email: string;
-  role: string;
-  profilePicture?: string;
-  sex?: string;
-}
-
-export const mapUserData = (users: User[]) =>
+export const mapUserData = (users: IUser[]) =>
   users.map((user) => ({
-    id: user.id,
+    id: String(user.id ?? user._id ?? "unknown-id"), // Convert to string
     checkbox: (
       <input
         type="checkbox"
@@ -26,7 +16,7 @@ export const mapUserData = (users: User[]) =>
       />
     ),
     profilePicture: (
-      <Link href={`/dashboard/users/${user.id}`}>
+      <Link href={`/dashboard/users/${user.id ?? user._id ?? "unknown-id"}`}>
         <Image
           src={getProfilePicture(user.profilePicture, user.sex)}
           alt={`${user.fullName}'s Profile Picture`}
@@ -38,7 +28,10 @@ export const mapUserData = (users: User[]) =>
       </Link>
     ),
     fullName: (
-      <Link href={`/dashboard/users/${user.id}`} className="hover:underline">
+      <Link
+        href={`/dashboard/users/${user.id ?? user._id ?? "unknown-id"}`}
+        className="hover:underline"
+      >
         {user.fullName}
       </Link>
     ),
@@ -47,7 +40,11 @@ export const mapUserData = (users: User[]) =>
     role: user.role,
     actions: (
       <div className="flex gap-2 items-center">
-        <TableActions id={user.id} type="users" deleteAction={deleteUser} />
+        <TableActions
+          id={String(user.id ?? user._id ?? "unknown-id")} // Ensure it's always a string
+          type="users"
+          deleteAction={deleteUser}
+        />
       </div>
     ),
   }));

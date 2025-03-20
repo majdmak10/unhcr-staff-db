@@ -15,7 +15,7 @@ export interface IAddress {
 }
 
 export interface IStaff {
-  id?: string;
+  id: string;
   _id?: string;
   profilePicture?: string;
   fullName: string;
@@ -46,10 +46,10 @@ export interface IStaff {
   criticalStaff?: boolean;
   warden?: string;
   floorMarshal?: string;
-  hasEmergencyTravelBag?: boolean;
-  hasFirstAidKit?: boolean;
-  isAdvancedDriver?: boolean;
-  isInsideDutyStation?: boolean;
-  isOutsideDutyStation?: boolean;
+  etb?: boolean;
+  ifak?: boolean;
+  advancedDriving?: boolean;
+  insideDs?: boolean;
+  outsideDs?: boolean;
   address?: IAddress;
 }

@@ -55,8 +55,8 @@ const TableHeader: React.FC<TableHeaderProps> = ({
                 "cursor-pointer": !disableSortingFor.includes(column.key),
                 "cursor-default": disableSortingFor.includes(column.key),
                 "bg-blue-50 text-blue-600": sortState?.column === column.key,
-                "sticky left-0 z-10": column.key === "checkbox",
-                "sticky left-[50px] z-10": column.key === "fullName",
+                "sticky left-0 z-5": column.key === "checkbox",
+                "sticky left-[50px] z-5": column.key === "fullName",
               }
             )}
             onClick={() => {

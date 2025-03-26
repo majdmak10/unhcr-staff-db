@@ -48,8 +48,8 @@ const TableBody: React.FC<TableBodyProps> = ({
                 "px-3 py-1 border-b border-gray-200 bg-white",
                 getWidthClass(column.key), // Apply dynamic width
                 {
-                  "sticky left-0 z-10": column.key === "checkbox",
-                  "sticky left-[50px] z-10": column.key === "fullName",
+                  "sticky left-0 z-5": column.key === "checkbox",
+                  "sticky left-[50px] z-5": column.key === "fullName",
                 }
               )}
               tabIndex={-1} // Cells are focusable but not tabbable

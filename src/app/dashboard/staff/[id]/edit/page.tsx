@@ -1,5 +1,5 @@
 const EditStaff = () => {
-  return <div className="">Edit Staff Page</div>;
+  return <main className="">Edit Staff Page</main>;
 };
 
 export default EditStaff;

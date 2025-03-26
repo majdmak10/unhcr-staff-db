@@ -15,7 +15,7 @@ const StaffPage = async () => {
 
   return (
     <Suspense fallback={<div>Loading staff...</div>}>
-      <div className="flex flex-col gap-3 w-full">
+      <main className="flex flex-col gap-3 w-full">
         {/* Header */}
         <div className="flex items-center justify-between bg-white rounded-lg p-4 shadow">
           <Breadcrumbs
@@ -37,7 +37,7 @@ const StaffPage = async () => {
             placeholder="Search for a staff member"
           />
         </div>
-      </div>
+      </main>
     </Suspense>
   );
 };

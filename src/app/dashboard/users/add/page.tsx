@@ -11,6 +11,25 @@ import AddEditActions from "@/components/form/AddEditActions";
 const AddUser: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const requiredField = (value: string, fieldName: string): string | null =>
+    !value || value.trim() === "" ? `${fieldName} is required` : null;
+
+  const validatePassword = (password: string): string | null => {
+    if (password.length < 8) {
+      return "Password must be at least 8 characters long.";
+    }
+    if (!/[A-Z]/.test(password)) {
+      return "Password must contain at least one uppercase letter.";
+    }
+    if (!/[0-9]/.test(password)) {
+      return "Password must contain at least one number.";
+    }
+    if (!/[!@#$%^&*()_+\-=\[\]{};':\"\\|,.<>\/?]/.test(password)) {
+      return "Password must contain at least one special character.";
+    }
+    return null;
+  };
+
   const validateForm = (formData: FormData) => {
     const fullName = formData.get("fullName") as string;
     const sex = formData.get("sex") as string;
@@ -20,55 +39,19 @@ const AddUser: React.FC = () => {
     const confirmPassword = formData.get("confirmPassword") as string;
     const role = formData.get("role") as string;
 
-    const validatePassword = (password: string): string | null => {
-      // Check if password is at least 8 characters long
-      if (password.length < 8) {
-        return "Password must be at least 8 characters long, contain at least one capital letter, one number, and one symbol (e.g., !@#$%^&*)";
-      }
-
-      // Check for at least one uppercase letter
-      const hasUpperCase = /[A-Z]/.test(password);
-      if (!hasUpperCase) {
-        return "Password must be at least 8 characters long, contain at least one capital letter, one number, and one symbol (e.g., !@#$%^&*)";
-      }
-
-      // Check for at least one number
-      const hasNumber = /[0-9]/.test(password);
-      if (!hasNumber) {
-        return "Password must be at least 8 characters long, contain at least one capital letter, one number, and one symbol (e.g., !@#$%^&*)";
-      }
-
-      // Check for at least one symbol
-      const hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
-      if (!hasSymbol) {
-        return "Password must be at least 8 characters long, contain at least one capital letter, one number, and one symbol (e.g., !@#$%^&*)";
-      }
-
-      // If all checks pass, return null (no error)
-      return null;
-    };
-
     const newErrors: Record<string, string> = {};
 
-    // Full Name validation
-    if (!fullName || fullName.trim() === "") {
-      newErrors.fullName = "Full Name is required";
-    }
-
-    // Sex validation
-    if (!sex || sex === "") {
-      newErrors.sex = "Sex is required";
-    }
-
-    // Position validation
-    if (!position || position === "") {
-      newErrors.position = "Position is required";
-    }
+    newErrors.fullName = requiredField(fullName, "Full Name") || "";
+    newErrors.sex = requiredField(sex, "Sex") || "";
+    newErrors.position = requiredField(position, "Position") || "";
+    newErrors.role = requiredField(role, "Role") || "";
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      newErrors.email = "Valid email is required";
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Invalid email format";
     }
 
     // Password validation
@@ -82,15 +65,10 @@ const AddUser: React.FC = () => {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
-    // Role validation
-    if (!role || role === "") {
-      newErrors.role = "Role is required";
-    }
-
-    return newErrors;
+    return Object.fromEntries(Object.entries(newErrors).filter(([, v]) => v));
   };
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleSubmit = async (formData: FormData): Promise<void> => {
     const validationErrors = validateForm(formData);
 
     if (Object.keys(validationErrors).length > 0) {
@@ -98,34 +76,24 @@ const AddUser: React.FC = () => {
       return;
     }
 
-    // Clear previous errors
     setErrors({});
 
     try {
       await addUser(formData);
-    } catch (error) {
-      // Handle any submission errors
-      console.error("Submission error:", error);
-
-      // Narrow down the type of `error`
+    } catch (error: unknown) {
       if (error instanceof Error) {
-        if (error.message === "Email already exists") {
-          setErrors({ email: "Email already exists" });
-        } else {
-          setErrors({ submit: "Failed to add user. Please try again." });
-        }
+        setErrors({
+          submit: error.message.includes("Email already exists")
+            ? "Email already exists"
+            : "Failed to add user. Please try again.",
+        });
       } else {
-        // Handle cases where `error` is not an Error object
         setErrors({
           submit: "An unexpected error occurred. Please try again.",
         });
       }
     }
   };
-
-  //   const handleCancel = () => {
-  //     router.push("/dashboard/users");
-  //   };
 
   return (
     <main className="flex flex-col gap-3">
@@ -173,7 +141,6 @@ const AddUser: React.FC = () => {
             id="position"
             name="position"
             placeholder="Enter position"
-            type="position"
             error={errors.position}
           />
           <InputField
@@ -196,7 +163,7 @@ const AddUser: React.FC = () => {
             label="Confirm Password"
             id="confirmPassword"
             name="confirmPassword"
-            placeholder="Enter confirm password"
+            placeholder="Confirm password"
             type="password"
             error={errors.confirmPassword}
           />

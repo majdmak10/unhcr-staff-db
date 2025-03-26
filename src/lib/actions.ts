@@ -152,9 +152,12 @@ export const addStaff = async (formData: FormData): Promise<void> => {
       dependents: dependents || "N/A",
       unhcrEmail: unhcrEmail || "N/A",
       privateEmail: privateEmail || "N/A",
-      mobileSyriatel: mobileSyriatel || "N/A",
-      mobileMtn: mobileMtn || "N/A",
-      homePhone: homePhone || "N/A",
+      mobileSyriatel:
+        mobileSyriatel && /^[0-9]{9}$/.test(mobileSyriatel)
+          ? mobileSyriatel
+          : null,
+      mobileMtn: mobileMtn && /^[0-9]{9}$/.test(mobileMtn) ? mobileMtn : null,
+      homePhone: homePhone && /^[0-9]{9}$/.test(homePhone) ? homePhone : null,
       extension: extension || "N/A",
       radio: radio || "N/A",
       emergencyContact,

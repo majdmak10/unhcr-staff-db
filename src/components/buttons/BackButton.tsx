@@ -7,7 +7,7 @@ const BackButton = () => {
   const router = useRouter();
 
   return (
-    <div className="flex justify-start p-4">
+    <div className="flex justify-start">
       <ArrowLeftIcon
         className="w-5 h-5 stroke-mBlue cursor-pointer"
         onClick={() => router.back()}

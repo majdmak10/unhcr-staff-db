@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import FormSectionTitle from "@/components/form/FormSectionTitle";
 import InputField from "@/components/form/InputFiled";
@@ -58,14 +58,29 @@ const booleanOptions = [
   { value: "false", label: "No" },
 ];
 
-// Validation Helper Function
-const requiredField = (value: string, fieldName: string): string | null =>
-  !value || value.trim() === "" ? `${fieldName} is required` : null;
-
 const AddStaff = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+
+  // Create refs for the fields you want to scroll to
+  const fieldRefs = {
+    fullName: useRef<HTMLInputElement>(null),
+    sex: useRef<HTMLSelectElement>(null),
+    unhcrEmail: useRef<HTMLInputElement>(null),
+    privateEmail: useRef<HTMLInputElement>(null),
+  };
+
+  const errorRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0 && errorRef.current) {
+      errorRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [errors]);
 
   const latitudeDMS = useMemo(
     () => (latitude ? convertToDMS(parseFloat(latitude), true) : ""),
@@ -77,13 +92,20 @@ const AddStaff = () => {
   );
 
   const validateForm = (formData: FormData) => {
+    const fullName = formData.get("fullName") as string;
+    const sex = formData.get("sex") as string;
+
     const newErrors: Record<string, string> = {};
 
-    newErrors.fullName =
-      requiredField(formData.get("fullName") as string, "Full Name") || "";
-    newErrors.sex = requiredField(formData.get("sex") as string, "Sex") || "";
+    if (!fullName || fullName.trim() === "") {
+      newErrors.fullName = "Full Name is required";
+    }
 
-    return Object.fromEntries(Object.entries(newErrors).filter(([, v]) => v));
+    if (!sex || sex === "") {
+      newErrors.sex = "Sex is required";
+    }
+
+    return newErrors;
   };
 
   const phoneRegex = /^[0-9]{9}$/;
@@ -105,6 +127,17 @@ const AddStaff = () => {
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+
+      // Scroll to the first field with error
+      const firstErrorKey = Object.keys(validationErrors)[0];
+      const ref = fieldRefs[firstErrorKey as keyof typeof fieldRefs];
+      if (ref?.current) {
+        ref.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        ref.current.focus();
+      }
       return;
     }
 
@@ -117,16 +150,23 @@ const AddStaff = () => {
       await addStaff(formData);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        const errorMap: Record<string, string> = {
-          "UNHCR email already exists": "unhcrEmail",
-          "Private email already exists": "privateEmail",
-        };
-
-        setErrors({
-          [errorMap[error.message] || "submit"]: errorMap[error.message]
-            ? `${error.message}`
-            : "Failed to add staff. Please try again.",
-        });
+        if (error.message === "UNHCR email already exists") {
+          setErrors({ unhcrEmail: "UNHCR email already exists" });
+          fieldRefs.unhcrEmail.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+          fieldRefs.unhcrEmail.current?.focus();
+        } else if (error.message === "Private email already exists") {
+          setErrors({ privateEmail: "Private email already exists" });
+          fieldRefs.privateEmail.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+          fieldRefs.privateEmail.current?.focus();
+        } else {
+          setErrors({ submit: "Failed to add staff. Please try again." });
+        }
       } else {
         setErrors({
           submit: "An unexpected error occurred. Please try again.",
@@ -146,7 +186,11 @@ const AddStaff = () => {
         ]}
       />
       <form
-        action={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          const formData = new FormData(e.currentTarget);
+          handleSubmit(formData);
+        }}
         className="flex flex-col gap-4 w-full bg-white rounded-lg p-4"
       >
         <h1 className="font-semibold">Add New Staff</h1>
@@ -166,6 +210,7 @@ const AddStaff = () => {
             name="fullName"
             placeholder="Enter full name"
             error={errors.fullName}
+            ref={fieldRefs.fullName}
           />
           <InputField
             label="Date of Birth"
@@ -179,6 +224,7 @@ const AddStaff = () => {
             name="sex"
             options={sexOptions}
             error={errors.sex}
+            ref={fieldRefs.sex}
           />
           <InputField
             label="Nationality"
@@ -231,6 +277,7 @@ const AddStaff = () => {
             name="unhcrEmail"
             type="email"
             error={errors.unhcrEmail}
+            ref={fieldRefs.unhcrEmail}
           />
           <InputField
             label="Private Email"
@@ -238,6 +285,7 @@ const AddStaff = () => {
             name="privateEmail"
             type="email"
             error={errors.privateEmail}
+            ref={fieldRefs.privateEmail}
           />
           <InputField
             label="Mobile Syriatel"

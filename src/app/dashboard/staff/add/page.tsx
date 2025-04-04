@@ -223,6 +223,8 @@ const AddStaff = () => {
             id="sex"
             name="sex"
             options={sexOptions}
+            placeholder="Select sex"
+            defaultValue=""
             error={errors.sex}
             ref={fieldRefs.sex}
           />
@@ -237,6 +239,8 @@ const AddStaff = () => {
             id="employmentType"
             name="employmentType"
             options={employmentTypeOptions}
+            placeholder="Select employment type"
+            defaultValue=""
           />
           <InputField
             label="Position"
@@ -249,12 +253,16 @@ const AddStaff = () => {
             id="unit"
             name="unit"
             options={unitOptions}
+            placeholder="Select unit"
+            defaultValue=""
           />
           <SelectField
             label="Blood Type"
             id="bloodType"
             name="bloodType"
             options={bloodTypeOptions}
+            placeholder="Select blood type"
+            defaultValue=""
           />
           <InputField
             label="Dependents"
@@ -276,6 +284,7 @@ const AddStaff = () => {
             id="unhcrEmail"
             name="unhcrEmail"
             type="email"
+            placeholder="Enter UNHCR email"
             error={errors.unhcrEmail}
             ref={fieldRefs.unhcrEmail}
           />
@@ -283,6 +292,7 @@ const AddStaff = () => {
             label="Private Email"
             id="privateEmail"
             name="privateEmail"
+            placeholder="Enter private email"
             type="email"
             error={errors.privateEmail}
             ref={fieldRefs.privateEmail}
@@ -354,8 +364,9 @@ const AddStaff = () => {
             label="Contract Type"
             id="contractType"
             name="contractType"
-            placeholder="Select an option"
             options={contractTypeOptions}
+            placeholder="Select contract type"
+            defaultValue=""
           />
           <InputField
             label="Contract Start Date"
@@ -411,57 +422,65 @@ const AddStaff = () => {
             label="Critical Staff"
             id="criticalStaff"
             name="criticalStaff"
-            placeholder="Select an option"
             options={booleanOptions}
+            placeholder="Select an option"
+            defaultValue=""
           />
           <SelectField
             label="Warden"
             id="warden"
             name="warden"
-            placeholder="Select an option"
             options={wardenTypeOptions}
+            placeholder="Select an option"
+            defaultValue=""
           />
           <SelectField
             label="Floor Marshal"
             id="floorMarshal"
             name="floorMarshal"
-            placeholder="Select an option"
             options={booleanOptions}
+            placeholder="Select an option"
+            defaultValue=""
           />
           <SelectField
             label="ETB"
             id="etb"
             name="etb"
-            placeholder="Select an option"
             options={booleanOptions}
+            placeholder="Select an option"
+            defaultValue=""
           />
           <SelectField
             label="IFAK"
             id="ifak"
             name="ifak"
-            placeholder="Select an option"
             options={booleanOptions}
+            placeholder="Select an option"
+            defaultValue=""
           />
           <SelectField
             label="Advanced Driving"
             id="advancedDriving"
             name="advancedDriving"
-            placeholder="Select an option"
             options={booleanOptions}
+            placeholder="Select an option"
+            defaultValue=""
           />
           <SelectField
             label="Inside DS"
             id="insideDs"
             name="insideDs"
-            placeholder="Select an option"
             options={booleanOptions}
+            placeholder="Select an option"
+            defaultValue=""
           />
           <SelectField
             label="Outside DS"
             id="outsideDs"
             name="outsideDs"
-            placeholder="Select an option"
             options={booleanOptions}
+            placeholder="Select an option"
+            defaultValue=""
           />
         </div>
 
@@ -507,6 +526,8 @@ const AddStaff = () => {
               id="latitudeDisplay"
               name={""}
               value={latitudeDMS}
+              placeholder="Pick a location on the map"
+              defaultValue=""
               readOnly
             />
             <InputField
@@ -514,6 +535,8 @@ const AddStaff = () => {
               id="longitudeDisplay"
               name={""}
               value={longitudeDMS}
+              placeholder="Pick a location on the map"
+              defaultValue=""
               readOnly
             />
 

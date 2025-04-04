@@ -150,8 +150,13 @@ export const addStaff = async (formData: FormData): Promise<void> => {
       unit: unit || "N/A",
       bloodType: bloodType || "N/A",
       dependents: dependents || "N/A",
-      unhcrEmail: unhcrEmail || "N/A",
-      privateEmail: privateEmail || "N/A",
+      unhcrEmail:
+        unhcrEmail && /.+@.+\..+/.test(unhcrEmail) ? unhcrEmail : undefined,
+      privateEmail:
+        privateEmail && /.+@.+\..+/.test(privateEmail)
+          ? privateEmail
+          : undefined,
+
       mobileSyriatel:
         mobileSyriatel && /^[0-9]{9}$/.test(mobileSyriatel)
           ? mobileSyriatel

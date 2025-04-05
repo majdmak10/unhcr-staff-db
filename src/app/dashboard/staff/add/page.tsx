@@ -12,6 +12,16 @@ import { addStaff } from "@/lib/actions";
 import { convertToDMS } from "@/utils/convertToDMS";
 
 // Constants for dropdown options
+const sexOptions = [
+  { value: "Female", label: "Female" },
+  { value: "Male", label: "Male" },
+];
+
+const employmentTypeOptions = [
+  { value: "International", label: "International" },
+  { value: "National", label: "National" },
+];
+
 const unitOptions = [
   "Admin",
   "Communication",
@@ -28,19 +38,9 @@ const unitOptions = [
   "Transportation",
 ].map((unit) => ({ value: unit, label: unit }));
 
-const sexOptions = [
-  { value: "Female", label: "Female" },
-  { value: "Male", label: "Male" },
-];
-
 const bloodTypeOptions = ["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"].map(
   (type) => ({ value: type, label: type })
 );
-
-const employmentTypeOptions = [
-  { value: "International", label: "International" },
-  { value: "National", label: "National" },
-];
 
 const contractTypeOptions = [
   { value: "Fixed", label: "Fixed" },
@@ -50,6 +50,12 @@ const contractTypeOptions = [
 const wardenTypeOptions = [
   { value: "Warden", label: "Warden" },
   { value: "Deputy", label: "Deputy" },
+  { value: "None", label: "None" },
+];
+
+const floorMarshalTypeOptions = [
+  { value: "Floor Marshal", label: "Floor Marshal" },
+  { value: "Deputy Floor Marshal", label: "Deputy Floor Marshal" },
   { value: "None", label: "None" },
 ];
 
@@ -438,7 +444,7 @@ const AddStaff = () => {
             label="Floor Marshal"
             id="floorMarshal"
             name="floorMarshal"
-            options={booleanOptions}
+            options={floorMarshalTypeOptions}
             placeholder="Select an option"
             defaultValue=""
           />

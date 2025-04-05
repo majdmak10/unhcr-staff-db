@@ -17,25 +17,57 @@ interface EditStaffProps {
 const toDateInputValue = (dateString?: string) =>
   dateString ? new Date(dateString).toISOString().split("T")[0] : undefined;
 
-const booleanOptions = [
-  { value: "true", label: "Yes" },
-  { value: "false", label: "No" },
+// Constants for dropdown options
+const sexOptions = [
+  { value: "Female", label: "Female" },
+  { value: "Male", label: "Male" },
+];
+
+const employmentTypeOptions = [
+  { value: "International", label: "International" },
+  { value: "National", label: "National" },
 ];
 
 const unitOptions = [
-  { value: "Admin", label: "Admin" },
-  { value: "Communication", label: "Communication" },
-  { value: "Field", label: "Field" },
-  { value: "Information Management", label: "Information Management" },
-  { value: "Livelihood", label: "Livelihood" },
-  { value: "Management", label: "Management" },
-  { value: "Programme", label: "Programme" },
-  { value: "ProjectControl", label: "Project Control" },
-  { value: "Protection", label: "Protection" },
-  { value: "Security", label: "Security" },
-  { value: "Shelter", label: "Shelter" },
-  { value: "Supply", label: "Supply" },
-  { value: "Transportation", label: "Transportation" },
+  "Admin",
+  "Communication",
+  "Field",
+  "Information Management",
+  "Livelihood",
+  "Management",
+  "Programme",
+  "Project Control",
+  "Protection",
+  "Security",
+  "Shelter",
+  "Supply",
+  "Transportation",
+].map((unit) => ({ value: unit, label: unit }));
+
+const bloodTypeOptions = ["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"].map(
+  (type) => ({ value: type, label: type })
+);
+
+const contractTypeOptions = [
+  { value: "Fixed", label: "Fixed" },
+  { value: "Temporary", label: "Temporary" },
+];
+
+const wardenTypeOptions = [
+  { value: "Warden", label: "Warden" },
+  { value: "Deputy", label: "Deputy" },
+  { value: "None", label: "None" },
+];
+
+const floorMarshalTypeOptions = [
+  { value: "Floor Marshal", label: "Floor Marshal" },
+  { value: "Deputy Floor Marshal", label: "Deputy Floor Marshal" },
+  { value: "None", label: "None" },
+];
+
+const booleanOptions = [
+  { value: "true", label: "Yes" },
+  { value: "false", label: "No" },
 ];
 
 const EditStaff = async ({ params }: EditStaffProps) => {
@@ -85,10 +117,8 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             id="sex"
             name="sex"
             defaultValue={staffMember.sex}
-            options={[
-              { value: "Female", label: "Female" },
-              { value: "Male", label: "Male" },
-            ]}
+            options={sexOptions}
+            placeholder="Select sex"
           />
           <InputField
             label="Nationality"
@@ -101,10 +131,8 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             id="employmentType"
             name="employmentType"
             defaultValue={staffMember.employmentType}
-            options={[
-              { value: "International", label: "International" },
-              { value: "National", label: "National" },
-            ]}
+            options={employmentTypeOptions}
+            placeholder="Select employment type"
           />
           <InputField
             label="Position"
@@ -118,15 +146,15 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             name="unit"
             defaultValue={staffMember.unit}
             options={unitOptions}
+            placeholder="Select unit"
           />
           <SelectField
             label="Blood Type"
             id="bloodType"
             name="bloodType"
             defaultValue={staffMember.bloodType}
-            options={["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"].map(
-              (b) => ({ value: b, label: b })
-            )}
+            options={bloodTypeOptions}
+            placeholder="Select blood type"
           />
           <InputField
             label="Dependents"
@@ -234,10 +262,8 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             id="contractType"
             name="contractType"
             defaultValue={staffMember.contractType}
-            options={[
-              { value: "Fixed", label: "Fixed" },
-              { value: "Temporary", label: "Temporary" },
-            ]}
+            options={contractTypeOptions}
+            placeholder="Select contract type"
           />
           <DateInputField
             name="contractStartDate"
@@ -288,28 +314,23 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             name="criticalStaff"
             defaultValue={String(staffMember.criticalStaff)}
             options={booleanOptions}
+            placeholder="Select an option"
           />
           <SelectField
             label="Warden"
             id="warden"
             name="warden"
             defaultValue={staffMember.warden}
-            options={[
-              { value: "Warden", label: "Warden" },
-              { value: "Deputy", label: "Deputy" },
-              { value: "None", label: "None" },
-            ]}
+            options={wardenTypeOptions}
+            placeholder="Select an option"
           />
           <SelectField
             label="Floor Marshal"
             id="floorMarshal"
             name="floorMarshal"
             defaultValue={staffMember.floorMarshal}
-            options={[
-              { value: "Floor Marshal", label: "Floor Marshal" },
-              { value: "Deputy Floor Marshal", label: "Deputy Floor Marshal" },
-              { value: "None", label: "None" },
-            ]}
+            options={floorMarshalTypeOptions}
+            placeholder="Select an option"
           />
           <SelectField
             label="ETB"
@@ -317,6 +338,7 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             name="etb"
             defaultValue={String(staffMember.etb)}
             options={booleanOptions}
+            placeholder="Select an option"
           />
           <SelectField
             label="IFAK"
@@ -324,6 +346,7 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             name="ifak"
             defaultValue={String(staffMember.ifak)}
             options={booleanOptions}
+            placeholder="Select an option"
           />
           <SelectField
             label="Advanced Driving"
@@ -331,6 +354,7 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             name="advancedDriving"
             defaultValue={String(staffMember.advancedDriving)}
             options={booleanOptions}
+            placeholder="Select an option"
           />
           <SelectField
             label="Inside DS"
@@ -338,6 +362,7 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             name="insideDs"
             defaultValue={String(staffMember.insideDs)}
             options={booleanOptions}
+            placeholder="Select an option"
           />
           <SelectField
             label="Outside DS"
@@ -345,6 +370,7 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             name="outsideDs"
             defaultValue={String(staffMember.outsideDs)}
             options={booleanOptions}
+            placeholder="Select an option"
           />
         </div>
 

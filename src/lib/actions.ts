@@ -156,7 +156,6 @@ export const addStaff = async (formData: FormData): Promise<void> => {
         privateEmail && /.+@.+\..+/.test(privateEmail)
           ? privateEmail
           : undefined,
-
       mobileSyriatel:
         mobileSyriatel && /^[0-9]{9}$/.test(mobileSyriatel)
           ? mobileSyriatel
@@ -321,9 +320,17 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
       dependents: formData.get("dependents") || staff.dependents,
       unhcrEmail: formData.get("unhcrEmail") || staff.unhcrEmail,
       privateEmail: formData.get("privateEmail") || staff.privateEmail,
-      mobileSyriatel: formData.get("mobileSyriatel") || staff.mobileSyriatel,
-      mobileMtn: formData.get("mobileMtn") || staff.mobileMtn,
-      homePhone: formData.get("homePhone") || staff.homePhone,
+      mobileSyriatel: /^[0-9]{9}$/.test(
+        formData.get("mobileSyriatel") as string
+      )
+        ? formData.get("mobileSyriatel")
+        : null,
+      mobileMtn: /^[0-9]{9}$/.test(formData.get("mobileMtn") as string)
+        ? formData.get("mobileMtn")
+        : null,
+      homePhone: /^[0-9]{9}$/.test(formData.get("homePhone") as string)
+        ? formData.get("homePhone")
+        : null,
       extension: formData.get("extension") || staff.extension,
       radio: formData.get("radio") || staff.radio,
       emergencyContact,

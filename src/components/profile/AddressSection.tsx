@@ -16,8 +16,11 @@ interface AddressSectionProps {
 }
 
 const AddressSection: React.FC<AddressSectionProps> = ({ address }) => {
-  const latitude = address?.latitude ? parseFloat(address.latitude) : null;
-  const longitude = address?.longitude ? parseFloat(address.longitude) : null;
+  const rawLat = address?.latitude || "";
+  const rawLng = address?.longitude || "";
+
+  const latitude = !isNaN(parseFloat(rawLat)) ? parseFloat(rawLat) : null;
+  const longitude = !isNaN(parseFloat(rawLng)) ? parseFloat(rawLng) : null;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white rounded-lg w-full p-4">

@@ -44,9 +44,25 @@ const StaffSchema = new Schema<IStaff>(
       sparse: true,
       match: /.+\@.+\..+/,
     },
-    mobileSyriatel: { type: String, match: /^[0-9]{9}$/ },
-    mobileMtn: { type: String, match: /^[0-9]{9}$/ },
-    homePhone: { type: String, match: /^[0-9]{9}$/ },
+    mobileSyriatel: {
+      type: String,
+      match: /^[0-9]{9}$/,
+      required: false,
+      default: null,
+    },
+    mobileMtn: {
+      type: String,
+      match: /^[0-9]{9}$/,
+      required: false,
+      default: null,
+    },
+    homePhone: {
+      type: String,
+      match: /^[0-9]{9}$/,
+      required: false,
+      default: null,
+    },
+
     extension: { type: String },
     radio: { type: String },
     emergencyContact: { type: EmergencyContactSchema },

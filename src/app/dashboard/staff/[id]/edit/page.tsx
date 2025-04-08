@@ -71,6 +71,11 @@ const booleanOptions = [
   { value: "false", label: "No" },
 ];
 
+const withPlaceholder = (
+  label: string,
+  options: { value: string; label: string }[]
+) => [{ value: "", label }, ...options];
+
 const EditStaff = async ({ params }: EditStaffProps) => {
   const { id } = params;
   const staffMember = await getStaffById(id);
@@ -131,9 +136,11 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             label="Employment Type"
             id="employmentType"
             name="employmentType"
-            defaultValue={staffMember.employmentType}
-            options={employmentTypeOptions}
-            placeholder="Select employment type"
+            defaultValue={staffMember.employmentType || ""}
+            options={withPlaceholder(
+              "Select employment type",
+              employmentTypeOptions
+            )}
           />
           <InputField
             label="Position"
@@ -145,9 +152,8 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             label="Unit"
             id="unit"
             name="unit"
-            defaultValue={staffMember.unit}
-            options={unitOptions}
-            placeholder="Select unit"
+            defaultValue={staffMember.unit || ""}
+            options={withPlaceholder("Select unit", unitOptions)}
           />
           <SelectField
             label="Blood Type"
@@ -313,7 +319,12 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             label="Critical Staff"
             id="criticalStaff"
             name="criticalStaff"
-            defaultValue={String(staffMember.criticalStaff)}
+            defaultValue={
+              staffMember.criticalStaff !== null &&
+              staffMember.criticalStaff !== undefined
+                ? String(staffMember.criticalStaff)
+                : ""
+            }
             options={booleanOptions}
             placeholder="Select an option"
           />
@@ -396,7 +407,7 @@ const EditStaff = async ({ params }: EditStaffProps) => {
         </div>
 
         <div className="flex justify-center gap-4 mt-4">
-          <AddEditActions submitTitle="Add" />
+          <AddEditActions submitTitle="Update" />
         </div>
       </form>
     </main>

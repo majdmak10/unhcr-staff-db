@@ -36,21 +36,41 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       <label htmlFor={id} className="text-sm text-gray-500 font-semibold">
         {label}
       </label>
-      <input
-        ref={ref}
-        type={type}
-        id={id}
-        name={name}
-        placeholder={placeholder}
-        value={value}
-        readOnly={readOnly}
-        aria-label={label}
-        onChange={onChange}
-        defaultValue={defaultValue}
-        className={`ring-[1.5px] p-2 rounded-md text-sm w-full hover:ring-mBlue focus:ring-mBlue focus:outline-none transition-all duration-200 h-10 ${
-          error ? "ring-red-500 text-red-600" : "ring-gray-300"
-        }`}
-      />
+
+      {value !== undefined ? (
+        // Controlled input
+        <input
+          ref={ref}
+          type={type}
+          id={id}
+          name={name}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          readOnly={readOnly}
+          aria-label={label}
+          className={`ring-[1.5px] p-2 rounded-md text-sm w-full hover:ring-mBlue focus:ring-mBlue focus:outline-none transition-all duration-200 h-10 ${
+            error ? "ring-red-500 text-red-600" : "ring-gray-300"
+          }`}
+        />
+      ) : (
+        // Uncontrolled input
+        <input
+          ref={ref}
+          type={type}
+          id={id}
+          name={name}
+          placeholder={placeholder}
+          defaultValue={defaultValue}
+          readOnly={readOnly}
+          aria-label={label}
+          onChange={onChange}
+          className={`ring-[1.5px] p-2 rounded-md text-sm w-full hover:ring-mBlue focus:ring-mBlue focus:outline-none transition-all duration-200 h-10 ${
+            error ? "ring-red-500 text-red-600" : "ring-gray-300"
+          }`}
+        />
+      )}
+
       {description && (
         <p className="text-xs text-gray-500 mt-1">{description}</p>
       )}
@@ -59,6 +79,6 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   )
 );
 
-InputField.displayName = "InputField"; // for DevTools clarity
+InputField.displayName = "InputField";
 
 export default InputField;

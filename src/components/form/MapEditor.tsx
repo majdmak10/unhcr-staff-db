@@ -22,11 +22,9 @@ const MapEditor: React.FC<MapEditorProps> = ({
   initialLongitude,
   initialAddress,
 }) => {
-  // Use the provided initial values for editing
   const [latitude, setLatitude] = useState(initialLatitude);
   const [longitude, setLongitude] = useState(initialLongitude);
 
-  // State for address fields
   const [address, setAddress] = useState({
     neighborhood: initialAddress?.neighborhood || "",
     street: initialAddress?.street || "",
@@ -35,11 +33,23 @@ const MapEditor: React.FC<MapEditorProps> = ({
     apartment: initialAddress?.apartment || "",
   });
 
+  // Format latitude and longitude for display
+  const formatDMS = (value: string, isLat: boolean): string => {
+    const num = parseFloat(value);
+    return !isNaN(num) ? convertToDMS(num, isLat) : "N/A";
+  };
+
+  const latitudeDisplay = formatDMS(latitude, true);
+  const longitudeDisplay = formatDMS(longitude, false);
+
+  // Fallback to Aleppo for map display only
+  const mapLat = !isNaN(parseFloat(latitude)) ? latitude : "36.2021";
+  const mapLng = !isNaN(parseFloat(longitude)) ? longitude : "37.1343";
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-10 gap-y-5">
-      {/* Display section: show DMS values and include hidden inputs for submission */}
+      {/* Address Fields */}
       <div className="flex flex-wrap justify-between gap-4">
-        {/* Address Fields */}
         <InputField
           label="Neighborhood"
           id="neighborhood"
@@ -80,7 +90,7 @@ const MapEditor: React.FC<MapEditorProps> = ({
           }
         />
 
-        {/* Latitude & Longitude Fields (DMS Format) */}
+        {/* DMS Fields */}
         <div className="w-full">
           <label className="block text-sm font-semibold text-gray-500 mb-2">
             Latitude
@@ -88,7 +98,7 @@ const MapEditor: React.FC<MapEditorProps> = ({
           <input
             type="text"
             aria-label="latitude"
-            value={latitude ? convertToDMS(parseFloat(latitude), true) : ""}
+            value={latitudeDisplay}
             readOnly
             className="block text-sm w-full rounded-md ring-[1.5px] ring-gray-300 hover:ring-mBlue focus:ring-mBlue focus:outline-none p-2 pr-10 transition-all duration-200 h-10"
           />
@@ -100,22 +110,22 @@ const MapEditor: React.FC<MapEditorProps> = ({
           <input
             type="text"
             aria-label="longitude"
-            value={longitude ? convertToDMS(parseFloat(longitude), false) : ""}
+            value={longitudeDisplay}
             readOnly
             className="block text-sm w-full rounded-md ring-[1.5px] ring-gray-300 hover:ring-mBlue focus:ring-mBlue focus:outline-none p-2 pr-10 transition-all duration-200 h-10"
           />
         </div>
 
-        {/* Hidden Inputs for Form Submission */}
+        {/* Hidden Inputs for Submission */}
         <input type="hidden" name="latitude" value={latitude} />
         <input type="hidden" name="longitude" value={longitude} />
       </div>
 
-      {/* Right Section: Map Picker */}
+      {/* Map Picker */}
       <div className="w-full h-[300px] md:h-full md:col-span-2">
         <MapPicker
-          latitude={latitude}
-          longitude={longitude}
+          latitude={mapLat}
+          longitude={mapLng}
           onLocationChange={(lat, lng) => {
             setLatitude(lat);
             setLongitude(lng);

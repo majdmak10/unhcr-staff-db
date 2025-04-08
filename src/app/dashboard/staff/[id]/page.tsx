@@ -8,14 +8,14 @@ import AddressSection from "@/components/profile/AddressSection";
 import ProfilePageHeader from "@/components/profile/ProfilePageHeader";
 import ProfileInfo from "@/components/profile/ProfileInfo";
 
-const StaffProfile = async ({ params }: { params: { id: string } }) => {
-  let staff;
-  try {
-    staff = await getStaffById(params.id);
-  } catch (error) {
-    console.error("Error fetching staff data:", error);
-    return <div>Error loading staff profile. Please try again.</div>;
-  }
+interface StaffProfileProps {
+  params: { id: string };
+}
+
+const StaffProfile = async ({ params }: StaffProfileProps) => {
+  const { id } = await params;
+
+  const staff = await getStaffById(id);
 
   if (!staff) {
     return <div>Staff not found</div>;

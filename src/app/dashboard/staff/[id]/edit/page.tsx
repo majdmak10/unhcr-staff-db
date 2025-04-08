@@ -9,6 +9,7 @@ import DateInputField from "@/components/form/DateInputFiled";
 import AddEditActions from "@/components/form/AddEditActions";
 import { getStaffById } from "@/lib/data";
 import { updateStaff } from "@/lib/actions";
+import { parseCoordinate } from "@/utils/parseCoordinate";
 
 interface EditStaffProps {
   params: { id: string };
@@ -378,8 +379,12 @@ const EditStaff = async ({ params }: EditStaffProps) => {
         <FormSectionTitle title="Address Information" />
         <div className="w-full md:col-span-2">
           <MapEditor
-            initialLatitude={staffMember.address?.latitude || "36.2021"}
-            initialLongitude={staffMember.address?.longitude || "37.1343"}
+            initialLatitude={
+              parseCoordinate(staffMember.address?.latitude)?.toString() || ""
+            }
+            initialLongitude={
+              parseCoordinate(staffMember.address?.longitude)?.toString() || ""
+            }
             initialAddress={{
               neighborhood: staffMember.address?.neighborhood,
               street: staffMember.address?.street,

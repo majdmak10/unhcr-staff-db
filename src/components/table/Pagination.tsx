@@ -35,14 +35,14 @@ const Pagination = ({
         <button
           onClick={handlePrev}
           disabled={currentPage === 1}
-          className="text-gray-600 w-8 h-8 flex items-center justify-center rounded-full border border-gray-400 bg-white hover:bg-gray-200 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          className="text-gray-600 w-8 h-8 flex items-center justify-center rounded-full border border-gray-400 bg-white hover:bg-gray-200 text-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
         >
           &#10094;
         </button>
         {[...Array(totalPages)].map((_, index) => (
           <button
             key={index}
-            className={`text-gray-600 w-8 h-8 flex items-center justify-center rounded-full border border-gray-400 text-sm ${
+            className={`text-gray-600 w-8 h-8 flex items-center justify-center rounded-full border border-gray-400 text-sm cursor-pointer ${
               currentPage === index + 1
                 ? "bg-mBlue text-white"
                 : "bg-white text-black hover:bg-gray-200"
@@ -55,7 +55,7 @@ const Pagination = ({
         <button
           onClick={handleNext}
           disabled={currentPage === totalPages}
-          className="text-gray-600 w-8 h-8 flex items-center justify-center rounded-full border border-gray-400 bg-white hover:bg-gray-200 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          className="text-gray-600 w-8 h-8 flex items-center justify-center rounded-full border border-gray-400 bg-white hover:bg-gray-200 text-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
         >
           &#10095;
         </button>

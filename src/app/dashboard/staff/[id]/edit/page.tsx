@@ -158,8 +158,8 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             label="Blood Type"
             id="bloodType"
             name="bloodType"
-            defaultValue={staffMember.bloodType}
-            options={bloodTypeOptions}
+            defaultValue={staffMember.bloodType || ""}
+            options={withPlaceholder("Select blood type", bloodTypeOptions)}
             placeholder="Select blood type"
           />
           <InputField
@@ -263,8 +263,11 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             label="Contract Type"
             id="contractType"
             name="contractType"
-            defaultValue={staffMember.contractType}
-            options={contractTypeOptions}
+            defaultValue={staffMember.contractType || ""}
+            options={withPlaceholder(
+              "Select contract type",
+              contractTypeOptions
+            )}
             placeholder="Select contract type"
           />
           <DateInputField
@@ -327,23 +330,30 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             label="Warden"
             id="warden"
             name="warden"
-            defaultValue={staffMember.warden}
-            options={wardenTypeOptions}
+            defaultValue={staffMember.warden || ""}
+            options={withPlaceholder("Select warden type", wardenTypeOptions)}
             placeholder="Select an option"
           />
           <SelectField
             label="Floor Marshal"
             id="floorMarshal"
             name="floorMarshal"
-            defaultValue={staffMember.floorMarshal}
-            options={floorMarshalTypeOptions}
+            defaultValue={staffMember.floorMarshal || ""}
+            options={withPlaceholder(
+              "Select floor marshal type",
+              floorMarshalTypeOptions
+            )}
             placeholder="Select an option"
           />
           <SelectField
             label="ETB"
             id="etb"
             name="etb"
-            defaultValue={String(staffMember.etb)}
+            defaultValue={
+              staffMember.etb !== null && staffMember.etb !== undefined
+                ? String(staffMember.etb)
+                : ""
+            }
             options={booleanOptions}
             placeholder="Select an option"
           />
@@ -351,7 +361,11 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             label="IFAK"
             id="ifak"
             name="ifak"
-            defaultValue={String(staffMember.ifak)}
+            defaultValue={
+              staffMember.ifak !== null && staffMember.ifak !== undefined
+                ? String(staffMember.ifak)
+                : ""
+            }
             options={booleanOptions}
             placeholder="Select an option"
           />
@@ -359,7 +373,12 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             label="Advanced Driving"
             id="advancedDriving"
             name="advancedDriving"
-            defaultValue={String(staffMember.advancedDriving)}
+            defaultValue={
+              staffMember.advancedDriving !== null &&
+              staffMember.advancedDriving !== undefined
+                ? String(staffMember.advancedDriving)
+                : ""
+            }
             options={booleanOptions}
             placeholder="Select an option"
           />
@@ -367,7 +386,12 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             label="Inside DS"
             id="insideDs"
             name="insideDs"
-            defaultValue={String(staffMember.insideDs)}
+            defaultValue={
+              staffMember.insideDs !== null &&
+              staffMember.insideDs !== undefined
+                ? String(staffMember.insideDs)
+                : ""
+            }
             options={booleanOptions}
             placeholder="Select an option"
           />
@@ -375,7 +399,12 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             label="Outside DS"
             id="outsideDs"
             name="outsideDs"
-            defaultValue={String(staffMember.outsideDs)}
+            defaultValue={
+              staffMember.outsideDs !== null &&
+              staffMember.outsideDs !== undefined
+                ? String(staffMember.outsideDs)
+                : ""
+            }
             options={booleanOptions}
             placeholder="Select an option"
           />

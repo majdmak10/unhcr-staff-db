@@ -4,7 +4,6 @@ import SelectField from "@/components/form/SelectFiled";
 import FormSectionTitle from "@/components/form/FormSectionTitle";
 import UploadPicture from "@/components/form/UploadPicture";
 import MapEditor from "@/components/form/MapEditor";
-import Image from "next/image";
 import DateInputField from "@/components/form/DateInputFiled";
 import AddEditActions from "@/components/form/AddEditActions";
 import { getStaffById } from "@/lib/data";
@@ -169,18 +168,14 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             name="dependents"
             defaultValue={staffMember.dependents}
           />
-          <UploadPicture />
-          <Image
-            src={
+          <UploadPicture
+            name="profilePicture"
+            initialImage={
               staffMember.profilePicture ||
               (staffMember.sex === "Male"
                 ? "/avatars/noProfilePicture_m.png"
                 : "/avatars/noProfilePicture_f.png")
             }
-            alt={`${staffMember.fullName}'s Profile Picture`}
-            width={50}
-            height={50}
-            className="rounded-full w-[80px] h-[80px] object-fill"
           />
         </div>
 
@@ -193,32 +188,32 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             id="unhcrEmail"
             name="unhcrEmail"
             type="email"
-            defaultValue={staffMember.unhcrEmail}
+            defaultValue={staffMember.unhcrEmail?.trim() || "N/A"}
           />
           <InputField
             label="Private Email"
             id="privateEmail"
             name="privateEmail"
             type="email"
-            defaultValue={staffMember.privateEmail}
+            defaultValue={staffMember.privateEmail?.trim() || "N/A"}
           />
           <InputField
             label="Mobile Syriatel"
             id="mobileSyriatel"
             name="mobileSyriatel"
-            defaultValue={staffMember.mobileSyriatel}
+            defaultValue={staffMember.mobileSyriatel?.trim() || "N/A"}
           />
           <InputField
             label="Mobile MTN"
             id="mobileMtn"
             name="mobileMtn"
-            defaultValue={staffMember.mobileMtn}
+            defaultValue={staffMember.mobileMtn?.trim() || "N/A"}
           />
           <InputField
             label="Home Phone"
             id="homePhone"
             name="homePhone"
-            defaultValue={staffMember.homePhone}
+            defaultValue={staffMember.homePhone?.trim() || "N/A"}
           />
           <InputField
             label="Office Extension"

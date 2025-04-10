@@ -168,6 +168,8 @@ const EditStaff = async ({ params }: EditStaffProps) => {
             name="dependents"
             defaultValue={staffMember.dependents}
           />
+        </div>
+        <div className="flex w-full">
           <UploadPicture
             name="profilePicture"
             initialImage={

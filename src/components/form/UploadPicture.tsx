@@ -12,6 +12,7 @@ interface UploadPictureProps {
   uploadIcon?: string;
   onFileSelect?: (file: File | null) => void;
   initialImage?: string;
+  variant?: "staff" | "user";
 }
 
 const UploadPicture: React.FC<UploadPictureProps> = ({
@@ -22,8 +23,9 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
   uploadIcon = "/table_icons/cloud-c.png",
   onFileSelect,
   initialImage,
+  variant = "staff", // default to 'staff'
 }) => {
-  const [fileName, setFileName] = useState<string>("No chosen picture");
+  const [fileName, setFileName] = useState<string>("Upload profile picture");
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     initialImage || null
   );
@@ -52,7 +54,7 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
   };
 
   const clearFile = () => {
-    setFileName("No chosen picture");
+    setFileName("Upload profile picture");
     setPreviewUrl(initialImage || null);
     setIsNewImage(false);
     if (fileInputRef.current) {
@@ -72,7 +74,35 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
   }, [previewUrl]);
 
   return (
-    <div className="flex items-start gap-4 w-full">
+    <div
+      className={`${
+        variant === "user"
+          ? "grid grid-cols-1 md:gap-x-10 w-full justify-center items-center"
+          : "grid grid-cols-1 md:grid-cols-3 md:gap-x-10 w-full justify-center items-center"
+      }`}
+    >
+      {variant === "user" && previewUrl && (
+        <div className="relative w-[120px] h-[120px] mx-auto mb-4">
+          <Image
+            src={previewUrl}
+            alt="Preview"
+            fill
+            className="rounded-full object-cover"
+          />
+          {isNewImage && (
+            <button
+              type="button"
+              onClick={clearFile}
+              className="absolute -top-2 -right-2 bg-white border border-gray-200 rounded-full p-1 shadow hover:bg-gray-100 transition cursor-pointer"
+              aria-label="Remove picture"
+              title="Remove picture"
+            >
+              <XMarkIcon className="h-4 w-4 text-gray-500" />
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Upload Field */}
       <div className="flex flex-col w-full gap-2">
         <label htmlFor={id} className="text-sm text-gray-500 font-semibold">
@@ -104,8 +134,8 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
         </div>
       </div>
 
-      {/* Preview beside field */}
-      {previewUrl && (
+      {/* Preview for staff (default behavior) */}
+      {variant === "staff" && previewUrl && (
         <div className="relative w-[80px] h-[80px] mt-7">
           <Image
             src={previewUrl}
@@ -117,7 +147,7 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
             <button
               type="button"
               onClick={clearFile}
-              className="absolute -top-2 -right-2 bg-white border border-gray-200 rounded-full p-1 shadow hover:bg-gray-100 transition"
+              className="absolute -top-2 -right-2 bg-white border border-gray-200 rounded-full p-1 shadow hover:bg-gray-100 transition cursor-pointer"
               aria-label="Remove picture"
               title="Remove picture"
             >

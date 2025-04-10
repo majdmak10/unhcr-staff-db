@@ -2,7 +2,6 @@ import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import InputField from "@/components/form/InputFiled";
 import SelectField from "@/components/form/SelectFiled";
 import UploadPicture from "@/components/form/UploadPicture";
-import Image from "next/image";
 import { getUserById } from "@/lib/data";
 import { updateUser } from "@/lib/actions";
 import AddEditActions from "@/components/form/AddEditActions";
@@ -37,7 +36,7 @@ const EditUser: React.FC<EditUserProps> = async ({ params }) => {
         <input type="hidden" name="id" value={user.id} />
         <div className="grid grid-cols-10 gap-x-20">
           <div className="col-span-3 flex flex-col items-center">
-            <Image
+            {/* <Image
               src={
                 user.profilePicture ||
                 (user.sex === "Male"
@@ -48,10 +47,28 @@ const EditUser: React.FC<EditUserProps> = async ({ params }) => {
               width={50}
               height={50}
               className="rounded-full w-[150px] h-[150px] object-fill"
-            />
-            <UploadPicture />
+            /> */}
+            {/* <UploadPicture
+              name="profilePicture"
+              initialImage={
+                user.profilePicture ||
+                (user.sex === "Male"
+                  ? "/avatars/noProfilePicture_m.png"
+                  : "/avatars/noProfilePicture_f.png")
+              }
+            /> */}
           </div>
           <div className="col-span-4 space-y-4">
+            <UploadPicture
+              variant="user"
+              name="profilePicture"
+              initialImage={
+                user.profilePicture ||
+                (user.sex === "Male"
+                  ? "/avatars/noProfilePicture_m.png"
+                  : "/avatars/noProfilePicture_f.png")
+              }
+            />
             <InputField
               label="Full Name"
               id="fullName"
@@ -86,7 +103,7 @@ const EditUser: React.FC<EditUserProps> = async ({ params }) => {
 
         {/* Submit Buttons Section */}
         <div className="flex justify-center items-center gap-4 mt-4">
-          <AddEditActions submitTitle="Save" />
+          <AddEditActions submitTitle="Update" />
         </div>
       </form>
     </main>

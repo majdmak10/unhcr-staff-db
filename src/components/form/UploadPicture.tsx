@@ -12,7 +12,7 @@ interface UploadPictureProps {
   uploadIcon?: string;
   onFileSelect?: (file: File | null) => void;
   initialImage?: string;
-  variant?: "staff" | "user";
+  variant?: "staff" | "userAdd" | "userEdit";
 }
 
 const UploadPicture: React.FC<UploadPictureProps> = ({
@@ -76,12 +76,15 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
   return (
     <div
       className={`${
-        variant === "user"
+        variant === "userEdit"
           ? "grid grid-cols-1 md:gap-x-10 w-full justify-center items-center"
+          : variant === "userAdd"
+          ? "grid grid-cols-1 w-full justify-center items-center"
           : "grid grid-cols-1 md:grid-cols-3 md:gap-x-10 w-full justify-center items-center"
       }`}
     >
-      {variant === "user" && previewUrl && (
+      {/* Preview at top for 'user' */}
+      {variant === "userEdit" && previewUrl && (
         <div className="relative w-[120px] h-[120px] mx-auto mb-4">
           <Image
             src={previewUrl}
@@ -132,9 +135,32 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
             ref={fileInputRef}
           />
         </div>
+
+        {/* Preview for 'userAdd' variant */}
+        {variant === "userAdd" && previewUrl && (
+          <div className="relative w-[120px] h-[120px] mt-4 mx-auto">
+            <Image
+              src={previewUrl}
+              alt="Preview"
+              fill
+              className="rounded-full object-cover"
+            />
+            {isNewImage && (
+              <button
+                type="button"
+                onClick={clearFile}
+                className="absolute -top-2 -right-2 bg-white border border-gray-200 rounded-full p-1 shadow hover:bg-gray-100 transition cursor-pointer"
+                aria-label="Remove picture"
+                title="Remove picture"
+              >
+                <XMarkIcon className="h-4 w-4 text-gray-500" />
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Preview for staff (default behavior) */}
+      {/* Preview for 'staff' variant (to the right) */}
       {variant === "staff" && previewUrl && (
         <div className="relative w-[80px] h-[80px] mt-7">
           <Image

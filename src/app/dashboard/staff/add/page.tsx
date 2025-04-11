@@ -276,6 +276,8 @@ const AddStaff = () => {
             name="dependents"
             placeholder="Enter dependents"
           />
+        </div>
+        <div className="flex w-full mt-2">
           <UploadPicture name="profilePicture" />
         </div>
 

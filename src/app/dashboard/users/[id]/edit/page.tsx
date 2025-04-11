@@ -39,7 +39,7 @@ const EditUser = async ({ params }: EditUserProps) => {
 
         <div className="flex flex-col items-center justify-center space-y-4 w-full md:w-[80%] mx-auto">
           <UploadPicture
-            variant="user"
+            variant="userEdit"
             name="profilePicture"
             initialImage={getProfileImage(user.profilePicture, user.sex)}
           />

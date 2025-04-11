@@ -8,6 +8,17 @@ import UploadPicture from "@/components/form/UploadPicture";
 import { addUser } from "@/lib/actions";
 import AddEditActions from "@/components/form/AddEditActions";
 
+// Constants for dropdown options
+const sexOptions = [
+  { value: "Female", label: "Female" },
+  { value: "Male", label: "Male" },
+];
+
+const roleOptions = ["Admin", "Editor", "Guest"].map((role) => ({
+  value: role,
+  label: role,
+}));
+
 const AddUser: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -129,11 +140,9 @@ const AddUser: React.FC = () => {
             label="Sex"
             id="sex"
             name="sex"
+            options={sexOptions}
             placeholder="Select sex"
-            options={[
-              { value: "Female", label: "Female" },
-              { value: "Male", label: "Male" },
-            ]}
+            defaultValue=""
             error={errors.sex}
           />
           <InputField
@@ -171,15 +180,12 @@ const AddUser: React.FC = () => {
             label="Role"
             id="role"
             name="role"
+            options={roleOptions}
             placeholder="Select role"
-            options={[
-              { value: "Admin", label: "Admin" },
-              { value: "Editor", label: "Editor" },
-              { value: "Guest", label: "Guest" },
-            ]}
+            defaultValue=""
             error={errors.role}
           />
-          <UploadPicture name="profilePicture" />
+          <UploadPicture name="profilePicture" variant="userAdd" />
         </div>
 
         <div className="flex justify-center gap-4 mt-4">

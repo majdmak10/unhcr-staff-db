@@ -5,6 +5,7 @@ import UploadPicture from "@/components/form/UploadPicture";
 import { getUserById } from "@/lib/data";
 import { updateUser } from "@/lib/actions";
 import AddEditActions from "@/components/form/AddEditActions";
+import { getProfileImage } from "./utils";
 
 interface EditUserProps {
   params: { id: string };
@@ -17,12 +18,6 @@ const EditUser = async ({ params }: EditUserProps) => {
   if (!user) {
     return <div className="text-center text-red-500">User not found</div>;
   }
-
-  const profilePicture =
-    user.profilePicture ||
-    (user.sex === "Male"
-      ? "/avatars/noProfilePicture_m.png"
-      : "/avatars/noProfilePicture_f.png");
 
   return (
     <main className="flex flex-col gap-3">
@@ -46,7 +41,7 @@ const EditUser = async ({ params }: EditUserProps) => {
           <UploadPicture
             variant="user"
             name="profilePicture"
-            initialImage={profilePicture}
+            initialImage={getProfileImage(user.profilePicture, user.sex)}
           />
 
           <InputField

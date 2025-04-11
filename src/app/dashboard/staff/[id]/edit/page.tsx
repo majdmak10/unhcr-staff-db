@@ -9,71 +9,21 @@ import AddEditActions from "@/components/form/AddEditActions";
 import { getStaffById } from "@/lib/data";
 import { updateStaff } from "@/lib/actions";
 import { parseCoordinate } from "@/utils/parseCoordinate";
+import {
+  sexOptions,
+  employmentTypeOptions,
+  unitOptions,
+  bloodTypeOptions,
+  contractTypeOptions,
+  wardenTypeOptions,
+  floorMarshalTypeOptions,
+  booleanOptions,
+} from "./dropdownOptions";
+import { formatDate, withPlaceholder, getProfileImage } from "./utils";
 
 interface EditStaffProps {
   params: { id: string };
 }
-
-const toDateInputValue = (dateString?: string) =>
-  dateString ? new Date(dateString).toISOString().split("T")[0] : undefined;
-
-// Constants for dropdown options
-const sexOptions = [
-  { value: "Female", label: "Female" },
-  { value: "Male", label: "Male" },
-];
-
-const employmentTypeOptions = [
-  { value: "International", label: "International" },
-  { value: "National", label: "National" },
-];
-
-const unitOptions = [
-  "Admin",
-  "Communication",
-  "Field",
-  "Information Management",
-  "Livelihood",
-  "Management",
-  "Programme",
-  "Project Control",
-  "Protection",
-  "Security",
-  "Shelter",
-  "Supply",
-  "Transportation",
-].map((unit) => ({ value: unit, label: unit }));
-
-const bloodTypeOptions = ["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"].map(
-  (type) => ({ value: type, label: type })
-);
-
-const contractTypeOptions = [
-  { value: "Fixed", label: "Fixed" },
-  { value: "Temporary", label: "Temporary" },
-];
-
-const wardenTypeOptions = [
-  { value: "Warden", label: "Warden" },
-  { value: "Deputy", label: "Deputy" },
-  { value: "None", label: "None" },
-];
-
-const floorMarshalTypeOptions = [
-  { value: "Floor Marshal", label: "Floor Marshal" },
-  { value: "Deputy Floor Marshal", label: "Deputy Floor Marshal" },
-  { value: "None", label: "None" },
-];
-
-const booleanOptions = [
-  { value: "true", label: "Yes" },
-  { value: "false", label: "No" },
-];
-
-const withPlaceholder = (
-  label: string,
-  options: { value: string; label: string }[]
-) => [{ value: "", label }, ...options];
 
 const EditStaff = async ({ params }: EditStaffProps) => {
   const { id } = await params;
@@ -115,7 +65,7 @@ const EditStaff = async ({ params }: EditStaffProps) => {
           <DateInputField
             name="dateOfBirth"
             label="Date of Birth"
-            initialDate={toDateInputValue(staffMember.dateOfBirth)}
+            initialDate={formatDate(staffMember.dateOfBirth)}
           />
           <SelectField
             label="Sex"
@@ -172,12 +122,10 @@ const EditStaff = async ({ params }: EditStaffProps) => {
         <div className="flex w-full">
           <UploadPicture
             name="profilePicture"
-            initialImage={
-              staffMember.profilePicture ||
-              (staffMember.sex === "Male"
-                ? "/avatars/noProfilePicture_m.png"
-                : "/avatars/noProfilePicture_f.png")
-            }
+            initialImage={getProfileImage(
+              staffMember.profilePicture,
+              staffMember.sex
+            )}
           />
         </div>
 
@@ -275,12 +223,12 @@ const EditStaff = async ({ params }: EditStaffProps) => {
           <DateInputField
             name="contractStartDate"
             label="Contract Start Date"
-            initialDate={toDateInputValue(staffMember.contractStartDate)}
+            initialDate={formatDate(staffMember.contractStartDate)}
           />
           <DateInputField
             name="contractEndDate"
             label="Contract End Date"
-            initialDate={toDateInputValue(staffMember.contractEndDate)}
+            initialDate={formatDate(staffMember.contractEndDate)}
           />
           <InputField
             label="National ID Number"
@@ -297,7 +245,7 @@ const EditStaff = async ({ params }: EditStaffProps) => {
           <DateInputField
             name="passportExpiryDate"
             label="Passport Expiry Date"
-            initialDate={toDateInputValue(staffMember.passportExpiryDate)}
+            initialDate={formatDate(staffMember.passportExpiryDate)}
           />
           <InputField
             label="UNLP Number"
@@ -308,7 +256,7 @@ const EditStaff = async ({ params }: EditStaffProps) => {
           <DateInputField
             name="unlpExpiryDate"
             label="UNLP Expiry Date"
-            initialDate={toDateInputValue(staffMember.unlpExpiryDate)}
+            initialDate={formatDate(staffMember.unlpExpiryDate)}
           />
         </div>
 

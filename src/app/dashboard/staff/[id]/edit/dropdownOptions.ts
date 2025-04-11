@@ -56,5 +56,3 @@ export const booleanOptions = [
   { value: "true", label: "Yes" },
   { value: "false", label: "No" },
 ];
-
-export const PLACEHOLDER = "Select an option";

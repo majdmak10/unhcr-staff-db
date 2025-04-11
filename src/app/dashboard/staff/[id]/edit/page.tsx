@@ -76,7 +76,7 @@ const withPlaceholder = (
 ) => [{ value: "", label }, ...options];
 
 const EditStaff = async ({ params }: EditStaffProps) => {
-  const { id } = params;
+  const { id } = await params;
   const staffMember = await getStaffById(id);
 
   if (!staffMember) {

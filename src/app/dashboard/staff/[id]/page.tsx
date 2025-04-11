@@ -14,7 +14,6 @@ interface StaffProfileProps {
 
 const StaffProfile = async ({ params }: StaffProfileProps) => {
   const { id } = await params;
-
   const staff = await getStaffById(id);
 
   if (!staff) {

@@ -10,59 +10,16 @@ import MapPicker from "@/components/form/MapPicker";
 import AddEditActions from "@/components/form/AddEditActions";
 import { addStaff } from "@/lib/actions";
 import { convertToDMS } from "@/utils/convertToDMS";
-
-// Constants for dropdown options
-const sexOptions = [
-  { value: "Female", label: "Female" },
-  { value: "Male", label: "Male" },
-];
-
-const employmentTypeOptions = [
-  { value: "International", label: "International" },
-  { value: "National", label: "National" },
-];
-
-const unitOptions = [
-  "Admin",
-  "Communication",
-  "Field",
-  "Information Management",
-  "Livelihood",
-  "Management",
-  "Programme",
-  "Project Control",
-  "Protection",
-  "Security",
-  "Shelter",
-  "Supply",
-  "Transportation",
-].map((unit) => ({ value: unit, label: unit }));
-
-const bloodTypeOptions = ["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"].map(
-  (type) => ({ value: type, label: type })
-);
-
-const contractTypeOptions = [
-  { value: "Fixed", label: "Fixed" },
-  { value: "Temporary", label: "Temporary" },
-];
-
-const wardenTypeOptions = [
-  { value: "Warden", label: "Warden" },
-  { value: "Deputy", label: "Deputy" },
-  { value: "None", label: "None" },
-];
-
-const floorMarshalTypeOptions = [
-  { value: "Floor Marshal", label: "Floor Marshal" },
-  { value: "Deputy Floor Marshal", label: "Deputy Floor Marshal" },
-  { value: "None", label: "None" },
-];
-
-const booleanOptions = [
-  { value: "true", label: "Yes" },
-  { value: "false", label: "No" },
-];
+import {
+  sexOptions,
+  employmentTypeOptions,
+  unitOptions,
+  bloodTypeOptions,
+  contractTypeOptions,
+  wardenTypeOptions,
+  floorMarshalTypeOptions,
+  booleanOptions,
+} from "@/utils/dropdownOptions";
 
 const AddStaff = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});

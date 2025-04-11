@@ -7,17 +7,7 @@ import SelectField from "@/components/form/SelectFiled";
 import UploadPicture from "@/components/form/UploadPicture";
 import { addUser } from "@/lib/actions";
 import AddEditActions from "@/components/form/AddEditActions";
-
-// Constants for dropdown options
-const sexOptions = [
-  { value: "Female", label: "Female" },
-  { value: "Male", label: "Male" },
-];
-
-const roleOptions = ["Admin", "Editor", "Guest"].map((role) => ({
-  value: role,
-  label: role,
-}));
+import { sexOptions, roleOptions } from "@/utils/dropdownOptions";
 
 const AddUser: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});

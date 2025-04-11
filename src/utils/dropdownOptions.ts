@@ -1,7 +1,10 @@
-export const sexOptions = [
-  { value: "Female", label: "Female" },
-  { value: "Male", label: "Male" },
-];
+// User dropdown options
+export const roleOptions = ["Admin", "Editor", "Guest"].map((role) => ({
+  value: role,
+  label: role,
+}));
+
+// Staff dropdown options
 
 export const employmentTypeOptions = [
   { value: "International", label: "International" },
@@ -55,4 +58,10 @@ export const floorMarshalTypeOptions = [
 export const booleanOptions = [
   { value: "true", label: "Yes" },
   { value: "false", label: "No" },
+];
+
+// Shared dropdown options
+export const sexOptions = [
+  { value: "Female", label: "Female" },
+  { value: "Male", label: "Male" },
 ];

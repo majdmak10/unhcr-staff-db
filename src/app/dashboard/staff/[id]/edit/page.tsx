@@ -18,8 +18,8 @@ import {
   wardenTypeOptions,
   floorMarshalTypeOptions,
   booleanOptions,
-} from "./dropdownOptions";
-import { formatDate, withPlaceholder, getProfileImage } from "./utils";
+} from "@/utils/dropdownOptions";
+import { formatDate, withPlaceholder, getProfileImage } from "./staffEditUtils";
 
 interface EditStaffProps {
   params: { id: string };

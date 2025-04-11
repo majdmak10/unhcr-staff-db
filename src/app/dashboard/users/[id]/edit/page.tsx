@@ -5,7 +5,8 @@ import UploadPicture from "@/components/form/UploadPicture";
 import { getUserById } from "@/lib/data";
 import { updateUser } from "@/lib/actions";
 import AddEditActions from "@/components/form/AddEditActions";
-import { getProfileImage } from "./utils";
+import { roleOptions } from "@/utils/dropdownOptions";
+import { getProfileImage } from "./userEditUtils";
 
 interface EditUserProps {
   params: { id: string };
@@ -74,12 +75,8 @@ const EditUser = async ({ params }: EditUserProps) => {
             id="role"
             name="role"
             defaultValue={user.role}
+            options={roleOptions}
             placeholder="Select role"
-            options={[
-              { value: "Admin", label: "Admin" },
-              { value: "Editor", label: "Editor" },
-              { value: "Guest", label: "Guest" },
-            ]}
           />
         </div>
 

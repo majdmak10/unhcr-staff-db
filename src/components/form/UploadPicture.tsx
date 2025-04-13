@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import imageCompression from "browser-image-compression";
 
 interface UploadPictureProps {
   label?: string;
@@ -13,6 +14,7 @@ interface UploadPictureProps {
   onFileSelect?: (file: File | null) => void;
   initialImage?: string;
   variant?: "staff" | "userAdd" | "userEdit";
+  onError?: (message: string) => void;
 }
 
 const UploadPicture: React.FC<UploadPictureProps> = ({
@@ -24,6 +26,7 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
   onFileSelect,
   initialImage,
   variant = "staff", // default to 'staff'
+  onError,
 }) => {
   const [fileName, setFileName] = useState<string>("Upload profile picture");
   const [previewUrl, setPreviewUrl] = useState<string | null>(
@@ -32,21 +35,50 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
   const [isNewImage, setIsNewImage] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
 
     if (file) {
-      const name = file.name;
-      const truncatedName =
-        name.length > 15 ? `${name.slice(0, 20)}...${name.slice(-10)}` : name;
-      setFileName(truncatedName);
+      if (file.size > 10 * 1024 * 1024) {
+        clearFile();
+        if (onError) {
+          onError("Profile picture must be less than 10MB.");
+        }
+        return;
+      }
 
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-      setIsNewImage(true);
+      try {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        };
 
-      if (onFileSelect) {
-        onFileSelect(file);
+        const compressedFile = await imageCompression(file, options);
+
+        const name = compressedFile.name;
+        const truncatedName =
+          name.length > 15 ? `${name.slice(0, 20)}...${name.slice(-10)}` : name;
+        setFileName(truncatedName);
+
+        const url = URL.createObjectURL(compressedFile);
+        setPreviewUrl(url);
+        setIsNewImage(true);
+
+        if (onFileSelect) {
+          onFileSelect(compressedFile);
+        }
+
+        if (onError) {
+          onError(""); // Clear previous errors
+        }
+      } catch (error) {
+        console.error("Compression failed:", error);
+        if (onError) {
+          onError("Failed to compress image. Please try another file.");
+        }
       }
     } else {
       clearFile();
@@ -135,6 +167,7 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
             ref={fileInputRef}
           />
         </div>
+        <label className="text-xs text-red-500 ml-1">Max size 10MB</label>
 
         {/* Preview for 'userAdd' variant */}
         {variant === "userAdd" && previewUrl && (

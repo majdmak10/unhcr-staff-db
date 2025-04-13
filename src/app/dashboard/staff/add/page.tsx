@@ -25,6 +25,7 @@ const AddStaff = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const [imageError, setImageError] = useState("");
 
   // Create refs for the fields you want to scroll to
   const fieldRefs = {
@@ -161,6 +162,11 @@ const AddStaff = () => {
         {errors.submit && (
           <div className="bg-red-100 text-red-700 p-3 rounded-md">
             {errors.submit}
+            {imageError && (
+              <div className="bg-red-100 text-red-700 p-3 rounded-md">
+                {imageError}
+              </div>
+            )}
           </div>
         )}
 
@@ -235,7 +241,10 @@ const AddStaff = () => {
           />
         </div>
         <div className="flex w-full mt-2">
-          <UploadPicture name="profilePicture" />
+          <UploadPicture
+            name="profilePicture"
+            onError={(message) => setImageError(message)}
+          />
         </div>
 
         {/* Tailwind divider */}

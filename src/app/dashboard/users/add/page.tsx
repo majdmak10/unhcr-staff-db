@@ -11,6 +11,7 @@ import { sexOptions, roleOptions } from "@/utils/dropdownOptions";
 
 const AddUser: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [imageError, setImageError] = useState("");
 
   const requiredField = (value: string, fieldName: string): string | null =>
     !value || value.trim() === "" ? `${fieldName} is required` : null;
@@ -115,6 +116,11 @@ const AddUser: React.FC = () => {
         {errors.submit && (
           <div className="bg-red-100 text-red-700 p-3 rounded-md">
             {errors.submit}
+            {imageError && (
+              <div className="bg-red-100 text-red-700 p-3 rounded-md">
+                {imageError}
+              </div>
+            )}
           </div>
         )}
 
@@ -175,7 +181,11 @@ const AddUser: React.FC = () => {
             defaultValue=""
             error={errors.role}
           />
-          <UploadPicture name="profilePicture" variant="userAdd" />
+          <UploadPicture
+            name="profilePicture"
+            variant="userAdd"
+            onError={(message) => setImageError(message)}
+          />
         </div>
 
         <div className="flex justify-center gap-4 mt-4">

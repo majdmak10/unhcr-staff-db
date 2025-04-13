@@ -1,17 +1,69 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import StaffCard from "@/components/dashboard/StaffCard";
 import StaffPanel from "@/components/dashboard/StaffPanel";
 import UsefulLinks from "@/components/dashboard/UsefulLinks";
 
 const Dashboard = () => {
+  const [counts, setCounts] = useState({
+    total: null,
+    insideDs: null,
+    outsideDs: null,
+  });
+
+  const [status, setStatus] = useState<"loading" | "error" | "success">(
+    "loading"
+  );
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const res = await fetch("/api/staff/get");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
+        setCounts({
+          total: data.total,
+          insideDs: data.insideDs,
+          outsideDs: data.outsideDs,
+        });
+        setStatus("success");
+      } catch (err) {
+        console.error(err);
+        setStatus("error");
+      }
+    };
+
+    fetchCounts();
+  }, []);
+
   return (
     <main className="grid gap-3 grid-cols-1 md:grid-cols-[4fr_1fr]">
       {/* LEFT SECTION */}
       <section className="grid gap-8">
         {/* STAFF CARDS */}
         <div className="grid gap-2 lg:grid-cols-3">
-          <StaffCard title="Total Staff" />
-          <StaffCard title="Staff Inside Aleppo" />
-          <StaffCard title="Staff Outside Aleppo" />
+          <StaffCard
+            title="Total Staff"
+            number={counts.total}
+            link="/staff"
+            iconType="total"
+            status={status}
+          />
+          <StaffCard
+            title="Staff Inside Aleppo"
+            number={counts.insideDs}
+            link="/staff/inside"
+            iconType="inside"
+            status={status}
+          />
+          <StaffCard
+            title="Staff Outside Aleppo"
+            number={counts.outsideDs}
+            link="/staff/outside"
+            iconType="outside"
+            status={status}
+          />
         </div>
 
         {/* STAFF PANELS */}

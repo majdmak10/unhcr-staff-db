@@ -17,7 +17,7 @@ export const connectToDb = async (): Promise<typeof mongoose> => {
   }
 
   try {
-    const mongooseInstance = await mongoose.connect(MONGO_URI); // ✅ FIXED
+    const mongooseInstance = await mongoose.connect(MONGO_URI);
 
     isConnected = true;
     console.log("MongoDB connection established");

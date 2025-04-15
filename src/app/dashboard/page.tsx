@@ -19,7 +19,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const res = await fetch("/api/staff/get");
+        const res = await fetch("/api/staff/cards");
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
         setCounts({
@@ -42,25 +42,25 @@ const Dashboard = () => {
       {/* LEFT SECTION */}
       <section className="grid gap-8">
         {/* STAFF CARDS */}
-        <div className="grid gap-2 lg:grid-cols-3">
+        <div className="grid gap-3 lg:grid-cols-3">
           <StaffCard
             title="Total Staff"
             number={counts.total}
-            link="/staff"
+            link="/dashboard/staff"
             iconType="total"
             status={status}
           />
           <StaffCard
             title="Staff Inside Aleppo"
             number={counts.insideDs}
-            link="/staff/inside"
+            link="/dashboard/inside-ds"
             iconType="inside"
             status={status}
           />
           <StaffCard
             title="Staff Outside Aleppo"
             number={counts.outsideDs}
-            link="/staff/outside"
+            link="/dashboard/outside-ds"
             iconType="outside"
             status={status}
           />

@@ -39,7 +39,7 @@ const UsefulLinks: React.FC = () => {
       {linkSections.map((section) => (
         <section
           key={section.title}
-          className="flex flex-col gap-2 text-sm p-5 bg-white rounded-lg"
+          className="flex flex-col gap-2 text-sm p-5 bg-white rounded-lg shadow"
         >
           <h2 className="font-bold text-sm">{section.title}</h2>
           {section.links.map((link) => (

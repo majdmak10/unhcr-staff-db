@@ -39,18 +39,18 @@ const StaffCard = ({
   const textColor = colorMap[iconType];
 
   return (
-    <div className="rounded-lg bg-white shadow p-6 flex flex-1 items-center w-full">
+    <div className="rounded-lg bg-white shadow px-6 py-1 flex flex-1 items-center w-full">
       <div className="flex-shrink-0">
         <Icon className={`h-10 w-10 ${textColor}`} />
       </div>
-      <div className="ml-4 flex flex-col">
+      <div className="ml-3 flex flex-col">
         <Link
           href={link}
           className={`no-underline hover:underline mb-2 font-medium ${textColor}`}
         >
           {title}
         </Link>
-        <div className={`text-xl font-bold ${textColor}`}>
+        <div className={`text-xl ${textColor}`}>
           {status === "loading" ? (
             <div className="w-10 h-5 bg-gray-200 animate-pulse rounded" />
           ) : status === "error" ? (

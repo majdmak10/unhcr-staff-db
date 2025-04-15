@@ -68,9 +68,18 @@ const Dashboard = () => {
 
         {/* STAFF PANELS */}
         <div className="grid gap-3">
-          <StaffPanel title="Total Staff Panel" />
-          <StaffPanel title="Staff Inside Aleppo Panel" />
-          <StaffPanel title="Staff Outside Aleppo Panel" />
+          <StaffPanel 
+            title="Total Staff" 
+            fetchUrl="/api/staff/panels?type=total" 
+          />
+          <StaffPanel 
+            title="Staff Inside Aleppo" 
+            fetchUrl="/api/staff/panels?type=inside" 
+          />
+          <StaffPanel 
+            title="Staff Outside Aleppo" 
+            fetchUrl="/api/staff/panels?type=outside" 
+          />
         </div>
       </section>
 

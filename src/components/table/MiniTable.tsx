@@ -1,66 +1,132 @@
-import React, { useState } from "react";
+"use client";
 
-interface MiniStaff {
-  fullName: string;
-  position?: string;
-  unhcrEmail?: string;
-  mobileSyriatel?: string;
-  mobileMtn?: string;
-  extension?: string;
+import { useEffect, useState, useMemo } from "react";
+import Pagination from "@/components/table/Pagination"; // adjust path as needed
+import Image from "next/image";
+
+interface Column {
+  key: string;
+  label: string;
 }
 
 interface MiniTableProps {
-  data: MiniStaff[];
+  columns: Column[];
+  fetchUrl: string; // endpoint to fetch data from
 }
 
-const MiniTable = ({ data }: MiniTableProps) => {
-  const rowsPerPage = 10;
+const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
+  const [data, setData] = useState<Array<{ [key: string]: string }>>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;
 
   const totalPages = Math.ceil(data.length / rowsPerPage);
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const paginatedData = data.slice(startIndex, startIndex + rowsPerPage);
+
+  const paginatedData = useMemo(() => {
+    const start = (currentPage - 1) * rowsPerPage;
+    return data.slice(start, start + rowsPerPage);
+  }, [data, currentPage]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(false);
+      try {
+        const res = await fetch(fetchUrl);
+        if (!res.ok) throw new Error("Failed to fetch");
+        const result = await res.json();
+        setData(result);
+      } catch {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [fetchUrl]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [totalPages, currentPage]);
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full table-auto border border-gray-300 text-sm">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="p-2 border">Full Name</th>
-            <th className="p-2 border">Position</th>
-            <th className="p-2 border">Email</th>
-            <th className="p-2 border">Syriatel</th>
-            <th className="p-2 border">MTN</th>
-            <th className="p-2 border">Ext</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedData.map((staff, idx) => (
-            <tr key={idx} className="hover:bg-gray-50">
-              <td className="p-2 border">{staff.fullName}</td>
-              <td className="p-2 border">{staff.position || "N/A"}</td>
-              <td className="p-2 border">{staff.unhcrEmail || "N/A"}</td>
-              <td className="p-2 border">{staff.mobileSyriatel || "N/A"}</td>
-              <td className="p-2 border">{staff.mobileMtn || "N/A"}</td>
-              <td className="p-2 border">{staff.extension || "N/A"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="border rounded shadow bg-white">
+      {/* Table Title */}
+      <div className="overflow-x-auto">
+        {loading ? (
+          <div className="flex justify-center items-center h-48">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-mBlue" />
+          </div>
+        ) : error ? (
+          <div className="p-4 text-center text-red-600 font-medium">
+            Failed to load data. Please try again.
+          </div>
+        ) : data.length === 0 ? (
+          <div className="p-4 text-center text-gray-500">
+            No data available.
+          </div>
+        ) : (
+          <>
+            <table className="w-full table-auto text-sm text-left min-w-[600px]">
+              <thead className="bg-gray-100 text-gray-700 font-semibold">
+                <tr>
+                  {columns.map((col) => (
+                    <th
+                      key={col.key}
+                      className="px-4 py-2 border-b whitespace-nowrap"
+                    >
+                      {col.label}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedData.map((row, idx) => (
+                  <tr key={idx} className="hover:bg-gray-50">
+                    {columns.map((col) => (
+                      <td
+                        key={col.key}
+                        className="px-4 py-2 border-b whitespace-nowrap"
+                      >
+                        {col.key === "profilePicture" ? (
+                          row.profilePicture ? (
+                            <Image
+                              src={row.profilePicture}
+                              alt="Profile"
+                              className="w-10 h-10 rounded-full object-cover"
+                              width={20}
+                              height={20}
+                            />
+                          ) : (
+                            <span className="text-gray-400">N/A</span>
+                          )
+                        ) : (
+                          row[col.key] || (
+                            <span className="text-gray-400">N/A</span>
+                          )
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-      {/* Pagination */}
-      <div className="mt-2 flex justify-center space-x-2 text-sm">
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrentPage(i + 1)}
-            className={`px-3 py-1 rounded ${
-              currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
+            {/* Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+              staffPerPage={rowsPerPage}
+              setStaffPerPage={() => {}}
+              showRowsPerPage={false}
+            />
+          </>
+        )}
       </div>
     </div>
   );

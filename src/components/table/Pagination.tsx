@@ -4,12 +4,14 @@ const Pagination = ({
   setCurrentPage,
   staffPerPage,
   setStaffPerPage,
+  showRowsPerPage = true, // ✅ new optional prop with default value
 }: {
   currentPage: number;
   totalPages: number;
   setCurrentPage: (page: number) => void;
   staffPerPage: number;
   setStaffPerPage: (value: number) => void;
+  showRowsPerPage?: boolean; // ✅ added this line
 }) => {
   const handlePrev = () => {
     if (currentPage > 1) {
@@ -61,22 +63,23 @@ const Pagination = ({
         </button>
       </div>
 
-      {/* Rows per page selection */}
-      <div className="flex items-center gap-2">
-        <span className="text-sm">Rows per page:</span>
-        <select
-          aria-label="Rows per page selection"
-          value={staffPerPage}
-          onChange={handleRowsPerPageChange}
-          className="p-1 border border-gray-400 rounded-md text-sm"
-        >
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={20}>20</option>
-          <option value={50}>50</option>
-          <option value={50}>100</option>
-        </select>
-      </div>
+      {showRowsPerPage && (
+        <div className="flex items-center gap-2">
+          <span className="text-sm">Rows per page:</span>
+          <select
+            aria-label="Rows per page selection"
+            value={staffPerPage}
+            onChange={handleRowsPerPageChange}
+            className="p-1 border border-gray-400 rounded-md text-sm"
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </select>
+        </div>
+      )}
     </div>
   );
 };

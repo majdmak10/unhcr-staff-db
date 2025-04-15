@@ -14,11 +14,11 @@ export const GET = async (request: Request) => {
       {
         profilePicture: 1,
         fullName: 1,
+        sex: 1,
         position: 1,
         unhcrEmail: 1,
         mobileSyriatel: 1,
         mobileMtn: 1,
-        extension: 1,
         insideDs: 1,
         outsideDs: 1,
       }

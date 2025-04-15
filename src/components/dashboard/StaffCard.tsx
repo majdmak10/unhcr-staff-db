@@ -39,7 +39,7 @@ const StaffCard = ({
   const textColor = colorMap[iconType];
 
   return (
-    <div className="rounded-lg bg-white shadow px-6 py-1 flex flex-1 items-center w-full">
+    <div className="rounded-lg bg-white shadow px-6 py-4 flex flex-1 items-center w-full">
       <div className="flex-shrink-0">
         <Icon className={`h-10 w-10 ${textColor}`} />
       </div>

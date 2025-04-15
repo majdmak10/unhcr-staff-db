@@ -7,6 +7,7 @@ import Image from "next/image";
 interface Column {
   key: string;
   label: string;
+  widthClass?: string; // e.g. "w-[60px]", "w-1/4", "min-w-[150px]"
 }
 
 interface MiniTableProps {
@@ -54,7 +55,7 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
   }, [totalPages, currentPage]);
 
   return (
-    <div className="border rounded shadow bg-white">
+    <div className=" bg-white">
       {/* Table Title */}
       <div className="overflow-x-auto">
         {loading ? (
@@ -77,7 +78,9 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
                   {columns.map((col) => (
                     <th
                       key={col.key}
-                      className="px-4 py-2 border-b whitespace-nowrap"
+                      className={`px-4 py-2 border-b whitespace-nowrap ${
+                        col.widthClass || ""
+                      }`}
                     >
                       {col.label}
                     </th>
@@ -90,20 +93,25 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
                     {columns.map((col) => (
                       <td
                         key={col.key}
-                        className="px-4 py-2 border-b whitespace-nowrap"
+                        className={`px-4 py-2 border-b whitespace-nowrap ${
+                          col.widthClass || ""
+                        }`}
                       >
                         {col.key === "profilePicture" ? (
-                          row.profilePicture ? (
+                          <div className="w-12 h-12">
                             <Image
-                              src={row.profilePicture}
-                              alt="Profile"
-                              className="w-10 h-10 rounded-full object-cover"
-                              width={20}
-                              height={20}
+                              src={
+                                row.profilePicture ||
+                                (row.sex === "Male"
+                                  ? "/avatars/noProfilePicture_m.png"
+                                  : "/avatars/noProfilePicture_f.png")
+                              }
+                              alt={`${row.fullName}'s Profile Picture`}
+                              width={48}
+                              height={48}
+                              className="rounded-full object-cover w-12 h-12 border shadow-sm"
                             />
-                          ) : (
-                            <span className="text-gray-400">N/A</span>
-                          )
+                          </div>
                         ) : (
                           row[col.key] || (
                             <span className="text-gray-400">N/A</span>

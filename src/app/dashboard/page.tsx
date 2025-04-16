@@ -40,7 +40,7 @@ const Dashboard = () => {
   return (
     <main className="grid gap-3 grid-cols-1 md:grid-cols-[4fr_1fr]">
       {/* LEFT SECTION */}
-      <section className="grid gap-8">
+      <section className="grid gap-3">
         {/* STAFF CARDS */}
         <div className="grid gap-3 lg:grid-cols-3">
           <StaffCard
@@ -67,21 +67,23 @@ const Dashboard = () => {
         </div>
 
         {/* STAFF PANELS */}
-        <StaffPanel
-          title="Total Staff Panel"
-          fetchUrl="/api/staff/panels?type=total"
-          type="total"
-        />
-        <StaffPanel
-          title="Staff Inside Aleppo Panel"
-          fetchUrl="/api/staff/panels?type=inside"
-          type="inside"
-        />
-        <StaffPanel
-          title="Staff Outside Aleppo Panel"
-          fetchUrl="/api/staff/panels?type=outside"
-          type="outside"
-        />
+        <div className="flex flex-col gap-3">
+          <StaffPanel
+            title="Total Staff Panel"
+            fetchUrl="/api/staff/panels?type=total"
+            type="total"
+          />
+          <StaffPanel
+            title="Staff Inside Aleppo Panel"
+            fetchUrl="/api/staff/panels?type=inside"
+            type="inside"
+          />
+          <StaffPanel
+            title="Staff Outside Aleppo Panel"
+            fetchUrl="/api/staff/panels?type=outside"
+            type="outside"
+          />
+        </div>
       </section>
 
       {/* RIGHT SECTION */}

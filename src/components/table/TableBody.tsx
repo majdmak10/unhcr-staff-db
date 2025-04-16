@@ -45,10 +45,10 @@ const TableBody: React.FC<TableBodyProps> = ({
             <td
               key={column.key}
               className={clsx(
-                "px-3 py-1 border-b border-gray-200 bg-white",
+                "px-3 py-1 border-b border-gray-200",
                 getWidthClass(column.key), // Apply dynamic width
                 {
-                  "sticky left-0 z-5": column.key === "checkbox",
+                  "sticky left-0 z-5 ": column.key === "checkbox",
                   "sticky left-[50px] z-5": column.key === "fullName",
                 }
               )}

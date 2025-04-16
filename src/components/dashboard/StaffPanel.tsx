@@ -19,10 +19,10 @@ const StaffPanel = ({ title, fetchUrl, type }: StaffPanelProps) => {
   const titleColor = titleColorMap[type];
 
   return (
-    <div className="bg-white rounded-lg shadow p-4">
+    <main className="bg-white rounded-lg shadow p-4">
       <h3 className={`text-lg font-semibold mb-4 ${titleColor}`}>{title}</h3>
       <MiniTable columns={columns} fetchUrl={fetchUrl} />
-    </div>
+    </main>
   );
 };
 

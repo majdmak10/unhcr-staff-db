@@ -78,7 +78,7 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
                   {columns.map((col) => (
                     <th
                       key={col.key}
-                      className={`px-4 py-2 border-b whitespace-nowrap ${
+                      className={`group p-3 border-b border-gray-200 text-gray-600 font-semibold text-sm text-left items-center sticky top-0 tracking-wide bg-white ${
                         col.widthClass || ""
                       }`}
                     >
@@ -89,11 +89,14 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
               </thead>
               <tbody>
                 {paginatedData.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-gray-50">
+                  <tr
+                    key={idx}
+                    className="group hover:bg-gray-100 transition duration-150 text-sm items-center"
+                  >
                     {columns.map((col) => (
                       <td
                         key={col.key}
-                        className={`px-4 py-2 border-b whitespace-nowrap ${
+                        className={`px-3 py-1 border-b border-gray-200 ${
                           col.widthClass || ""
                         }`}
                       >
@@ -125,14 +128,16 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
             </table>
 
             {/* Pagination */}
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              setCurrentPage={setCurrentPage}
-              staffPerPage={rowsPerPage}
-              setStaffPerPage={() => {}}
-              showRowsPerPage={false}
-            />
+            <div className="flex justify-end">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setCurrentPage={setCurrentPage}
+                staffPerPage={rowsPerPage}
+                setStaffPerPage={() => {}}
+                showRowsPerPage={false}
+              />
+            </div>
           </>
         )}
       </div>

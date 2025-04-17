@@ -3,11 +3,13 @@
 import { useEffect, useState, useMemo } from "react";
 import Pagination from "@/components/table/Pagination"; // adjust path as needed
 import Image from "next/image";
+import Link from "next/link";
 
 interface Column {
   key: string;
   label: string;
-  widthClass?: string; // e.g. "w-[60px]", "w-1/4", "min-w-[150px]"
+  widthClass?: string;
+  responsive?: boolean; // ✅ Optional field for hiding on small screens
 }
 
 interface MiniTableProps {
@@ -72,7 +74,7 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
           </div>
         ) : (
           <>
-            <table className="w-full table-auto text-sm text-left min-w-[600px]">
+            <table className="w-full table-auto text-sm text-left">
               <thead className="bg-gray-100 text-gray-700 font-semibold">
                 <tr>
                   {columns.map((col) => (
@@ -80,7 +82,7 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
                       key={col.key}
                       className={`group p-3 border-b border-gray-200 text-gray-600 font-semibold text-sm text-left items-center sticky top-0 tracking-wide bg-white ${
                         col.widthClass || ""
-                      }`}
+                      } ${col.responsive ? "hidden sm:table-cell" : ""}`}
                     >
                       {col.label}
                     </th>
@@ -98,7 +100,7 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
                         key={col.key}
                         className={`px-3 py-1 border-b border-gray-200 ${
                           col.widthClass || ""
-                        }`}
+                        } ${col.responsive ? "hidden sm:table-cell" : ""}`}
                       >
                         {col.key === "profilePicture" ? (
                           <div className="w-12 h-12">
@@ -115,10 +117,17 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
                               className="rounded-full object-cover w-12 h-12 border shadow-sm"
                             />
                           </div>
+                        ) : col.key === "fullName" ? (
+                          <Link
+                            href={`/dashboard/staff/${row._id}`}
+                            className="hover:underline"
+                          >
+                            {row.fullName}
+                          </Link>
+                        ) : !row[col.key]?.toString().trim() ? (
+                          <span className="text-mText">N/A</span>
                         ) : (
-                          row[col.key] || (
-                            <span className="text-gray-400">N/A</span>
-                          )
+                          row[col.key]
                         )}
                       </td>
                     ))}

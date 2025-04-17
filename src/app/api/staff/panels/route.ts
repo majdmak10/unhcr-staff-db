@@ -12,6 +12,7 @@ export const GET = async (request: Request) => {
     const staff = await Staff.find(
       {},
       {
+        _id: 1,
         profilePicture: 1,
         fullName: 1,
         sex: 1,

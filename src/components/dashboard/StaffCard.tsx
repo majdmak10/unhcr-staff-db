@@ -54,7 +54,7 @@ const StaffCard = ({
           {status === "loading" ? (
             <div className="w-10 h-5 bg-gray-200 animate-pulse rounded" />
           ) : status === "error" ? (
-            <span className="text-red-500">Error</span>
+            <span className="text-red-500 text-xs">Failed to load data</span>
           ) : (
             <AnimatePresence>
               <motion.span

@@ -58,6 +58,8 @@ const AddStaff = () => {
   const validateForm = (formData: FormData) => {
     const fullName = formData.get("fullName") as string;
     const sex = formData.get("sex") as string;
+    const insideDs = formData.get("insideDs") as string;
+    const outsideDs = formData.get("outsideDs") as string;
 
     const newErrors: Record<string, string> = {};
 
@@ -67,6 +69,15 @@ const AddStaff = () => {
 
     if (!sex || sex === "") {
       newErrors.sex = "Sex is required";
+    }
+
+    if (
+      (insideDs === "true" && outsideDs === "true") ||
+      (insideDs === "false" && outsideDs === "false")
+    ) {
+      newErrors.insideDs =
+        'Inside DS cannot be "Yes" if Outside DS is also "Yes", and vice versa.';
+      newErrors.outsideDs = newErrors.insideDs;
     }
 
     return newErrors;
@@ -447,6 +458,7 @@ const AddStaff = () => {
             options={booleanOptions}
             placeholder="Select an option"
             defaultValue=""
+            error={errors.insideDs}
           />
           <SelectField
             label="Outside DS"
@@ -455,6 +467,7 @@ const AddStaff = () => {
             options={booleanOptions}
             placeholder="Select an option"
             defaultValue=""
+            error={errors.insideDs}
           />
         </div>
 

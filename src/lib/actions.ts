@@ -196,6 +196,15 @@ export const addStaff = async (formData: FormData): Promise<void> => {
       address,
     });
 
+    if (
+      (insideDs === "true" && outsideDs === "true") ||
+      (insideDs === "false" && outsideDs === "false")
+    ) {
+      throw new Error(
+        'Inside DS cannot be "Yes" if Outside DS is also "Yes", and vice versa.'
+      );
+    }
+
     await newStaff.save();
     console.log("Staff added successfully");
   } catch (err) {

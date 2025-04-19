@@ -19,6 +19,7 @@ export interface IStaff {
   _id?: string;
   profilePicture?: string;
   fullName: string;
+  slug: string;
   dateOfBirth?: Date;
   sex?: string;
   nationality?: string;

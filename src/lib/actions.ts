@@ -71,6 +71,10 @@ export const addStaff = async (formData: FormData): Promise<void> => {
   try {
     await connectToDb();
 
+    if (!fullName || fullName.trim() === "") {
+      throw new Error("Full name is required to generate slug");
+    }
+
     // Check for duplicate emails
     const existingStaffWithUnhcrEmail =
       unhcrEmail && unhcrEmail !== "N/A"
@@ -88,15 +92,23 @@ export const addStaff = async (formData: FormData): Promise<void> => {
       throw new Error("Private email already exists");
     }
 
+    // Generate slug from full name
+    const rawSlug = fullName.trim().toLowerCase().replace(/\s+/g, "_");
+    let slug = rawSlug;
+    let counter = 1;
+    while (await Staff.findOne({ slug })) {
+      slug = `${rawSlug}_${counter}`;
+      counter++;
+    }
+    console.log("Generated slug:", slug);
+
     // Handle profile picture upload
     let profilePicturePath = "";
     if (profilePictureFile && profilePictureFile.size > 0) {
-      // Get original filename and extension
       const originalFilename = profilePictureFile.name;
       const fileExtension = path.extname(originalFilename);
       const baseFilename = path.basename(originalFilename, fileExtension);
 
-      // Ensure the upload directory exists
       const uploadDir = path.join(
         process.cwd(),
         "public",
@@ -106,7 +118,6 @@ export const addStaff = async (formData: FormData): Promise<void> => {
       );
       await fs.mkdir(uploadDir, { recursive: true });
 
-      // Function to generate unique filename
       const generateUniqueFilename = async (
         baseName: string,
         ext: string,
@@ -117,35 +128,29 @@ export const addStaff = async (formData: FormData): Promise<void> => {
         const fullPath = path.join(uploadDir, potentialFilename);
 
         try {
-          // Check if file exists
           await fs.access(fullPath);
-          // If file exists, try again with incremented counter
           return generateUniqueFilename(baseName, ext, counter + 1);
         } catch {
-          // File doesn't exist, so this filename is unique
           return potentialFilename;
         }
       };
 
-      // Generate unique filename
       const uniqueFilename = await generateUniqueFilename(
         baseFilename,
         fileExtension
       );
 
-      // Convert File to Buffer
       const bytes = await profilePictureFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
 
-      // Write file to public directory
       const fullFilePath = path.join(uploadDir, uniqueFilename);
       await fs.writeFile(fullFilePath, buffer);
 
-      // Store relative path for database and frontend
       profilePicturePath = `/uploads/profiles_pictures/staff/${uniqueFilename}`;
     }
 
     const newStaff = new Staff({
+      slug,
       profilePicture: profilePicturePath,
       fullName: fullName || "N/A",
       dateOfBirth: dateOfBirth || null,
@@ -184,7 +189,7 @@ export const addStaff = async (formData: FormData): Promise<void> => {
           ? true
           : criticalStaff === "false"
           ? false
-          : null, // Use null for "N/A"
+          : null,
       warden: warden || "N/A",
       floorMarshal: floorMarshal || "N/A",
       etb: etb === "true" ? true : etb === "false" ? false : null,

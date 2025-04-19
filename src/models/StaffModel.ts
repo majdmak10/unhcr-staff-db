@@ -24,6 +24,11 @@ const StaffSchema = new Schema<IStaff>(
   {
     profilePicture: { type: String },
     fullName: { type: String, required: true },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     dateOfBirth: { type: Date },
     sex: { type: String, required: true },
     nationality: { type: String },

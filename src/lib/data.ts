@@ -54,3 +54,16 @@ export const getUserById = async (id: string) => {
     throw new Error("Failed to get admin");
   }
 };
+
+export const getUserBySlug = async (slug: string) => {
+  try {
+    await connectToDb();
+    const fullName = slug.replace(/_/g, " ").toLowerCase();
+    return await User.findOne({
+      fullName: { $regex: new RegExp(`^${fullName}$`, "i") },
+    });
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to get user by slug");
+  }
+};

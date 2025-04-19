@@ -1,12 +1,13 @@
-import { getUserById } from "@/lib/data";
+// import { getUserById } from "@/lib/data";
 import { deleteUser } from "@/lib/actions";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import ProfilePicture from "@/components/profile/ProfilePicture";
 import ProfilePageHeader from "@/components/profile/ProfilePageHeader";
+import { getUserBySlug } from "@/lib/data";
 
 const UserProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = await params;
-  const user = await getUserById(id);
+  const { id: slug } = await params;
+  const user = await getUserBySlug(slug);
 
   if (!user) {
     return <div>User not found</div>;

@@ -6,6 +6,11 @@ const UserSchema = new Schema<IUser>(
   {
     profilePicture: { type: String },
     fullName: { type: String, required: true },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     sex: { type: String, required: true },
     position: { type: String, required: true },
     email: { type: String, required: true, unique: true, match: /.+\@.+\..+/ },

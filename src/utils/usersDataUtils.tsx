@@ -16,7 +16,11 @@ export const mapUserData = (users: IUser[]) =>
       />
     ),
     profilePicture: (
-      <Link href={`/dashboard/users/${user.id ?? user._id ?? "unknown-id"}`}>
+      <Link
+        href={`/dashboard/users/${user.fullName
+          .replace(/\s+/g, "_")
+          .toLowerCase()}`}
+      >
         <Image
           src={getProfilePicture(user.profilePicture, user.sex)}
           alt={`${user.fullName}'s Profile Picture`}
@@ -29,7 +33,9 @@ export const mapUserData = (users: IUser[]) =>
     ),
     fullName: (
       <Link
-        href={`/dashboard/users/${user.id ?? user._id ?? "unknown-id"}`}
+        href={`/dashboard/users/${user.fullName
+          .replace(/\s+/g, "_")
+          .toLowerCase()}`}
         className="hover:underline"
       >
         {user.fullName}

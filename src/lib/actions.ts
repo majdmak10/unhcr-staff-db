@@ -486,6 +486,15 @@ export const addUser = async (formData: FormData): Promise<void> => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const hashedConfirmPassword = await bcrypt.hash(confirmPassword, 10);
 
+    // 🔤 Generate slug
+    const rawSlug = fullName.trim().toLowerCase().replace(/\s+/g, "_");
+    let slug = rawSlug;
+    let counter = 1;
+    while (await User.findOne({ slug })) {
+      slug = `${rawSlug}_${counter}`;
+      counter++;
+    }
+
     // Handle profile picture upload
     let profilePicturePath = "";
     if (profilePictureFile && profilePictureFile.size > 0) {
@@ -544,6 +553,7 @@ export const addUser = async (formData: FormData): Promise<void> => {
     }
 
     const newUser = new User({
+      slug,
       profilePicture: profilePicturePath,
       fullName,
       position,

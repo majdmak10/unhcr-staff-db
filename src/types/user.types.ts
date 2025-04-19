@@ -9,6 +9,7 @@ export interface IUser {
   _id?: string;
   profilePicture?: string;
   fullName: string;
+  slug: string;
   sex: string;
   position: string;
   email: string;

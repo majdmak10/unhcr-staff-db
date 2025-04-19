@@ -1,20 +1,19 @@
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import EditStaffForm from "./EditStaffForm";
-import { getStaffById } from "@/lib/data";
+import { IStaff } from "@/types/staff.types";
 
-interface EditStaffProps {
-  params: { id: string };
+interface EditStaffContentProps {
+  staffMember: IStaff;
+  staffId: string;
 }
 
-const EditStaff = async (props: EditStaffProps) => {
-  const { id } = await props.params; // Await the `params` properly.
-  const staff = await getStaffById(id);
-
-  if (!staff) {
+export default function EditStaffContent({
+  staffMember,
+  staffId,
+}: EditStaffContentProps) {
+  if (!staffMember) {
     return <div className="text-red-500 p-4">Staff member not found</div>;
   }
-
-  const staffMember = JSON.parse(JSON.stringify(staff));
 
   return (
     <main className="flex flex-col gap-3">
@@ -23,16 +22,11 @@ const EditStaff = async (props: EditStaffProps) => {
         items={[
           { label: "Dashboard", href: "/dashboard" },
           { label: "All Staff", href: "/dashboard/staff" },
-          {
-            label: "Edit Staff",
-            href: `/dashboard/staff/${staffMember.id}/edit`,
-          },
+          { label: "Edit Staff", href: `/dashboard/staff/${staffId}/edit` },
         ]}
       />
 
       <EditStaffForm staffMember={staffMember} />
     </main>
   );
-};
-
-export default EditStaff;
+}

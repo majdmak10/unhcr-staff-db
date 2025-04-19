@@ -1,45 +1,43 @@
-import { Staff } from "@/models";
-import { User } from "@/models";
+import { Staff } from "@/models/StaffModel";
+import { User } from "@/models/UserModel";
 import { connectToDb } from "@/utils/connectToDb";
 
 export const getStaff = async () => {
   try {
-    connectToDb();
-    const staff = await Staff.find();
-    return staff;
+    await connectToDb();
+    return await Staff.find();
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error("Error getting staff");
   }
 };
 
 export const getStaffById = async (id: string) => {
   try {
-    const staff = await Staff.findById(id);
-    return staff;
+    await connectToDb();
+    return await Staff.findById(id);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error("Failed to get staff");
   }
 };
 
 export const getUsers = async () => {
   try {
-    connectToDb();
-    const users = await User.find();
-    return users;
+    await connectToDb();
+    return await User.find();
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error("Error getting admins");
   }
 };
 
 export const getUserById = async (id: string) => {
   try {
-    const user = await User.findById(id);
-    return user;
+    await connectToDb();
+    return await User.findById(id);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error("Failed to get admin");
   }
 };

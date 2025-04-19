@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 interface BreadcrumbsProps {
   items: { label: string; href: string }[];
@@ -10,17 +9,14 @@ interface BreadcrumbsProps {
 }
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, className }) => {
-  const pathname = usePathname();
-
   return (
     <main className={className}>
       <nav aria-label="breadcrumb">
         <ol className="flex items-center justify-center text-sm">
           {items.map((item, index) => {
-            const isActive = pathname === item.href;
             return (
               <li key={item.href} className="flex items-center">
-                {isActive ? (
+                {index === items.length - 1 ? (
                   <span className="text-gray-500" aria-current="page">
                     {item.label}
                   </span>

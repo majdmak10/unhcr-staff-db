@@ -72,12 +72,18 @@ export const addStaff = async (formData: FormData): Promise<void> => {
     await connectToDb();
 
     // Check for duplicate emails
-    const existingStaffWithUnhcrEmail = await Staff.findOne({ unhcrEmail });
+    const existingStaffWithUnhcrEmail =
+      unhcrEmail && unhcrEmail !== "N/A"
+        ? await Staff.findOne({ unhcrEmail })
+        : null;
     if (existingStaffWithUnhcrEmail) {
       throw new Error("UNHCR email already exists");
     }
 
-    const existingStaffWithPrivateEmail = await Staff.findOne({ privateEmail });
+    const existingStaffWithPrivateEmail =
+      privateEmail && privateEmail !== "N/A"
+        ? await Staff.findOne({ privateEmail })
+        : null;
     if (existingStaffWithPrivateEmail) {
       throw new Error("Private email already exists");
     }
@@ -318,8 +324,15 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
       unit: formData.get("unit") || staff.unit,
       bloodType: formData.get("bloodType") || staff.bloodType,
       dependents: formData.get("dependents") || staff.dependents,
-      unhcrEmail: formData.get("unhcrEmail") || staff.unhcrEmail,
-      privateEmail: formData.get("privateEmail") || staff.privateEmail,
+      unhcrEmail: (() => {
+        const value = formData.get("unhcrEmail")?.toString().trim();
+        return value && /.+@.+\..+/.test(value) ? value : null;
+      })(),
+      privateEmail: (() => {
+        const value = formData.get("privateEmail")?.toString().trim();
+        return value && /.+@.+\..+/.test(value) ? value : null;
+      })(),
+
       mobileSyriatel: /^[0-9]{9}$/.test(
         formData.get("mobileSyriatel") as string
       )

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef } from "react";
 import InputField from "@/components/form/InputFiled";
 import SelectField from "@/components/form/SelectFiled";
 import FormSectionTitle from "@/components/form/FormSectionTitle";
@@ -27,9 +28,64 @@ interface EditStaffFormProps {
 }
 
 const EditStaffForm = ({ staffMember }: EditStaffFormProps) => {
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const fieldRefs = {
+    insideDs: useRef<HTMLSelectElement>(null),
+    outsideDs: useRef<HTMLSelectElement>(null),
+  };
+
+  const validateForm = (formData: FormData) => {
+    const insideDs = formData.get("insideDs") as string;
+    const outsideDs = formData.get("outsideDs") as string;
+
+    const newErrors: Record<string, string> = {};
+
+    if (
+      (insideDs === "true" && outsideDs === "true") ||
+      (insideDs === "false" && outsideDs === "false")
+    ) {
+      const errorMsg =
+        'Inside DS cannot be "Yes" if Outside DS is also "Yes", and vice versa.';
+      newErrors.insideDs = errorMsg;
+      newErrors.outsideDs = errorMsg;
+    }
+
+    return newErrors;
+  };
+
+  const handleSubmit = async (formData: FormData) => {
+    const validationErrors = validateForm(formData);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+
+      // Scroll to the first error
+      const firstErrorKey = Object.keys(validationErrors)[0];
+      const ref = fieldRefs[firstErrorKey as keyof typeof fieldRefs];
+      if (ref?.current) {
+        ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        ref.current.focus();
+      }
+
+      return;
+    }
+
+    setErrors({});
+    try {
+      await updateStaff(formData);
+    } catch (error: unknown) {
+      console.error("Error updating staff:", error);
+      setErrors({ submit: "Failed to update staff. Please try again." });
+    }
+  };
+
   return (
     <form
-      action={updateStaff}
+      onSubmit={(e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        handleSubmit(formData);
+      }}
       className="flex flex-col gap-4 bg-white rounded-lg p-4"
     >
       <h1 className="font-semibold">Edit Staff</h1>
@@ -118,14 +174,14 @@ const EditStaffForm = ({ staffMember }: EditStaffFormProps) => {
           label="UNHCR Email"
           id="unhcrEmail"
           name="unhcrEmail"
-          type="email"
+          type="text"
           defaultValue={staffMember.unhcrEmail?.trim() || "N/A"}
         />
         <InputField
           label="Private Email"
           id="privateEmail"
           name="privateEmail"
-          type="email"
+          type="text"
           defaultValue={staffMember.privateEmail?.trim() || "N/A"}
         />
         <InputField
@@ -323,6 +379,8 @@ const EditStaffForm = ({ staffMember }: EditStaffFormProps) => {
           }
           options={booleanOptions}
           placeholder="Select an option"
+          error={errors.insideDs}
+          ref={fieldRefs.insideDs}
         />
         <SelectField
           label="Outside DS"
@@ -336,6 +394,8 @@ const EditStaffForm = ({ staffMember }: EditStaffFormProps) => {
           }
           options={booleanOptions}
           placeholder="Select an option"
+          error={errors.outsideDs}
+          ref={fieldRefs.outsideDs}
         />
       </div>
 

@@ -36,14 +36,15 @@ const StaffSchema = new Schema<IStaff>(
       type: String,
       unique: true,
       sparse: true,
-      match: /.+\@.+\..+/,
+      default: null,
     },
     privateEmail: {
       type: String,
       unique: true,
       sparse: true,
-      match: /.+\@.+\..+/,
+      default: null,
     },
+
     mobileSyriatel: {
       type: String,
       match: /^[0-9]{9}$/,
@@ -87,7 +88,7 @@ const StaffSchema = new Schema<IStaff>(
 );
 
 // Create a compound index for email uniqueness
-StaffSchema.index({ unhcrEmail: 1, privateEmail: 1 }, { unique: true });
+// StaffSchema.index({ unhcrEmail: 1, privateEmail: 1 }, { unique: true });
 
 export const Staff =
   mongoose.models.Staff || mongoose.model<IStaff>("Staff", StaffSchema);

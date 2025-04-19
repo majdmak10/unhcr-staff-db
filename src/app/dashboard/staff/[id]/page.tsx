@@ -1,20 +1,21 @@
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import Image from "next/image";
-import { getStaffById } from "@/lib/data";
+// import { getStaffById } from "@/lib/data";
 import { deleteStaff } from "@/lib/actions";
 import { formatDate } from "@/utils/formatDate";
 import ProfileSection from "@/components/profile/ProfileSection";
 import AddressSection from "@/components/profile/AddressSection";
 import ProfilePageHeader from "@/components/profile/ProfilePageHeader";
 import ProfileInfo from "@/components/profile/ProfileInfo";
+import { getStaffBySlug } from "@/lib/data";
 
 interface StaffProfileProps {
   params: { id: string };
 }
 
 const StaffProfile = async ({ params }: StaffProfileProps) => {
-  const { id } = await params;
-  const staff = await getStaffById(id);
+  const { id: slug } = await params;
+  const staff = await getStaffBySlug(slug);
 
   if (!staff) {
     return <div>Staff not found</div>;

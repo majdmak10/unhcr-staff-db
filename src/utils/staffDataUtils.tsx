@@ -22,7 +22,11 @@ export const mapStaffData = (staff: IStaff[]) => {
       />
     ),
     profilePicture: (
-      <Link href={`/dashboard/staff/${staff.id ?? staff._id ?? "unknown-id"}`}>
+      <Link
+        href={`/dashboard/staff/${staff.fullName
+          .replace(/\s+/g, "_")
+          .toLowerCase()}`}
+      >
         <Image
           src={getProfilePicture(staff.profilePicture, staff.sex)}
           alt={`${staff.fullName}'s Profile Picture`}
@@ -35,7 +39,9 @@ export const mapStaffData = (staff: IStaff[]) => {
     ),
     fullName: (
       <Link
-        href={`/dashboard/staff/${staff.id ?? staff._id ?? "unknown-id"}`}
+        href={`/dashboard/staff/${staff.fullName
+          .replace(/\s+/g, "_")
+          .toLowerCase()}`}
         className="hover:underline"
       >
         {staff.fullName}

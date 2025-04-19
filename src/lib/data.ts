@@ -22,6 +22,19 @@ export const getStaffById = async (id: string) => {
   }
 };
 
+export const getStaffBySlug = async (slug: string) => {
+  try {
+    await connectToDb();
+    const fullName = slug.replace(/_/g, " ").toLowerCase();
+    return await Staff.findOne({
+      fullName: { $regex: new RegExp(`^${fullName}$`, "i") },
+    });
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to get staff by slug");
+  }
+};
+
 export const getUsers = async () => {
   try {
     await connectToDb();

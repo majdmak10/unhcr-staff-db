@@ -67,3 +67,9 @@ export const getUserBySlug = async (slug: string) => {
     throw new Error("Failed to get user by slug");
   }
 };
+
+export const getCriticalStaff = async () => {
+  await connectToDb();
+  const criticalStaff = await Staff.find({ criticalStaff: true });
+  return criticalStaff;
+};

@@ -26,7 +26,7 @@ export interface Column {
 export interface TableProps {
   columns: Column[];
   data: Array<{ [key: string]: string | React.JSX.Element }>;
-  deleteAction: (formData: FormData) => Promise<DeleteActionResult>;
+  deleteAction?: (formData: FormData) => Promise<DeleteActionResult>;
   type: "staff" | "user";
   placeholder?: string;
 }

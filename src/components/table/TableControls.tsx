@@ -27,7 +27,7 @@ interface TableControlsProps {
     filters: { column: string; operator: string; value: string }[]
   ) => void;
   onFilterClear: () => void;
-  deleteAction: (formData: FormData) => Promise<DeleteActionResult>;
+  deleteAction?: (formData: FormData) => Promise<DeleteActionResult>;
   selectedIds: string[];
   type: "staff" | "user";
   onSearch: (value: string) => void;
@@ -164,12 +164,14 @@ const TableControls: React.FC<TableControlsProps> = ({
         <SelectedRows count={selectedRows?.length || 0} />
 
         {/* Add delete selected rows */}
-        <DeleteSelectedButton
-          selectedIds={selectedIds}
-          type={type}
-          deleteAction={deleteAction}
-          show={!!selectedIds.length}
-        />
+        {deleteAction && selectedIds.length > 0 && (
+          <DeleteSelectedButton
+            selectedIds={selectedIds}
+            type={type}
+            deleteAction={deleteAction}
+            show={!!selectedIds.length}
+          />
+        )}
 
         {/* Add delete selected rows */}
         {isResetVisible && <ResetButton onReset={onReset} />}

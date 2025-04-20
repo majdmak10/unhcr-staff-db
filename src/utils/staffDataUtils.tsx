@@ -82,12 +82,15 @@ export const mapStaffData = (staff: IStaff[]) => {
     insideDs: formatBoolean(staff.insideDs),
     outsideDs: formatBoolean(staff.outsideDs),
     address: formatAddress(staff.address),
-    latitude: staff.address?.latitude
-      ? convertToDMS(parseFloat(staff.address.latitude), true)
-      : "N/A",
-    longitude: staff.address?.longitude
-      ? convertToDMS(parseFloat(staff.address.longitude), false)
-      : "N/A",
+    latitude:
+      staff.address?.latitude && !isNaN(parseFloat(staff.address.latitude))
+        ? convertToDMS(parseFloat(staff.address.latitude), true)
+        : "N/A",
+
+    longitude:
+      staff.address?.longitude && !isNaN(parseFloat(staff.address.longitude))
+        ? convertToDMS(parseFloat(staff.address.longitude), false)
+        : "N/A",
     actions: (
       <div className="flex gap-2 items-center">
         <TableActions

@@ -15,7 +15,7 @@ import EmptyState from "./EmptyState";
 import { useColumnResize } from "@/hooks/useColumnResize";
 import { useSort } from "@/hooks/useSort";
 import staffColumns from "@/constants/staffColumns";
-import Pagination from "./Pagination"; // Import the Pagination component
+import Pagination from "./Pagination";
 
 export interface Column {
   key: string;

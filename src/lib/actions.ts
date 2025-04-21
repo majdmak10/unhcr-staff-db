@@ -249,7 +249,6 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
     // Handle profile picture update
     let profilePicturePath = staff.profilePicture;
     if (profilePictureFile && profilePictureFile.size > 0) {
-      // Remove old profile picture if it exists
       if (profilePicturePath) {
         const oldFilePath = path.join(
           process.cwd(),
@@ -272,7 +271,6 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
         }
       }
 
-      // Upload new profile picture
       const originalFilename = profilePictureFile.name;
       const fileExtension = path.extname(originalFilename);
       const baseFilename = path.basename(originalFilename, fileExtension);
@@ -317,10 +315,24 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
       profilePicturePath = `/uploads/profiles_pictures/staff/${uniqueFilename}`;
     }
 
-    // Update staff details
+    const newFullName =
+      formData.get("fullName")?.toString().trim() || staff.fullName;
+    if (newFullName !== staff.fullName) {
+      const rawSlug = newFullName.toLowerCase().replace(/\s+/g, "_");
+      let slug = rawSlug;
+      let counter = 1;
+
+      while (await Staff.findOne({ slug, _id: { $ne: staff._id } })) {
+        slug = `${rawSlug}_${counter}`;
+        counter++;
+      }
+
+      staff.slug = slug;
+    }
+
     Object.assign(staff, {
       profilePicture: profilePicturePath,
-      fullName: formData.get("fullName") || staff.fullName,
+      fullName: newFullName,
       dateOfBirth: formData.get("dateOfBirth") || staff.dateOfBirth,
       sex: formData.get("sex") || staff.sex,
       nationality: formData.get("nationality") || staff.nationality,
@@ -337,7 +349,6 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
         const value = formData.get("privateEmail")?.toString().trim();
         return value && /.+@.+\..+/.test(value) ? value : null;
       })(),
-
       mobileSyriatel: /^[0-9]{9}$/.test(
         formData.get("mobileSyriatel") as string
       )

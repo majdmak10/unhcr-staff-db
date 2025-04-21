@@ -16,6 +16,7 @@ interface StaffProfileProps {
 const StaffProfile = async ({ params }: StaffProfileProps) => {
   const { id: slug } = await params;
   const staff = await getStaffBySlug(slug);
+  console.log("staff object:", staff);
 
   if (!staff) {
     return <div>Staff not found</div>;
@@ -36,7 +37,7 @@ const StaffProfile = async ({ params }: StaffProfileProps) => {
       {/* General Information */}
       <div className="flex flex-col bg-white rounded-lg w-full p-4">
         <ProfilePageHeader
-          id={staff.id}
+          id={staff.slug}
           type="staff"
           deleteAction={deleteStaff}
         />

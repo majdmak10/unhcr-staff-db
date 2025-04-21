@@ -71,7 +71,10 @@ const AddStaff = () => {
       newErrors.sex = "Sex is required";
     }
 
-    if (
+    if (!insideDs || !outsideDs) {
+      newErrors.insideDs = "Please select both Inside DS and Outside DS.";
+      newErrors.outsideDs = "Please select both Inside DS and Outside DS.";
+    } else if (
       (insideDs === "true" && outsideDs === "true") ||
       (insideDs === "false" && outsideDs === "false")
     ) {

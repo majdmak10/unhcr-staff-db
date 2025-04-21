@@ -40,14 +40,16 @@ const EditStaffForm = ({ staffMember }: EditStaffFormProps) => {
 
     const newErrors: Record<string, string> = {};
 
-    if (
+    if (!insideDs || !outsideDs) {
+      newErrors.insideDs = "Please select both Inside DS and Outside DS.";
+      newErrors.outsideDs = "Please select both Inside DS and Outside DS.";
+    } else if (
       (insideDs === "true" && outsideDs === "true") ||
       (insideDs === "false" && outsideDs === "false")
     ) {
-      const errorMsg =
+      newErrors.insideDs =
         'Inside DS cannot be "Yes" if Outside DS is also "Yes", and vice versa.';
-      newErrors.insideDs = errorMsg;
-      newErrors.outsideDs = errorMsg;
+      newErrors.outsideDs = newErrors.insideDs;
     }
 
     return newErrors;

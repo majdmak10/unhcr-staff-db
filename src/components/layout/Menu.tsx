@@ -134,7 +134,7 @@ const Menu = () => {
             icon: "/menu_icons/help.png?v=1.0",
             hoverIcon: "/menu_icons/help_h.png?v=1.0",
             label: "Help",
-            href: "/help",
+            href: "/dashboard/help",
           },
           {
             icon: "/menu_icons/logout.png?v=1.0",

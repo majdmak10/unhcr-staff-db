@@ -149,6 +149,23 @@ export const addStaff = async (formData: FormData): Promise<void> => {
       profilePicturePath = `/uploads/profiles_pictures/staff/${uniqueFilename}`;
     }
 
+    if (insideDs !== "true" && insideDs !== "false") {
+      throw new Error('Inside DS must be selected as "Yes" or "No".');
+    }
+
+    if (outsideDs !== "true" && outsideDs !== "false") {
+      throw new Error('Outside DS must be selected as "Yes" or "No".');
+    }
+
+    if (
+      (insideDs === "true" && outsideDs === "true") ||
+      (insideDs === "false" && outsideDs === "false")
+    ) {
+      throw new Error(
+        'Inside DS cannot be "Yes" if Outside DS is also "Yes", and vice versa.'
+      );
+    }
+
     const newStaff = new Staff({
       slug,
       profilePicture: profilePicturePath,
@@ -237,6 +254,27 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
     latitude: formData.get("latitude") || "N/A",
     longitude: formData.get("longitude") || "N/A",
   };
+
+  const insideDs = formData.get("insideDs")?.toString();
+  const outsideDs = formData.get("outsideDs")?.toString();
+
+  // ✅ Server-side validation for insideDs/outsideDs
+  if (insideDs !== "true" && insideDs !== "false") {
+    throw new Error('Inside DS must be selected as "Yes" or "No".');
+  }
+
+  if (outsideDs !== "true" && outsideDs !== "false") {
+    throw new Error('Outside DS must be selected as "Yes" or "No".');
+  }
+
+  if (
+    (insideDs === "true" && outsideDs === "true") ||
+    (insideDs === "false" && outsideDs === "false")
+  ) {
+    throw new Error(
+      'Inside DS cannot be "Yes" if Outside DS is also "Yes", and vice versa.'
+    );
+  }
 
   try {
     await connectToDb();

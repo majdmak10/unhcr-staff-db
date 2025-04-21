@@ -77,7 +77,7 @@ export const getCriticalStaff = async () => {
 export const getWardenStaff = async () => {
   await connectToDb();
   const wardenStaff = await Staff.find({
-    warden: { $in: ["warden", "deputy"] },
+    warden: { $in: ["Warden", "Deputy Warden"] },
   });
   return wardenStaff;
 };
@@ -85,7 +85,7 @@ export const getWardenStaff = async () => {
 export const getFloorMarshalStaff = async () => {
   await connectToDb();
   const floorMarshalStaff = await Staff.find({
-    floorMarshal: { $in: ["floorMarshal", "deputy"] },
+    floorMarshal: { $in: ["Floor Marshal", "Deputy Floor Marshal"] },
   });
   return floorMarshalStaff;
 };

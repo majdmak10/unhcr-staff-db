@@ -1,8 +1,8 @@
-import { getCriticalStaff } from "@/lib/data";
-import { mapStaffData } from "@/utils/staffDataUtils";
 import Table from "@/components/table/Table";
 import staffColumns from "@/constants/staffColumns";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import { getCriticalStaff } from "@/lib/data";
+import { mapStaffData } from "@/utils/staffDataUtils";
 
 const CriticalStaffPage = async () => {
   const staff = await getCriticalStaff();

@@ -45,7 +45,7 @@ export const contractTypeOptions = [
 
 export const wardenTypeOptions = [
   { value: "Warden", label: "Warden" },
-  { value: "Deputy", label: "Deputy" },
+  { value: "Deputy Warden", label: "Deputy Warden" },
   { value: "None", label: "None" },
 ];
 

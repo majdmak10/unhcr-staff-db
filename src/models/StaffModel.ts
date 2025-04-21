@@ -83,6 +83,7 @@ const StaffSchema = new Schema<IStaff>(
     criticalStaff: { type: Boolean, default: true },
     warden: { type: String },
     floorMarshal: { type: String },
+    etb: { type: Boolean, default: true },
     ifak: { type: Boolean, default: true },
     advancedDriving: { type: Boolean, default: true },
     insideDs: { type: Boolean, default: true },

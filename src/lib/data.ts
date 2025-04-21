@@ -89,3 +89,33 @@ export const getFloorMarshalStaff = async () => {
   });
   return floorMarshalStaff;
 };
+
+export const getEtbStaff = async () => {
+  await connectToDb();
+  const etbStaff = await Staff.find({ etb: true });
+  return etbStaff;
+};
+
+export const getIfakStaff = async () => {
+  await connectToDb();
+  const ifakStaff = await Staff.find({ ifak: true });
+  return ifakStaff;
+};
+
+export const getAdvancedDrivingStaff = async () => {
+  await connectToDb();
+  const advancedDrivingStaff = await Staff.find({ advancedDriving: true });
+  return advancedDrivingStaff;
+};
+
+export const getInsideDsStaff = async () => {
+  await connectToDb();
+  const insideDsStaff = await Staff.find({ insideDs: true });
+  return insideDsStaff;
+};
+
+export const getOutsideDsStaff = async () => {
+  await connectToDb();
+  const outsideDsStaff = await Staff.find({ outsideDs: true });
+  return outsideDsStaff;
+};

@@ -122,7 +122,7 @@ const Navbar = () => {
           {dropdownOpen && (
             <div
               ref={dropdownRef}
-              className="absolute right-0 bottom-[-5px] translate-y-full w-36 bg-white shadow-lg rounded-lg p-2"
+              className="absolute right-0 bottom-[-5px] translate-y-full w-36 bg-white shadow-lg rounded-lg p-2 z-50"
             >
               {/* Hidden user info for mobile */}
               <div className="md:hidden flex flex-col">

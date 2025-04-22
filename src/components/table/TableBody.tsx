@@ -45,13 +45,14 @@ const TableBody: React.FC<TableBodyProps> = ({
             <td
               key={column.key}
               className={clsx(
-                "px-3 py-1 border-b border-gray-200", // removed bg-white
+                "px-3 py-1 border-b border-gray-200 transition-colors duration-150",
                 getWidthClass(column.key),
                 {
-                  "sticky left-0 z-5 bg-white": column.key === "checkbox",
-                  "sticky left-[50px] z-5 bg-white": column.key === "fullName",
-                  "group-hover:bg-gray-100 transition-colors duration-150":
-                    true, // apply hover effect here
+                  "sticky left-0 z-5": column.key === "checkbox",
+                  "sticky left-[50px] z-5": column.key === "fullName",
+                  "bg-blue-50": selectedRows.includes(rowIndex),
+                  "bg-white": !selectedRows.includes(rowIndex), // fallback if not selected
+                  "group-hover:bg-gray-100": true,
                 }
               )}
               tabIndex={-1} // Cells are focusable but not tabbable

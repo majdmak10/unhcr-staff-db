@@ -88,7 +88,7 @@ const EditStaffForm = ({ staffMember }: EditStaffFormProps) => {
         const formData = new FormData(e.currentTarget);
         handleSubmit(formData);
       }}
-      className="flex flex-col gap-4 bg-white rounded-lg p-4"
+      className="flex flex-col gap-4 bg-white rounded-lg p-4 shadow"
     >
       <h1 className="font-semibold">Edit Staff</h1>
       <input type="hidden" name="id" value={staffMember._id} />

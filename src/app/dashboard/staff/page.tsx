@@ -23,6 +23,7 @@ const StaffPage = async () => {
               { label: "Dashboard", href: "/dashboard" },
               { label: "All Staff", href: "/dashboard/staff" },
             ]}
+            className="shadow-none"
           />
           <AddButton href="/dashboard/staff/add" />
         </div>

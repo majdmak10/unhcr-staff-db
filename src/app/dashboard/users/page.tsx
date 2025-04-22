@@ -24,6 +24,7 @@ const UserPage = async () => {
               { label: "Dashboard", href: "/dashboard" },
               { label: "All Users", href: "/dashboard/users" },
             ]}
+            className="shadow-none"
           />
           <AddButton href="/dashboard/users/add" />
         </div>

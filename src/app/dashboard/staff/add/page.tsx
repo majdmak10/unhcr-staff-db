@@ -156,7 +156,6 @@ const AddStaff = () => {
   return (
     <main className="flex flex-col gap-3">
       <Breadcrumbs
-        className="flex items-center justify-between bg-white rounded-lg p-4"
         items={[
           { label: "Dashboard", href: "/dashboard" },
           { label: "All Staff", href: "/dashboard/staff" },
@@ -169,7 +168,7 @@ const AddStaff = () => {
           const formData = new FormData(e.currentTarget);
           handleSubmit(formData);
         }}
-        className="flex flex-col gap-4 w-full bg-white rounded-lg p-4"
+        className="flex flex-col gap-4 w-full bg-white rounded-lg p-4 shadow"
       >
         <h1 className="font-semibold">Add New Staff</h1>
 

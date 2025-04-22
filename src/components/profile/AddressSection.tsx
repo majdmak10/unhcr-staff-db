@@ -23,7 +23,7 @@ const AddressSection: React.FC<AddressSectionProps> = ({ address }) => {
   const longitude = !isNaN(parseFloat(rawLng)) ? parseFloat(rawLng) : null;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white rounded-lg w-full p-4">
+    <main className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white rounded-lg w-full p-4 shadow">
       <div>
         <FormSectionTitle
           title="Address Information"
@@ -55,7 +55,7 @@ const AddressSection: React.FC<AddressSectionProps> = ({ address }) => {
       <div className="w-full md:col-span-2">
         <ProfileMap latitude={latitude} longitude={longitude} />
       </div>
-    </div>
+    </main>
   );
 };
 

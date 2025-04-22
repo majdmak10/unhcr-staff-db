@@ -1,6 +1,5 @@
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import EditStaffForm from "./EditStaffForm";
-// import { getStaffById } from "@/lib/data";
 import { getStaffBySlug } from "@/lib/data";
 
 interface EditStaffProps {
@@ -20,7 +19,6 @@ const EditStaff = async (props: EditStaffProps) => {
   return (
     <main className="flex flex-col gap-3">
       <Breadcrumbs
-        className="flex items-center justify-between bg-white rounded-lg p-4"
         items={[
           { label: "Dashboard", href: "/dashboard" },
           { label: "All Staff", href: "/dashboard/staff" },

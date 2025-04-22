@@ -1,6 +1,5 @@
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import Image from "next/image";
-// import { getStaffById } from "@/lib/data";
 import { deleteStaff } from "@/lib/actions";
 import { formatDate } from "@/utils/formatDate";
 import ProfileSection from "@/components/profile/ProfileSection";
@@ -26,7 +25,6 @@ const StaffProfile = async ({ params }: StaffProfileProps) => {
     <main className="flex flex-col gap-3">
       {/* Breadcrumbs */}
       <Breadcrumbs
-        className="flex items-center justify-between bg-white rounded-lg p-4"
         items={[
           { label: "Dashboard", href: "/dashboard" },
           { label: "All Staff", href: "/dashboard/staff" },
@@ -35,7 +33,7 @@ const StaffProfile = async ({ params }: StaffProfileProps) => {
       />
 
       {/* General Information */}
-      <div className="flex flex-col bg-white rounded-lg w-full p-4">
+      <div className="flex flex-col bg-white rounded-lg w-full p-4 shadow">
         <ProfilePageHeader
           id={staff.slug}
           type="staff"

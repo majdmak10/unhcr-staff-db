@@ -122,7 +122,7 @@ const Menu = () => {
             icon: "/menu_icons/profile.png?v=1.0",
             hoverIcon: "/menu_icons/profile_h.png?v=1.0",
             label: "Profile",
-            href: "/profile",
+            href: "/dashboard/profile",
           },
           {
             icon: "/menu_icons/settings.png?v=1.0",

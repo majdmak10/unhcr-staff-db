@@ -23,7 +23,6 @@ const EditUser = async ({ params }: EditUserProps) => {
   return (
     <main className="flex flex-col gap-3">
       <Breadcrumbs
-        className="flex items-center justify-between bg-white rounded-lg p-4"
         items={[
           { label: "Dashboard", href: "/dashboard" },
           { label: "All Users", href: "/dashboard/users" },
@@ -33,7 +32,7 @@ const EditUser = async ({ params }: EditUserProps) => {
 
       <form
         action={updateUser}
-        className="flex flex-col gap-4 bg-white rounded-lg p-4"
+        className="flex flex-col gap-4 bg-white rounded-lg p-4 shadow"
       >
         <h1 className="font-semibold text-lg">Edit User</h1>
         <input type="hidden" name="id" value={user.id} />

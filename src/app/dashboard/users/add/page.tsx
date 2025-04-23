@@ -100,7 +100,6 @@ const AddUser: React.FC = () => {
   return (
     <main className="flex flex-col gap-3">
       <Breadcrumbs
-        className="flex items-center justify-between bg-white rounded-lg p-4"
         items={[
           { label: "Dashboard", href: "/dashboard" },
           { label: "All Users", href: "/dashboard/users" },
@@ -109,7 +108,7 @@ const AddUser: React.FC = () => {
       />
       <form
         action={handleSubmit}
-        className="flex flex-col gap-4 w-full bg-white rounded-lg p-4"
+        className="flex flex-col gap-4 w-full bg-white rounded-lg p-4 shadow"
       >
         <h1 className="font-semibold">Add New User</h1>
 

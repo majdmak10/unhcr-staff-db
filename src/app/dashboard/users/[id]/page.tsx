@@ -16,20 +16,19 @@ const UserProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <main className="flex flex-col gap-3">
       <Breadcrumbs
-        className="flex items-center justify-between bg-white rounded-lg p-4"
         items={[
           { label: "Dashboard", href: "/dashboard" },
           { label: "All Users", href: "/dashboard/users" },
           { label: `${user.fullName}`, href: `/dashboard/users/${user.id}` },
         ]}
       />
-      <div className="flex flex-col gap-3 bg-white rounded-lg w-full p-4">
+      <div className="flex flex-col gap-3 bg-white rounded-lg w-full p-4 shadow">
         <ProfilePageHeader
           id={user.id}
           type="users"
           deleteAction={deleteUser}
         />
-        <div className="flex flex-col justify-center items-center gap-4 w-full mx-auto md:w-[30%] bg-white rounded-lg p-4 shadow-lg mb-5 border border-gray-200">
+        <div className="flex flex-col justify-center items-center gap-4 w-full mx-auto md:w-[30%] bg-white rounded-lg p-4 shadow mb-5 border border-gray-200">
           <ProfilePicture
             profilePicture={user.profilePicture}
             fullName={user.fullName}

@@ -1,17 +1,19 @@
 "use client";
 
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import InputField from "@/components/form/InputFiled";
+import SelectField from "@/components/form/SelectFiled";
+import UploadPicture from "@/components/form/UploadPicture";
+import AddEditActions from "@/components/form/AddEditActions";
+import StatusMessage from "@/components/form/StatusMessage";
 import { getProfilePicture } from "@/utils/userUtils";
 import { fetchCurrentUser } from "@/utils/fetchUser";
-import StatusMessage from "@/components/form/StatusMessage";
-import InputField from "@/components/form/InputFiled";
 
 const EditProfilePage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -53,32 +55,22 @@ const EditProfilePage = () => {
     };
   }, [previewImage]);
 
-  const handleInputChange = (
+  const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFormData((prev) => ({ ...prev, profilePicture: file }));
-      setPreviewImage(URL.createObjectURL(file));
-    }
-  };
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-    setSubmitting(true);
 
     const passwordChanged = Boolean(formData.password);
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
-      setSubmitting(false);
       return;
     }
 
@@ -96,21 +88,22 @@ const EditProfilePage = () => {
         form.append("password", formData.password);
         form.append("confirmPassword", formData.confirmPassword);
       }
+
       if (formData.profilePicture) {
         form.append("profilePicture", formData.profilePicture);
       }
 
-      const response = await fetch("/api/users/update", {
+      const res = await fetch("/api/users/update", {
         method: "POST",
         body: form,
       });
 
-      const data = await response.json();
-
-      if (!response.ok)
-        throw new Error(data.error || "Failed to update profile");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to update profile");
 
       if (passwordChanged) {
+        setSuccess("Password changed successfully. Logging out...");
+        await new Promise((resolve) => setTimeout(resolve, 2000)); // short delay for UI feedback
         await fetch("/api/auth/logout", { method: "POST" });
         router.push("/login");
         return;
@@ -119,161 +112,119 @@ const EditProfilePage = () => {
       setSuccess("Profile updated successfully!");
       setTimeout(() => router.push("/dashboard/profile"), 2000);
     } catch (err) {
-      console.error("Error updating profile:", err);
       setError(err instanceof Error ? err.message : "Failed to update profile");
-    } finally {
-      setSubmitting(false);
     }
   };
 
   if (loading) return <StatusMessage message="Loading profile data..." />;
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden max-w-4xl mx-auto">
-        <div className="bg-blue-600 p-6 text-white">
-          <h1 className="text-2xl font-bold">Edit My Profile</h1>
+    <main className="flex flex-col gap-3">
+      <Breadcrumbs
+        items={[
+          { label: "Dashboard", href: "/dashboard" },
+          { label: "My Profile", href: "/dashboard/profile" },
+          { label: "Edit Profile", href: "/dashboard/profile/edit" },
+        ]}
+      />
+
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 bg-white rounded-lg p-4 shadow"
+      >
+        {error && <StatusMessage message={error} type="error" />}
+        {success && <StatusMessage message={success} type="success" />}
+
+        <h1 className="font-semibold text-lg">Edit My Profile</h1>
+        <input type="hidden" name="id" value={formData.id} />
+
+        <div className="flex flex-col items-center justify-center space-y-4 w-full md:w-[80%] mx-auto">
+          <UploadPicture
+            variant="userEdit"
+            name="profilePicture"
+            initialImage={
+              previewImage ||
+              getProfilePicture(formData.currentProfilePicture, formData.sex)
+            }
+            onFileSelect={(file) => {
+              setFormData((prev) => ({ ...prev, profilePicture: file }));
+              if (file) {
+                setPreviewImage(URL.createObjectURL(file));
+              } else {
+                setPreviewImage(null);
+              }
+            }}
+          />
+
+          <InputField
+            label="Full Name"
+            id="fullName"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            placeholder="Enter full name"
+          />
+
+          <InputField
+            label="Position"
+            id="position"
+            name="position"
+            value={formData.position}
+            onChange={handleChange}
+            placeholder="Enter position"
+          />
+
+          <InputField
+            label="Email"
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Enter email"
+          />
+
+          <SelectField
+            label="Sex"
+            id="sex"
+            name="sex"
+            defaultValue={formData.sex}
+            options={[
+              { label: "Male", value: "Male" },
+              { label: "Female", value: "Female" },
+            ]}
+            placeholder="Select sex"
+          />
+
+          <InputField
+            label="New Password (leave blank to keep current)"
+            id="password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Enter new password"
+          />
+
+          <InputField
+            label="Confirm Password"
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="Confirm new password"
+          />
         </div>
 
-        <div className="p-6">
-          {error && <StatusMessage message={error} type="error" />}
-          {success && (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-              {success}
-            </div>
-          )}
+        {error && <StatusMessage message={error} type="error" />}
+        {success && <StatusMessage message={success} type="success" />}
 
-          <form
-            onSubmit={handleSubmit}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-          >
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Profile Picture
-              </label>
-              <div className="flex items-center space-x-6 mb-6">
-                <div className="w-24 h-24 relative rounded-full overflow-hidden border-2 border-gray-300">
-                  <Image
-                    src={
-                      previewImage ||
-                      getProfilePicture(
-                        formData.currentProfilePicture,
-                        formData.sex
-                      )
-                    }
-                    alt="Profile Picture"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <label className="cursor-pointer bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
-                  <span>Choose File</span>
-                  <input
-                    type="file"
-                    name="profilePicture"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                  />
-                </label>
-              </div>
-
-              <InputField
-                id="fullName"
-                name="fullName"
-                label="Full Name"
-                type="text"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                placeholder="Enter your full name"
-                // required
-              />
-              <InputField
-                id="email"
-                name="email"
-                label="Email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="Enter your email"
-                // required
-              />
-
-              <div className="mb-4">
-                <label
-                  htmlFor="sex"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Gender
-                </label>
-                <select
-                  id="sex"
-                  name="sex"
-                  value={formData.sex}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <InputField
-                id="position"
-                name="position"
-                label="Position"
-                type="text"
-                value={formData.position}
-                onChange={handleInputChange}
-                placeholder="Enter your position"
-                // required
-              />
-              <InputField
-                id="password"
-                name="password"
-                label="Password (leave blank to keep current)"
-                type="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                placeholder="Enter new password"
-              />
-              <InputField
-                id="confirmPassword"
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                placeholder="Confirm new password"
-              />
-            </div>
-
-            <div className="md:col-span-2 mt-8 flex justify-end space-x-4">
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={submitting}
-                className={`px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors ${
-                  submitting ? "opacity-70 cursor-not-allowed" : ""
-                }`}
-              >
-                {submitting ? "Saving..." : "Save Changes"}
-              </button>
-            </div>
-          </form>
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <AddEditActions submitTitle="Update" />
         </div>
-      </div>
-    </div>
+      </form>
+    </main>
   );
 };
 

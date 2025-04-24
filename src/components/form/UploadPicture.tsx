@@ -122,7 +122,7 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
             src={previewUrl}
             alt="Preview"
             fill
-            className="rounded-full object-cover"
+            className="rounded-full border border-gray-300 shadow-md object-cover "
           />
           {isNewImage && (
             <button
@@ -176,7 +176,7 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
               src={previewUrl}
               alt="Preview"
               fill
-              className="rounded-full object-cover"
+              className="rounded-full object-cover "
             />
             {isNewImage && (
               <button

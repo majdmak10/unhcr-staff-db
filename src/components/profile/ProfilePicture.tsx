@@ -26,7 +26,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
       width={96}
       height={96}
       className={clsx(
-        "rounded-full border shadow-md object-cover w-28 h-28", // Default styles
+        "rounded-full border border-gray-300 shadow-md object-cover w-28 h-28", // Default styles
         className // Allow custom styles
       )}
     />

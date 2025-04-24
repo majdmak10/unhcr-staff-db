@@ -7,7 +7,7 @@ import { DeleteActionResult } from "@/lib/actions";
 interface ProfilePageHeaderProps {
   id: string;
   type: "users" | "staff";
-  deleteAction: (formData: FormData) => Promise<DeleteActionResult>;
+  deleteAction?: (formData: FormData) => Promise<DeleteActionResult>;
 }
 
 const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
@@ -24,11 +24,13 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           type={type}
           className="hover:opacity-80 transition"
         />
-        <DeleteButton
-          id={id}
-          type={type === "users" ? "user" : "staff"}
-          deleteAction={deleteAction}
-        />
+        {deleteAction && (
+          <DeleteButton
+            id={id}
+            type={type === "users" ? "user" : "staff"}
+            deleteAction={deleteAction}
+          />
+        )}
       </div>
     </div>
   );

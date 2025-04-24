@@ -30,8 +30,9 @@ export async function GET() {
 
     // Find user
     const user = await User.findById(decoded.id).select(
-      "fullName role profilePicture"
+      "fullName role profilePicture email sex position"
     );
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "User not found" },

@@ -146,7 +146,7 @@ export const addStaff = async (formData: FormData): Promise<void> => {
       const fullFilePath = path.join(uploadDir, uniqueFilename);
       await fs.writeFile(fullFilePath, buffer);
 
-      profilePicturePath = `/uploads/profiles_pictures/staff/${uniqueFilename}`;
+      profilePicturePath = `/uploads/profile_pictures/staff/${uniqueFilename}`;
     }
 
     if (insideDs !== "true" && insideDs !== "false") {
@@ -350,7 +350,7 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
       const fullFilePath = path.join(uploadDir, uniqueFilename);
       await fs.writeFile(fullFilePath, buffer);
 
-      profilePicturePath = `/uploads/profiles_pictures/staff/${uniqueFilename}`;
+      profilePicturePath = `/uploads/profile_pictures/staff/${uniqueFilename}`;
     }
 
     const newFullName =
@@ -598,7 +598,7 @@ export const addUser = async (formData: FormData): Promise<void> => {
       await fs.writeFile(fullFilePath, buffer);
 
       // Store relative path for database and frontend
-      profilePicturePath = `/uploads/profiles_pictures/users/${uniqueFilename}`;
+      profilePicturePath = `/uploads/profile_pictures/users/${uniqueFilename}`;
     }
 
     const newUser = new User({
@@ -672,7 +672,7 @@ export const updateUser = async (formData: FormData): Promise<void> => {
     const buffer = Buffer.from(await profilePictureFile.arrayBuffer());
     await fs.writeFile(fullPath, buffer);
 
-    profilePicturePath = `/uploads/profiles_pictures/users/${uniqueFilename}`;
+    profilePicturePath = `/uploads/profile_pictures/users/${uniqueFilename}`;
   }
 
   try {

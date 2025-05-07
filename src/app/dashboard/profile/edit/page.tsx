@@ -76,13 +76,11 @@ const EditProfilePage = () => {
 
     try {
       const form = new FormData();
-      Object.entries({
-        id: formData.id,
-        fullName: formData.fullName,
-        email: formData.email,
-        position: formData.position,
-        sex: formData.sex,
-      }).forEach(([key, value]) => form.append(key, value));
+      form.append("id", formData.id);
+      form.append("fullName", formData.fullName);
+      form.append("email", formData.email);
+      form.append("position", formData.position);
+      form.append("sex", formData.sex);
 
       if (passwordChanged) {
         form.append("password", formData.password);
@@ -90,7 +88,11 @@ const EditProfilePage = () => {
       }
 
       if (formData.profilePicture) {
-        form.append("profilePicture", formData.profilePicture);
+        form.append(
+          "profilePicture",
+          formData.profilePicture,
+          formData.profilePicture.name
+        );
       }
 
       const res = await fetch("/api/users/update", {
@@ -103,7 +105,7 @@ const EditProfilePage = () => {
 
       if (passwordChanged) {
         setSuccess("Password changed successfully. Logging out...");
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // short delay for UI feedback
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         await fetch("/api/auth/logout", { method: "POST" });
         router.push("/login");
         return;
@@ -148,8 +150,10 @@ const EditProfilePage = () => {
             }
             onFileSelect={(file) => {
               setFormData((prev) => ({ ...prev, profilePicture: file }));
+
               if (file) {
-                setPreviewImage(URL.createObjectURL(file));
+                const url = URL.createObjectURL(file);
+                setPreviewImage(url);
               } else {
                 setPreviewImage(null);
               }

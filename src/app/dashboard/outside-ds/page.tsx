@@ -13,7 +13,7 @@ const OutsideDsPage = async () => {
 
   return (
     <main className="flex flex-col gap-3 w-full">
-      <div className="flex items-center justify-between bg-white rounded-lg p-4 shadow">
+      <div className="flex items-center justify-between bg-white rounded-lg shadow">
         <Breadcrumbs
           items={[
             { label: "Dashboard", href: "/dashboard" },
@@ -22,6 +22,7 @@ const OutsideDsPage = async () => {
               href: "/dashboard/staff/outside-ds",
             },
           ]}
+          className="shadow-none"
         />
       </div>
 

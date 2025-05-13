@@ -17,7 +17,7 @@ const StaffPage = async () => {
     <Suspense fallback={<div>Loading staff...</div>}>
       <main className="flex flex-col gap-3 w-full">
         {/* Header */}
-        <div className="flex items-center justify-between bg-white rounded-lg p-4 shadow">
+        <div className="flex items-center justify-between bg-white rounded-lg pr-4 shadow">
           <Breadcrumbs
             items={[
               { label: "Dashboard", href: "/dashboard" },

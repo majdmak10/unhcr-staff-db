@@ -13,12 +13,13 @@ const CriticalStaffPage = async () => {
 
   return (
     <main className="flex flex-col gap-3 w-full">
-      <div className="flex items-center justify-between bg-white rounded-lg p-4 shadow">
+      <div className="flex items-center justify-between bg-white rounded-lg shadow">
         <Breadcrumbs
           items={[
             { label: "Dashboard", href: "/dashboard" },
             { label: "Critical Staff", href: "/dashboard/staff/critical" },
           ]}
+          className="shadow-none"
         />
       </div>
 

@@ -12,12 +12,13 @@ const WardenStaffPage = async () => {
 
   return (
     <main className="flex flex-col gap-3 w-full">
-      <div className="flex items-center justify-between bg-white rounded-lg p-4 shadow">
+      <div className="flex items-center justify-between bg-white rounded-lg shadow">
         <Breadcrumbs
           items={[
             { label: "Dashboard", href: "/dashboard" },
             { label: "Warden Staff", href: "/dashboard/staff/wardens" },
           ]}
+          className="shadow-none"
         />
       </div>
 

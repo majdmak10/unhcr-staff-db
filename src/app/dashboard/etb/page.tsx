@@ -13,7 +13,7 @@ const EtbPage = async () => {
 
   return (
     <main className="flex flex-col gap-3 w-full">
-      <div className="flex items-center justify-between bg-white rounded-lg p-4 shadow">
+      <div className="flex items-center justify-between bg-white rounded-lg shadow">
         <Breadcrumbs
           items={[
             { label: "Dashboard", href: "/dashboard" },
@@ -22,6 +22,7 @@ const EtbPage = async () => {
               href: "/dashboard/staff/etb",
             },
           ]}
+          className="shadow-none"
         />
       </div>
 

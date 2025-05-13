@@ -105,10 +105,7 @@ const LoginPage = () => {
                 </label>
               </div>
               <div className="text-right">
-                <a
-                  href="/forgot-password"
-                  className="text-blue-500 text-sm hover:underline"
-                >
+                <a href="#" className="text-blue-500 text-sm hover:underline">
                   Forgot Password?
                 </a>
               </div>

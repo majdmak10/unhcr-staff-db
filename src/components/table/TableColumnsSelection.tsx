@@ -75,7 +75,7 @@ const TableColumnsSelection: React.FC<TableColumnsSelectionProps> = ({
   };
 
   return (
-    <div
+    <main
       ref={menuRef}
       className="absolute top-full left-0 mt-2 p-4 bg-white border-1 border-gray-200 rounded shadow-lg w-72 animate-in fade-in duration-200 text-sm z-50"
     >
@@ -135,7 +135,7 @@ const TableColumnsSelection: React.FC<TableColumnsSelectionProps> = ({
           Reset
         </button>
       </div>
-    </div>
+    </main>
   );
 };
 

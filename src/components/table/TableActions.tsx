@@ -18,7 +18,7 @@ const TableActions: React.FC<TableActionsProps> = ({
   className,
 }) => {
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
+    <main className={`flex items-center gap-2 ${className}`}>
       <ViewButton id={id} type={type} className="hover:opacity-80 transition" />
       <EditButton id={id} type={type} className="hover:opacity-80 transition" />
       {/* Convert "users" to "user" before passing it to DeleteButton */}
@@ -27,7 +27,7 @@ const TableActions: React.FC<TableActionsProps> = ({
         type={type === "users" ? "user" : "staff"}
         deleteAction={deleteAction}
       />
-    </div>
+    </main>
   );
 };
 

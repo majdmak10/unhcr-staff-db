@@ -106,13 +106,13 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
   }, [previewUrl]);
 
   return (
-    <div
+    <main
       className={`${
         variant === "userEdit"
           ? "grid grid-cols-1 md:gap-x-10 w-full justify-center items-center"
           : variant === "userAdd"
-          ? "grid grid-cols-1 w-full justify-center items-center"
-          : "grid grid-cols-1 md:grid-cols-3 md:gap-x-10 w-full justify-center items-center"
+            ? "grid grid-cols-1 w-full justify-center items-center"
+            : "grid grid-cols-1 md:grid-cols-3 md:gap-x-10 w-full justify-center items-center"
       }`}
     >
       {/* Preview at top for 'user' */}
@@ -215,7 +215,7 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
           )}
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

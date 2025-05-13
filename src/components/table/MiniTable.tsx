@@ -57,7 +57,7 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
   }, [totalPages, currentPage]);
 
   return (
-    <div className=" bg-white">
+    <main className=" bg-white">
       {/* Table Title */}
       <div className="overflow-x-auto">
         {loading ? (
@@ -150,7 +150,7 @@ const MiniTable = ({ columns, fetchUrl }: MiniTableProps) => {
           </>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 

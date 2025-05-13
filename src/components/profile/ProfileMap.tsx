@@ -32,7 +32,7 @@ const ProfileMap: React.FC<ProfileMapProps> = ({ latitude, longitude }) => {
   if (!isLoaded) return <div>Loading map...</div>;
 
   return (
-    <div className="relative w-full h-[300px] border border-gray-300 rounded-lg overflow-hidden">
+    <main className="relative w-full h-[300px] border border-gray-300 rounded-lg overflow-hidden">
       {!isValidLatLng && (
         <div className="absolute top-2 left-2 z-10 px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded shadow">
           No location selected — showing default (Aleppo)
@@ -45,7 +45,7 @@ const ProfileMap: React.FC<ProfileMapProps> = ({ latitude, longitude }) => {
       >
         <Marker position={center} />
       </GoogleMap>
-    </div>
+    </main>
   );
 };
 

@@ -11,15 +11,15 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   searchValue,
   visibleColumnsCount,
 }) => (
-  <div className="flex justify-center items-center py-8">
+  <main className="flex justify-center items-center py-8">
     <p className="text-gray-500 text-center">
       {visibleColumnsCount === 0
         ? noColumnsMessage
         : searchValue
-        ? `${noResultsMessage} (Search term: "${searchValue}")`
-        : noResultsMessage}
+          ? `${noResultsMessage} (Search term: "${searchValue}")`
+          : noResultsMessage}
     </p>
-  </div>
+  </main>
 );
 
 export default EmptyState;

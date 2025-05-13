@@ -16,7 +16,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   data,
 }) => {
   return (
-    <div className="flex flex-col bg-white rounded-lg w-full p-4 shadow">
+    <main className="flex flex-col bg-white rounded-lg w-full p-4 shadow">
       <FormSectionTitle title={title} className={`${color} mb-3`} />
       {data.map((info, index) => {
         let displayValue: string;
@@ -54,7 +54,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
           />
         );
       })}
-    </div>
+    </main>
   );
 };
 

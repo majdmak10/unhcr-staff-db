@@ -16,14 +16,14 @@ const AddEditActions: React.FC<AddEditActionsProps> = ({
   className,
 }) => {
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
+    <main className={`flex items-center gap-2 ${className}`}>
       <AddEditSubmitButton
         title={submitTitle}
         onClick={onSubmit}
         type={submitType}
       />
       <CancelButton />
-    </div>
+    </main>
   );
 };
 

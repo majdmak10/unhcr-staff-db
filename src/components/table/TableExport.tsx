@@ -62,13 +62,16 @@ const TableExport: React.FC<ExportProps> = ({
       }
 
       // Create headers map (key to label)
-      const headers = exportableColumns.reduce((acc, col) => {
-        acc[col.key] =
-          typeof col.label === "string"
-            ? col.label
-            : col.label?.props?.children || col.key;
-        return acc;
-      }, {} as { [key: string]: string });
+      const headers = exportableColumns.reduce(
+        (acc, col) => {
+          acc[col.key] =
+            typeof col.label === "string"
+              ? col.label
+              : col.label?.props?.children || col.key;
+          return acc;
+        },
+        {} as { [key: string]: string }
+      );
 
       // Process data for export
       const processedData = rowsToExport.map((row) => {
@@ -79,8 +82,8 @@ const TableExport: React.FC<ExportProps> = ({
             typeof value === "string"
               ? value
               : value?.props?.children
-              ? String(value.props.children)
-              : "";
+                ? String(value.props.children)
+                : "";
         });
         return processedRow;
       });
@@ -201,7 +204,7 @@ const TableExport: React.FC<ExportProps> = ({
   };
 
   return (
-    <div
+    <main
       ref={menuRef}
       className="absolute top-full left-0 mt-2 py-2 bg-white border-1 border-gray-200 rounded shadow-lg w-36 animate-in fade-in duration-200 text-sm z-50"
     >
@@ -217,7 +220,7 @@ const TableExport: React.FC<ExportProps> = ({
       >
         Export to Word
       </button>
-    </div>
+    </main>
   );
 };
 

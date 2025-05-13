@@ -31,7 +31,7 @@ const Pagination = ({
   };
 
   return (
-    <div className="flex items-center justify-between p-4 text-gray-600">
+    <main className="flex items-center justify-between p-4 text-gray-600">
       {/* Pagination buttons */}
       <div className="flex items-center gap-2">
         <button
@@ -80,7 +80,7 @@ const Pagination = ({
           </select>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

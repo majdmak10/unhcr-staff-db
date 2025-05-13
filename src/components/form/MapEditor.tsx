@@ -47,7 +47,7 @@ const MapEditor: React.FC<MapEditorProps> = ({
   const mapLng = !isNaN(parseFloat(longitude)) ? longitude : "37.1343";
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-10 gap-y-5">
+    <main className="grid grid-cols-1 md:grid-cols-3 md:gap-x-10 gap-y-5">
       {/* Address Fields */}
       <div className="flex flex-wrap justify-between gap-4">
         <InputField
@@ -132,7 +132,7 @@ const MapEditor: React.FC<MapEditorProps> = ({
           }}
         />
       </div>
-    </div>
+    </main>
   );
 };
 

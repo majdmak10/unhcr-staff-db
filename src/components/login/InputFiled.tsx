@@ -22,7 +22,7 @@ const InputField: React.FC<InputFieldProps> = ({
   icon,
 }) => {
   return (
-    <div className="mb-5">
+    <main className="mb-5">
       <label htmlFor={id} className="block text-gray-700 text-sm font-semibold">
         {label}
       </label>
@@ -45,7 +45,7 @@ const InputField: React.FC<InputFieldProps> = ({
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 

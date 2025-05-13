@@ -39,7 +39,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
+    <main className="h-screen flex items-center justify-center bg-gray-100">
       <div className="flex items-stretch shadow-lg rounded-lg overflow-hidden">
         {/* Left Panel - Form */}
         <div className="flex flex-col bg-white p-12 w-[500px] rounded-l-lg">
@@ -124,7 +124,7 @@ const LoginPage = () => {
         {/* Right Panel - Background Image */}
         <div className="bg-[url('/login/unhcr-bg.jpg')] bg-cover bg-center w-[600px] rounded-r-lg"></div>
       </div>
-    </div>
+    </main>
   );
 };
 

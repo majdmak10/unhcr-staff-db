@@ -76,7 +76,7 @@ const TableControls: React.FC<TableControlsProps> = ({
   );
 
   return (
-    <div className="flex flex-col justify-center gap-4 md:flex-row md:justify-between w-full">
+    <main className="flex flex-col justify-center gap-4 md:flex-row md:justify-between w-full">
       <div className="flex justify-between items-center gap-6 w-full md:w-auto">
         <div className="relative flex justify-start items-center gap-2 w-full md:w-auto">
           {/* Columns selection */}
@@ -180,7 +180,7 @@ const TableControls: React.FC<TableControlsProps> = ({
       <div className="w-full md:w-auto">
         <TableSearch onSearch={onSearch} placeholder={placeholder} />
       </div>
-    </div>
+    </main>
   );
 };
 

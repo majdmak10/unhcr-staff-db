@@ -33,7 +33,7 @@ const DateInputField: React.FC<DateInputFieldProps> = ({
   };
 
   return (
-    <div className="relative w-full ">
+    <main className="relative w-full ">
       <label className="block text-sm font-semibold text-gray-500 mb-2">
         {label}
       </label>
@@ -179,7 +179,7 @@ const DateInputField: React.FC<DateInputFieldProps> = ({
           }
         `}
       </style>
-    </div>
+    </main>
   );
 };
 

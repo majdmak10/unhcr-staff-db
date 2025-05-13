@@ -18,7 +18,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]">
+    <main className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]">
       <div className="bg-white rounded-lg p-6 shadow-lg w-[300px] text-justify md:w-auto">
         <p className="text-lg">{message}</p>
         <div className="mt-4 flex items-center justify-center gap-2">
@@ -38,7 +38,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

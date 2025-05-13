@@ -18,7 +18,7 @@ interface SelectFieldProps {
 // Use forwardRef to expose the <select> DOM element
 const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
   ({ label, id, name, options, defaultValue, placeholder, error }, ref) => (
-    <div className="flex flex-col w-full gap-2">
+    <main className="flex flex-col w-full gap-2">
       <label htmlFor={id} className="text-sm text-gray-500 font-semibold">
         {label}
       </label>
@@ -42,7 +42,7 @@ const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
         ))}
       </select>
       {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-    </div>
+    </main>
   )
 );
 

@@ -16,7 +16,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
   deleteAction,
 }) => {
   return (
-    <div className="flex justify-between items-center">
+    <main className="flex justify-between items-center">
       <BackButton />
       <div className="flex justify-end p-4 gap-3">
         <EditButton
@@ -32,7 +32,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           />
         )}
       </div>
-    </div>
+    </main>
   );
 };
 

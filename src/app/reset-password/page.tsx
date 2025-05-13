@@ -45,7 +45,7 @@ const ResetPassword = () => {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-100">
+    <main className="flex h-screen items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow p-8 rounded-lg w-96"
@@ -79,7 +79,7 @@ const ResetPassword = () => {
           Reset Password
         </button>
       </form>
-    </div>
+    </main>
   );
 };
 

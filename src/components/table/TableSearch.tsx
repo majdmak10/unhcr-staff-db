@@ -24,7 +24,7 @@ const TableSearch = ({
   };
 
   return (
-    <div className="w-full md:w-auto flex flex-row justify-between items-center rounded-full ring-[1.5px] ring-gray-300 px-2">
+    <main className="w-full md:w-auto flex flex-row justify-between items-center rounded-full ring-[1.5px] ring-gray-300 px-2">
       <div className="flex flex-row items-center">
         <Image
           src="/table_icons/search.png"
@@ -59,7 +59,7 @@ const TableSearch = ({
           </span>
         </button>
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -56,10 +56,13 @@ const Table: React.FC<TableProps> = ({
     [columns, visibleColumns]
   );
 
-  const initialColumnWidths = staffColumns.reduce((acc, col) => {
-    acc[col.key] = parseInt(col.width.replace("px", ""), 10);
-    return acc;
-  }, {} as { [key: string]: number });
+  const initialColumnWidths = staffColumns.reduce(
+    (acc, col) => {
+      acc[col.key] = parseInt(col.width.replace("px", ""), 10);
+      return acc;
+    },
+    {} as { [key: string]: number }
+  );
 
   const {
     columnWidths,
@@ -77,8 +80,8 @@ const Table: React.FC<TableProps> = ({
           typeof cellValue === "string"
             ? cellValue
             : typeof cellValue === "object" && cellValue?.props?.children
-            ? String(cellValue.props.children)
-            : "";
+              ? String(cellValue.props.children)
+              : "";
 
         if (operator === "contains")
           return cellText.toLowerCase().includes(value.toLowerCase());
@@ -96,8 +99,8 @@ const Table: React.FC<TableProps> = ({
           typeof cellValue === "string"
             ? cellValue
             : typeof cellValue === "object" && cellValue?.props?.children
-            ? String(cellValue.props.children)
-            : "";
+              ? String(cellValue.props.children)
+              : "";
 
         return cellText.toLowerCase().includes(searchValue.toLowerCase());
       });
@@ -214,7 +217,7 @@ const Table: React.FC<TableProps> = ({
   }
 
   return (
-    <div className="w-full">
+    <main className="w-full">
       <div className="flex items-center sticky top-0 bg-white z-10 py-2">
         <TableControls
           columns={columns}
@@ -276,7 +279,7 @@ const Table: React.FC<TableProps> = ({
         staffPerPage={staffPerPage}
         setStaffPerPage={setStaffPerPage}
       />
-    </div>
+    </main>
   );
 };
 

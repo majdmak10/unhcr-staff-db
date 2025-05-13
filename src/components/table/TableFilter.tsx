@@ -54,7 +54,7 @@ const TableFilter: React.FC<TableFilterProps> = ({
   };
 
   return (
-    <div className="absolute top-full left-0 mt-2 p-4 bg-white border-1 border-gray-200 rounded shadow-lg w-64 md:w-72 animate-in fade-in duration-200 text-sm z-50">
+    <main className="absolute top-full left-0 mt-2 p-4 bg-white border-1 border-gray-200 rounded shadow-lg w-64 md:w-72 animate-in fade-in duration-200 text-sm z-50">
       <div className="max-h-[300px] overflow-y-auto">
         {filters.map((filter, index) => (
           <div key={index} className="mb-4 border-b border-gray-200 pb-4">
@@ -137,7 +137,7 @@ const TableFilter: React.FC<TableFilterProps> = ({
           Clear
         </button>
       </div>
-    </div>
+    </main>
   );
 };
 

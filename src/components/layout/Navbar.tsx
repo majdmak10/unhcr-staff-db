@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 
@@ -16,8 +18,8 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
-  // Fetch logged-in user details
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -31,13 +33,11 @@ const Navbar = () => {
     fetchUser();
   }, []);
 
-  // Memoized dropdown toggle
   const toggleDropdown = useCallback(
     () => setDropdownOpen((prev) => !prev),
     []
   );
 
-  // Close dropdown when clicking outside or pressing Escape
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -63,7 +63,6 @@ const Navbar = () => {
     };
   }, []);
 
-  // Memoized user details
   const userInfo = useMemo(
     () => ({
       fullName: user?.fullName || "User",
@@ -73,6 +72,15 @@ const Navbar = () => {
     }),
     [user]
   );
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+      router.push("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <nav className="flex items-center justify-between p-4 bg-mBlue rounded-lg">
@@ -132,25 +140,37 @@ const Navbar = () => {
               </div>
 
               <ul className="text-[14px] text-gray-700">
-                {[
-                  { icon: "settings", label: "Settings" },
-                  { icon: "help", label: "Help" },
-                  { icon: "logout", label: "Logout" },
-                ].map(({ icon, label }) => (
-                  <li
-                    key={label}
-                    className="flex py-2 pr-2 pl-1 hover:bg-[#d8d8d8] cursor-pointer rounded-lg gap-2"
-                    tabIndex={0} // Adds accessibility
+                {/* Profile Link */}
+                <li>
+                  <Link
+                    href="/dashboard/profile"
+                    className="flex items-center py-2 pr-2 pl-1 hover:bg-[#d8d8d8] rounded-lg gap-2"
                   >
                     <Image
-                      src={`/navbar_icons/${icon}.svg`}
-                      alt={`${label} Icon`}
+                      src="/navbar_icons/profile.svg"
+                      alt="Profile Icon"
                       width={16}
                       height={16}
                     />
-                    {label}
-                  </li>
-                ))}
+                    Profile
+                  </Link>
+                </li>
+
+                {/* Logout Button */}
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center w-full text-left py-2 pr-2 pl-1 hover:bg-[#d8d8d8] rounded-lg gap-2"
+                  >
+                    <Image
+                      src="/navbar_icons/logout.svg"
+                      alt="Logout Icon"
+                      width={16}
+                      height={16}
+                    />
+                    Logout
+                  </button>
+                </li>
               </ul>
             </div>
           )}

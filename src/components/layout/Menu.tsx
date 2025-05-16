@@ -125,22 +125,16 @@ const Menu = () => {
             href: "/dashboard/profile",
           },
           {
-            icon: "/menu_icons/settings.png?v=1.0",
-            hoverIcon: "/menu_icons/settings_h.png?v=1.0",
-            label: "Settings",
-            href: "/settings",
-          },
-          {
-            icon: "/menu_icons/help.png?v=1.0",
-            hoverIcon: "/menu_icons/help_h.png?v=1.0",
-            label: "Help",
-            href: "/dashboard/help",
+            icon: "/menu_icons/contact.png?v=1.0",
+            hoverIcon: "/menu_icons/contact_h.png?v=1.0",
+            label: "Contact",
+            href: "/dashboard/contact",
           },
           {
             icon: "/menu_icons/logout.png?v=1.0",
             hoverIcon: "/menu_icons/logout_h.png?v=1.0",
             label: "Logout",
-            action: handleLogout, // Add action instead of href
+            action: handleLogout,
           },
         ],
       },

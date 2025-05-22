@@ -2,21 +2,23 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { useDebounce } from "use-debounce";
 import Image from "next/image";
 
 const Search = () => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const [query, setQuery] = useState("");
+  const [debouncedQuery] = useDebounce(query, 500); // Wait 500ms
   const router = useRouter();
 
   const handleCloseClick = useCallback(() => setIsOverlayVisible(false), []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (query.trim()) {
-      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    if (debouncedQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(debouncedQuery.trim())}`);
       setIsOverlayVisible(false);
-      setQuery("");
+      setQuery(""); // Clear input after search
     }
   };
 
@@ -24,7 +26,7 @@ const Search = () => {
     <main>
       <form
         onSubmit={handleSubmit}
-        className="flex items-center justify-center bg-mBlue md:bg-white text-xs rounded-full md:h-[32px] md:w-auto md:px-2"
+        className="flex items-center justify-center bg-mBlue md:bg-white text-xs rounded-full md:h-[32px] md:w-auto md:px-2 relative"
       >
         <button
           type="button"
@@ -34,14 +36,14 @@ const Search = () => {
         >
           <Image
             src="/navbar_icons/search_white.svg"
-            alt="Search icon for small screens"
+            alt="Search icon"
             width={52}
             height={52}
             className="block md:hidden"
           />
           <Image
             src="/navbar_icons/search.svg"
-            alt="Search icon for larger screens"
+            alt="Search icon"
             width={26}
             height={26}
             className="hidden md:block"
@@ -50,12 +52,23 @@ const Search = () => {
 
         <input
           type="text"
-          placeholder="Search for a staff..."
+          placeholder="Search..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="hidden md:block w-[220px] p-2 bg-transparent outline-none"
+          className="hidden md:block w-[220px] p-2 pr-8 bg-transparent outline-none"
           aria-label="Search input"
         />
+
+        {query && (
+          <button
+            type="button"
+            onClick={() => setQuery("")}
+            className="hidden md:block absolute right-2 text-gray-500 text-xs font-bold rounded-full hover:bg-gray-200 px-[7px] py-[4px]"
+            aria-label="Clear search"
+          >
+            &#10005;
+          </button>
+        )}
       </form>
 
       {isOverlayVisible && (
@@ -69,15 +82,26 @@ const Search = () => {
               ✖
             </button>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="relative">
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search..."
-                className="w-full p-3 bg-gray-100 rounded-lg outline-none text-sm"
+                className="w-full p-3 pr-10 bg-gray-100 rounded-lg outline-none text-sm"
                 aria-label="Search input"
               />
+
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 text-sm font-bold rounded-full hover:bg-gray-200 px-[7px] py-[4px]"
+                  aria-label="Clear search"
+                >
+                  &#10005;
+                </button>
+              )}
             </form>
           </div>
         </div>

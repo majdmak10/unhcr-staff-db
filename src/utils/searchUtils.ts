@@ -15,7 +15,7 @@ export const searchData = async (query: string) => {
     return staffResults.map((staff) => ({
       title: staff.fullName,
       href: `dashboard/staff/${staff.fullName.replace(/\s+/g, "_").toLowerCase()}`, // or use slug if available
-      description: `${staff.position} – ${staff.unhcrEmail}`,
+      description: `Position: ${staff.position} – Email: ${staff.unhcrEmail}`,
     }));
   } catch (error) {
     console.error("Search error:", error);

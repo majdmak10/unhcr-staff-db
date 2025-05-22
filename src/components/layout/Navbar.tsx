@@ -160,7 +160,7 @@ const Navbar = () => {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center w-full text-left py-2 pr-2 pl-1 hover:bg-[#d8d8d8] rounded-lg gap-2"
+                    className="flex items-center w-full text-left py-2 pr-2 pl-1 hover:bg-[#d8d8d8] rounded-lg gap-2 cursor-pointer"
                   >
                     <Image
                       src="/navbar_icons/logout.svg"

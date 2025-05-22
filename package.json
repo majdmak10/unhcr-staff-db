@@ -26,7 +26,8 @@
     "react": "^19.0.0",
     "react-datepicker": "^8.2.0",
     "react-dom": "^19.0.0",
-    "resend": "^4.5.1"
+    "resend": "^4.5.1",
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

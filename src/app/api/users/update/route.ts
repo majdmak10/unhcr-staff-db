@@ -97,7 +97,7 @@ export async function POST(req: Request) {
         process.cwd(),
         "public",
         "uploads",
-        "profiles_pictures",
+        "profile_picture",
         "users"
       );
       await fs.mkdir(uploadDir, { recursive: true });
@@ -138,7 +138,7 @@ export async function POST(req: Request) {
       await fs.writeFile(fullFilePath, buffer);
 
       // Store relative path for database and frontend
-      profilePicturePath = `/uploads/profiles_pictures/users/${uniqueFilename}`;
+      profilePicturePath = `/uploads/profile_picture/users/${uniqueFilename}`;
 
       // Delete old profile picture if it exists
       if (user.profilePicture) {

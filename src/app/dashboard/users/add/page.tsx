@@ -156,6 +156,18 @@ const AddUser: React.FC = () => {
             error={errors.email}
           />
           <InputField
+            label="Mobile Syriatel"
+            id="mobileSyriatel"
+            name="mobileSyriatel"
+            placeholder="Enter Syriatel mobile number"
+          />
+          <InputField
+            label="Mobile MTN"
+            id="mobileMtn"
+            name="mobileMtn"
+            placeholder="Enter MTN mobile number"
+          />
+          <InputField
             label="Password"
             id="password"
             name="password"

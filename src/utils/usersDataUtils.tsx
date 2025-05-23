@@ -43,6 +43,8 @@ export const mapUserData = (users: IUser[]) =>
     ),
     position: user.position || "N/A",
     email: user.email,
+    mobileSyriatel: user.mobileSyriatel || "N/A",
+    mobileMtn: user.mobileMtn || "N/A",
     role: user.role,
     actions: (
       <div className="flex gap-2 items-center">

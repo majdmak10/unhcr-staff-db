@@ -45,8 +45,8 @@ const DeleteSelectedButton: React.FC<DeleteSelectedButtonProps> = ({
           typeof result.error === "string"
             ? result.error
             : result.error instanceof Error
-            ? result.error.message
-            : "An unknown error occurred.";
+              ? result.error.message
+              : "An unknown error occurred.";
         setErrorMessage(errorString);
         setModalOpen(true);
       }
@@ -61,7 +61,7 @@ const DeleteSelectedButton: React.FC<DeleteSelectedButtonProps> = ({
     <>
       <button
         onClick={() => setModalOpen(true)}
-        className="px-2 py-1 rounded-full bg-mRed hover:bg-red-300 text-white text-xs md:text-[13px]"
+        className="px-2 py-1 rounded-full bg-mRed hover:bg-red-300 text-white text-xs md:text-[13px] cursor-pointer"
         aria-label="Delete Selected"
         disabled={isDeleting}
       >

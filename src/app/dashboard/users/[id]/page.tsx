@@ -39,6 +39,14 @@ const UserProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
             Position: <span className="font-normal">{user.position}</span>
           </p>
           <p className="font-semibold">
+            Mobile (Syriatel):{" "}
+            <span className="font-normal">{user.mobileSyriatel || "N/A"}</span>
+          </p>
+          <p className="font-semibold">
+            Mobile (MTN):{" "}
+            <span className="font-normal">{user.mobileMtn || "N/A"}</span>
+          </p>
+          <p className="font-semibold">
             Email: <span className="font-normal">{user.email}</span>
           </p>
           <p className="font-semibold">

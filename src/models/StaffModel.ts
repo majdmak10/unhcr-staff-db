@@ -52,16 +52,17 @@ const StaffSchema = new Schema<IStaff>(
 
     mobileSyriatel: {
       type: String,
-      match: /^[0-9]{9}$/,
+      match: /^0[0-9]{9}$/,
       required: false,
       default: null,
     },
     mobileMtn: {
       type: String,
-      match: /^[0-9]{9}$/,
+      match: /^0[0-9]{9}$/,
       required: false,
       default: null,
     },
+
     homePhone: {
       type: String,
       match: /^[0-9]{9}$/,

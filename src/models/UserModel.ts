@@ -14,6 +14,18 @@ const UserSchema = new Schema<IUser>(
     sex: { type: String, required: true },
     position: { type: String, required: true },
     email: { type: String, required: true, unique: true, match: /.+\@.+\..+/ },
+    mobileSyriatel: {
+      type: String,
+      match: /^0[0-9]{9}$/,
+      required: false,
+      default: null,
+    },
+    mobileMtn: {
+      type: String,
+      match: /^0[0-9]{9}$/,
+      required: false,
+      default: null,
+    },
     password: { type: String, required: true },
     role: { type: String, enum: Object.values(UserRole), required: true },
   },

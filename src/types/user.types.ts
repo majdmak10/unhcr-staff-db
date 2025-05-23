@@ -13,6 +13,8 @@ export interface IUser {
   sex: string;
   position: string;
   email: string;
+  mobileSyriatel?: string;
+  mobileMtn?: string;
   password: string;
   role: UserRole;
 }

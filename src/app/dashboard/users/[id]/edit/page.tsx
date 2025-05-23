@@ -69,6 +69,20 @@ const EditUser = async ({ params }: EditUserProps) => {
             placeholder="Enter email"
           />
 
+          <InputField
+            label="Mobile (Syriatel)"
+            id="mobileSyriatel"
+            name="mobileSyriatel"
+            defaultValue={user.mobileSyriatel?.trim() || "N/A"}
+          />
+
+          <InputField
+            label="Mobile (MTN)"
+            id="mobileMtn"
+            name="mobileMtn"
+            defaultValue={user.mobileMtn?.trim() || "N/A"}
+          />
+
           <SelectField
             label="Role"
             id="role"

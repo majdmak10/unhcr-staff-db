@@ -113,7 +113,7 @@ export const addStaff = async (formData: FormData): Promise<void> => {
         process.cwd(),
         "public",
         "uploads",
-        "profiles_pictures",
+        "profile_picture",
         "staff"
       );
       await fs.mkdir(uploadDir, { recursive: true });
@@ -146,7 +146,7 @@ export const addStaff = async (formData: FormData): Promise<void> => {
       const fullFilePath = path.join(uploadDir, uniqueFilename);
       await fs.writeFile(fullFilePath, buffer);
 
-      profilePicturePath = `/uploads/profile_pictures/staff/${uniqueFilename}`;
+      profilePicturePath = `/uploads/profile_picture/staff/${uniqueFilename}`;
     }
 
     if (insideDs !== "true" && insideDs !== "false") {
@@ -205,8 +205,8 @@ export const addStaff = async (formData: FormData): Promise<void> => {
         criticalStaff === "true"
           ? true
           : criticalStaff === "false"
-          ? false
-          : null,
+            ? false
+            : null,
       warden: warden || "N/A",
       floorMarshal: floorMarshal || "N/A",
       etb: etb === "true" ? true : etb === "false" ? false : null,
@@ -215,8 +215,8 @@ export const addStaff = async (formData: FormData): Promise<void> => {
         advancedDriving === "true"
           ? true
           : advancedDriving === "false"
-          ? false
-          : null,
+            ? false
+            : null,
       insideDs:
         insideDs === "true" ? true : insideDs === "false" ? false : null,
       outsideDs:
@@ -317,7 +317,7 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
         process.cwd(),
         "public",
         "uploads",
-        "profiles_pictures",
+        "profile_picture",
         "staff"
       );
       await fs.mkdir(uploadDir, { recursive: true });
@@ -350,7 +350,7 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
       const fullFilePath = path.join(uploadDir, uniqueFilename);
       await fs.writeFile(fullFilePath, buffer);
 
-      profilePicturePath = `/uploads/profile_pictures/staff/${uniqueFilename}`;
+      profilePicturePath = `/uploads/profile_picture/staff/${uniqueFilename}`;
     }
 
     const newFullName =
@@ -416,40 +416,40 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
         formData.get("criticalStaff") === "true"
           ? true
           : formData.get("criticalStaff") === "false"
-          ? false
-          : staff.criticalStaff,
+            ? false
+            : staff.criticalStaff,
       warden: formData.get("warden") || staff.warden,
       floorMarshal: formData.get("floorMarshal") || staff.floorMarshal,
       etb:
         formData.get("etb") === "true"
           ? true
           : formData.get("etb") === "false"
-          ? false
-          : staff.etb,
+            ? false
+            : staff.etb,
       ifak:
         formData.get("ifak") === "true"
           ? true
           : formData.get("ifak") === "false"
-          ? false
-          : staff.ifak,
+            ? false
+            : staff.ifak,
       advancedDriving:
         formData.get("advancedDriving") === "true"
           ? true
           : formData.get("advancedDriving") === "false"
-          ? false
-          : staff.advancedDriving,
+            ? false
+            : staff.advancedDriving,
       insideDs:
         formData.get("insideDs") === "true"
           ? true
           : formData.get("insideDs") === "false"
-          ? false
-          : staff.insideDs,
+            ? false
+            : staff.insideDs,
       outsideDs:
         formData.get("outsideDs") === "true"
           ? true
           : formData.get("outsideDs") === "false"
-          ? false
-          : staff.outsideDs,
+            ? false
+            : staff.outsideDs,
       address,
     });
 
@@ -516,26 +516,37 @@ export async function deleteStaff(
 }
 
 export const addUser = async (formData: FormData): Promise<void> => {
-  const { fullName, sex, position, email, password, confirmPassword, role } =
-    Object.fromEntries(formData) as Record<string, string>;
+  const {
+    fullName,
+    sex,
+    position,
+    email,
+    mobileSyriatel,
+    mobileMtn,
+    password,
+    confirmPassword,
+    role,
+  } = Object.fromEntries(formData) as Record<string, string>;
 
-  // Get the file from formData
   const profilePictureFile = formData.get("profilePicture") as File;
+
+  // ✅ Clean and validate mobile numbers
+  const cleanMobile = (value: string | undefined): string | null => {
+    const digitsOnly = value?.replace(/\D/g, "");
+    return digitsOnly && /^0[0-9]{9}$/.test(digitsOnly) ? digitsOnly : null;
+  };
 
   try {
     await connectToDb();
 
-    // Check for duplicate email
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw new Error("Email already exists");
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
     const hashedConfirmPassword = await bcrypt.hash(confirmPassword, 10);
 
-    // 🔤 Generate slug
     const rawSlug = fullName.trim().toLowerCase().replace(/\s+/g, "_");
     let slug = rawSlug;
     let counter = 1;
@@ -544,25 +555,21 @@ export const addUser = async (formData: FormData): Promise<void> => {
       counter++;
     }
 
-    // Handle profile picture upload
     let profilePicturePath = "";
     if (profilePictureFile && profilePictureFile.size > 0) {
-      // Get original filename and extension
       const originalFilename = profilePictureFile.name;
       const fileExtension = path.extname(originalFilename);
       const baseFilename = path.basename(originalFilename, fileExtension);
 
-      // Ensure the upload directory exists
       const uploadDir = path.join(
         process.cwd(),
         "public",
         "uploads",
-        "profiles_pictures",
+        "profile_picture",
         "users"
       );
       await fs.mkdir(uploadDir, { recursive: true });
 
-      // Function to generate unique filename
       const generateUniqueFilename = async (
         baseName: string,
         ext: string,
@@ -573,32 +580,23 @@ export const addUser = async (formData: FormData): Promise<void> => {
         const fullPath = path.join(uploadDir, potentialFilename);
 
         try {
-          // Check if file exists
           await fs.access(fullPath);
-          // If file exists, try again with incremented counter
           return generateUniqueFilename(baseName, ext, counter + 1);
         } catch {
-          // File doesn't exist, so this filename is unique
           return potentialFilename;
         }
       };
 
-      // Generate unique filename
       const uniqueFilename = await generateUniqueFilename(
         baseFilename,
         fileExtension
       );
 
-      // Convert File to Buffer
-      const bytes = await profilePictureFile.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      // Write file to public directory
+      const buffer = Buffer.from(await profilePictureFile.arrayBuffer());
       const fullFilePath = path.join(uploadDir, uniqueFilename);
       await fs.writeFile(fullFilePath, buffer);
 
-      // Store relative path for database and frontend
-      profilePicturePath = `/uploads/profile_pictures/users/${uniqueFilename}`;
+      profilePicturePath = `/uploads/profile_picture/users/${uniqueFilename}`;
     }
 
     const newUser = new User({
@@ -608,6 +606,8 @@ export const addUser = async (formData: FormData): Promise<void> => {
       position,
       sex: sex === "Female" || sex === "Male" ? sex : "Male",
       email,
+      mobileSyriatel: cleanMobile(mobileSyriatel),
+      mobileMtn: cleanMobile(mobileMtn),
       password: hashedPassword,
       confirmPassword: hashedConfirmPassword,
       role:
@@ -634,12 +634,21 @@ export const updateUser = async (formData: FormData): Promise<void> => {
     position,
     sex,
     email,
+    mobileSyriatel,
+    mobileMtn,
     password,
     confirmPassword,
     role,
   } = Object.fromEntries(formData) as Record<string, string>;
 
   const profilePictureFile = formData.get("profilePicture") as File;
+
+  // ✅ Clean and validate mobile numbers
+  const cleanMobile = (value: string | undefined): string | null => {
+    const digitsOnly = value?.replace(/\D/g, "");
+    return digitsOnly && /^0[0-9]{9}$/.test(digitsOnly) ? digitsOnly : null;
+  };
+
   let profilePicturePath = "";
 
   if (profilePictureFile && profilePictureFile.size > 0) {
@@ -647,7 +656,7 @@ export const updateUser = async (formData: FormData): Promise<void> => {
       process.cwd(),
       "public",
       "uploads",
-      "profiles_pictures",
+      "profile_picture",
       "users"
     );
     await fs.mkdir(uploadDir, { recursive: true });
@@ -656,7 +665,6 @@ export const updateUser = async (formData: FormData): Promise<void> => {
     let uniqueFilename = originalFilename;
     let fileCounter = 1;
 
-    // Check for existing files with the same name
     while (
       await fs.stat(path.join(uploadDir, uniqueFilename)).catch(() => false)
     ) {
@@ -667,26 +675,21 @@ export const updateUser = async (formData: FormData): Promise<void> => {
     }
 
     const fullPath = path.join(uploadDir, uniqueFilename);
-
-    // Write the new profile picture
     const buffer = Buffer.from(await profilePictureFile.arrayBuffer());
     await fs.writeFile(fullPath, buffer);
-
-    profilePicturePath = `/uploads/profile_pictures/users/${uniqueFilename}`;
+    profilePicturePath = `/uploads/profile_picture/users/${uniqueFilename}`;
   }
 
   try {
     await connectToDb();
 
-    // Fetch existing user data to delete old profile picture
     const existingUser = await User.findById(id);
     if (!existingUser) {
       throw new Error("User not found");
     }
 
-    const oldProfilePicturePath = existingUser.profilePicture;
-    const oldFullPath = oldProfilePicturePath
-      ? path.join(process.cwd(), "public", oldProfilePicturePath)
+    const oldProfilePicturePath = existingUser.profilePicture
+      ? path.join(process.cwd(), "public", existingUser.profilePicture)
       : null;
 
     const updateFields = {
@@ -695,26 +698,30 @@ export const updateUser = async (formData: FormData): Promise<void> => {
       position,
       sex,
       email,
+      mobileSyriatel: cleanMobile(mobileSyriatel),
+      mobileMtn: cleanMobile(mobileMtn),
       password,
       confirmPassword,
       role,
     };
 
     Object.keys(updateFields).forEach((key) => {
-      if (updateFields[key as keyof typeof updateFields] === "" || undefined) {
+      if (
+        updateFields[key as keyof typeof updateFields] === "" ||
+        updateFields[key as keyof typeof updateFields] === undefined
+      ) {
         delete updateFields[key as keyof typeof updateFields];
       }
     });
 
-    // Update the user data in the database
     await User.findByIdAndUpdate(id, updateFields);
 
-    // Delete the old profile picture if it exists and is different from the new one
     if (
-      oldFullPath &&
-      oldFullPath !== path.join(process.cwd(), profilePicturePath)
+      oldProfilePicturePath &&
+      oldProfilePicturePath !==
+        path.join(process.cwd(), profilePicturePath || "")
     ) {
-      await fs.unlink(oldFullPath).catch((err) => {
+      await fs.unlink(oldProfilePicturePath).catch((err) => {
         console.error("Failed to delete old profile picture:", err);
       });
     }

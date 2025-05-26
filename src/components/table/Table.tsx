@@ -249,7 +249,7 @@ const Table: React.FC<TableProps> = ({
               noResultsMessage="No matching data found."
             />
           ) : (
-            <table className="w-full table-fixed">
+            <table className="w-full min-w-max">
               <TableHeader
                 columns={filteredColumns}
                 columnWidths={columnWidths}

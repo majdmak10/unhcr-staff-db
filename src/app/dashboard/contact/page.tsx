@@ -17,7 +17,13 @@ const ContactPage = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p className="text-center py-10">Loading contacts...</p>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <main className="flex flex-col gap-3 w-full">
@@ -48,14 +54,27 @@ const ContactPage = () => {
                 }
               />
             </div>
-            <h2 className="text-lg font-semibold">{user.fullName}</h2>
-            <p className="text-sm text-gray-600">{user.email}</p>
-            <p className="text-sm text-gray-600">
-              Syriatel: {user.mobileSyriatel || "N/A"}
-            </p>
-            <p className="text-sm text-gray-600">
-              MTN: {user.mobileMtn || "N/A"}
-            </p>
+            <div>
+              <h2 className="text-lg font-semibold text-mBlue mb-2">
+                {user.fullName}
+              </h2>
+              <p className="text-sm mb-1">
+                <span className="font-semibold">Position: </span>
+                {user.position}
+              </p>
+              <p className="text-sm mb-1">
+                <span className="font-semibold">Email: </span>
+                {user.email}
+              </p>
+              <p className="text-sm mb-1">
+                <span className="font-semibold">Mobile (Syriatel): </span>
+                {user.mobileSyriatel || "N/A"}
+              </p>
+              <p className="text-sm mb-1">
+                <span className="font-semibold">Mobile (MTN): </span>
+                {user.mobileMtn || "N/A"}
+              </p>
+            </div>
           </div>
         ))}
       </div>

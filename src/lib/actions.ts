@@ -6,6 +6,7 @@ import { connectToDb } from "@/utils/connectToDb";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { promises as fs } from "fs";
+import { cleanMobile } from "@/utils/cleanMobile";
 import path from "path";
 import bcrypt from "bcryptjs";
 
@@ -184,12 +185,9 @@ export const addStaff = async (formData: FormData): Promise<void> => {
         privateEmail && /.+@.+\..+/.test(privateEmail)
           ? privateEmail
           : undefined,
-      mobileSyriatel:
-        mobileSyriatel && /^[0-9]{9}$/.test(mobileSyriatel)
-          ? mobileSyriatel
-          : null,
-      mobileMtn: mobileMtn && /^[0-9]{9}$/.test(mobileMtn) ? mobileMtn : null,
-      homePhone: homePhone && /^[0-9]{9}$/.test(homePhone) ? homePhone : null,
+      mobileSyriatel: cleanMobile(mobileSyriatel),
+      mobileMtn: cleanMobile(mobileMtn),
+      homePhone: cleanMobile(homePhone),
       extension: extension || "N/A",
       radio: radio || "N/A",
       emergencyContact,
@@ -387,17 +385,9 @@ export const updateStaff = async (formData: FormData): Promise<void> => {
         const value = formData.get("privateEmail")?.toString().trim();
         return value && /.+@.+\..+/.test(value) ? value : null;
       })(),
-      mobileSyriatel: /^[0-9]{9}$/.test(
-        formData.get("mobileSyriatel") as string
-      )
-        ? formData.get("mobileSyriatel")
-        : null,
-      mobileMtn: /^[0-9]{9}$/.test(formData.get("mobileMtn") as string)
-        ? formData.get("mobileMtn")
-        : null,
-      homePhone: /^[0-9]{9}$/.test(formData.get("homePhone") as string)
-        ? formData.get("homePhone")
-        : null,
+      mobileSyriatel: cleanMobile(formData.get("mobileSyriatel")?.toString()),
+      mobileMtn: cleanMobile(formData.get("mobileMtn")?.toString()),
+      homePhone: cleanMobile(formData.get("homePhone")?.toString()),
       extension: formData.get("extension") || staff.extension,
       radio: formData.get("radio") || staff.radio,
       emergencyContact,
@@ -530,12 +520,6 @@ export const addUser = async (formData: FormData): Promise<void> => {
 
   const profilePictureFile = formData.get("profilePicture") as File;
 
-  // ✅ Clean and validate mobile numbers
-  const cleanMobile = (value: string | undefined): string | null => {
-    const digitsOnly = value?.replace(/\D/g, "");
-    return digitsOnly && /^0[0-9]{9}$/.test(digitsOnly) ? digitsOnly : null;
-  };
-
   try {
     await connectToDb();
 
@@ -642,12 +626,6 @@ export const updateUser = async (formData: FormData): Promise<void> => {
   } = Object.fromEntries(formData) as Record<string, string>;
 
   const profilePictureFile = formData.get("profilePicture") as File;
-
-  // ✅ Clean and validate mobile numbers
-  const cleanMobile = (value: string | undefined): string | null => {
-    const digitsOnly = value?.replace(/\D/g, "");
-    return digitsOnly && /^0[0-9]{9}$/.test(digitsOnly) ? digitsOnly : null;
-  };
 
   let profilePicturePath = "";
 

@@ -13,10 +13,10 @@ const ConOpsPage = async () => {
     "profilePicture",
     "fullName",
     "position",
+    "bloodType",
     "mobileSyriatel",
     "mobileMtn",
     "unhcrEmail",
-    "bloodType",
   ]);
 
   return (

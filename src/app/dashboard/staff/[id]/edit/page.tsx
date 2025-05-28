@@ -3,7 +3,7 @@ import EditStaffForm from "./EditStaffForm";
 import { getStaffBySlug } from "@/lib/data";
 
 interface EditStaffProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const EditStaff = async (props: EditStaffProps) => {

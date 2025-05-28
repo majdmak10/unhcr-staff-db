@@ -1,14 +1,10 @@
+import { getStaffBySlug } from "@/lib/data";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import EditStaffForm from "./EditStaffForm";
-import { getStaffBySlug } from "@/lib/data";
 
-interface EditStaffProps {
-  params: { id: string };
-}
-
-const EditStaff = async (props: EditStaffProps) => {
-  const { id: slug } = props.params;
-  const staff = getStaffBySlug(slug);
+const EditStaff = async ({ params }: { params: { id: string } }) => {
+  const { id: slug } = params;
+  const staff = await getStaffBySlug(slug);
 
   if (!staff) {
     return <div className="text-red-500 p-4">Staff member not found</div>;
@@ -28,7 +24,6 @@ const EditStaff = async (props: EditStaffProps) => {
           },
         ]}
       />
-
       <EditStaffForm staffMember={staffMember} />
     </main>
   );

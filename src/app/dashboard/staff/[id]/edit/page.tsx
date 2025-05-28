@@ -3,12 +3,12 @@ import EditStaffForm from "./EditStaffForm";
 import { getStaffBySlug } from "@/lib/data";
 
 interface EditStaffProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 const EditStaff = async (props: EditStaffProps) => {
-  const { id: slug } = await props.params; // Await the `params` properly.
-  const staff = await getStaffBySlug(slug);
+  const { id: slug } = props.params;
+  const staff = getStaffBySlug(slug);
 
   if (!staff) {
     return <div className="text-red-500 p-4">Staff member not found</div>;

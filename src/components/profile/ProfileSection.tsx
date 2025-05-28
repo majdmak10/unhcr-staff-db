@@ -6,7 +6,7 @@ interface ProfileSectionProps {
   color: string;
   data: {
     title: string;
-    value?: string | number | boolean | Record<string, any> | null;
+    value?: string | number | boolean | Record<string, unknown> | null;
   }[];
 }
 

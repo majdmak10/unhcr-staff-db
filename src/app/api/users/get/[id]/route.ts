@@ -1,14 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { connectToDb } from "@/utils/connectToDb";
 import { User } from "@/models";
 
+// Correct type for context: { params: { id: string } }
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: { id: string } }
 ) {
   try {
     await connectToDb();
-    const { id } = params;
+    const { id } = context.params;
 
     const admin = await User.findById(id);
     if (!admin) {

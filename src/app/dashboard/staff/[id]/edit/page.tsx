@@ -1,9 +1,13 @@
-import { getStaffBySlug } from "@/lib/data";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import EditStaffForm from "./EditStaffForm";
+import { getStaffBySlug } from "@/lib/data";
 
-const EditStaff = async ({ params }: { params: { id: string } }) => {
-  const { id: slug } = params;
+interface EditStaffProps {
+  params: { id: string };
+}
+
+const EditStaff = async (props: EditStaffProps) => {
+  const { id: slug } = await props.params; // Await the `params` properly.
   const staff = await getStaffBySlug(slug);
 
   if (!staff) {
@@ -24,6 +28,7 @@ const EditStaff = async ({ params }: { params: { id: string } }) => {
           },
         ]}
       />
+
       <EditStaffForm staffMember={staffMember} />
     </main>
   );

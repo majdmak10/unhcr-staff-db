@@ -3,12 +3,11 @@ import EditStaffForm from "./EditStaffForm";
 import { getStaffBySlug } from "@/lib/data";
 
 interface EditStaffProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-const EditStaff = async ({ params }: EditStaffProps) => {
-  const { id: slug } = params;
-
+const EditStaff = async (props: EditStaffProps) => {
+  const { id: slug } = await props.params;
   const staff = await getStaffBySlug(slug);
 
   if (!staff) {
@@ -29,6 +28,7 @@ const EditStaff = async ({ params }: EditStaffProps) => {
           },
         ]}
       />
+
       <EditStaffForm staffMember={staffMember} />
     </main>
   );

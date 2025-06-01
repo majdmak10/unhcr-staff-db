@@ -4,13 +4,14 @@ import { notFound } from "next/navigation";
 import { highlightText } from "@/utils/highlightText";
 
 interface SearchParams {
-  searchParams: {
+  searchParams: Promise<{
     q?: string;
-  };
+  }>;
 }
 
 const SearchResultsPage = async ({ searchParams }: SearchParams) => {
-  const query = searchParams.q?.trim() || "";
+  const { q } = await searchParams;
+  const query = q?.trim() || "";
 
   if (!query) return notFound();
 

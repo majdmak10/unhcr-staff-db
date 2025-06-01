@@ -9,7 +9,7 @@ import { roleOptions } from "@/utils/dropdownOptions";
 import { getProfileImage } from "./userEditUtils";
 
 interface EditUserProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const EditUser = async ({ params }: EditUserProps) => {

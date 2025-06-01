@@ -6,8 +6,9 @@ interface EditStaffProps {
   params: { id: string };
 }
 
-const EditStaff = async (props: EditStaffProps) => {
-  const { id: slug } = await props.params; // Await the `params` properly.
+const EditStaff = async ({ params }: EditStaffProps) => {
+  const { id: slug } = params;
+
   const staff = await getStaffBySlug(slug);
 
   if (!staff) {
@@ -28,7 +29,6 @@ const EditStaff = async (props: EditStaffProps) => {
           },
         ]}
       />
-
       <EditStaffForm staffMember={staffMember} />
     </main>
   );

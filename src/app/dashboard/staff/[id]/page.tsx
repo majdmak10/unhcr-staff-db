@@ -9,7 +9,7 @@ import ProfileInfo from "@/components/profile/ProfileInfo";
 import { getStaffBySlug } from "@/lib/data";
 
 interface StaffProfileProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const StaffProfile = async ({ params }: StaffProfileProps) => {

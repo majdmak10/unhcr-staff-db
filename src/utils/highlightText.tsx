@@ -17,13 +17,15 @@ export function highlightText(
   );
   const regex = new RegExp(`(${escapedTerms.join("|")})`, "gi");
 
-  return text.split(regex).map((part, index) =>
-    regex.test(part) ? (
+  return text.split(regex).map((part, index) => {
+    // Reset lastIndex to ensure consistent results when using the global flag
+    regex.lastIndex = 0;
+    return regex.test(part) ? (
       <span key={index} className="bg-yellow-200 font-semibold">
         {part}
       </span>
     ) : (
       part
-    )
-  );
+    );
+  });
 }

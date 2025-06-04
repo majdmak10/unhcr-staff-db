@@ -1,10 +1,17 @@
 export function parseCoordinate(value?: string | number | null): number | null {
-  if (!value || value === "N/A") return null;
+  if (
+    value === undefined ||
+    value === null ||
+    value === "" ||
+    value === "N/A"
+  ) {
+    return null;
+  }
   const num =
     typeof value === "string"
       ? parseFloat(value)
       : typeof value === "number"
-      ? value
-      : NaN;
+        ? value
+        : NaN;
   return isFinite(num) ? num : null;
 }

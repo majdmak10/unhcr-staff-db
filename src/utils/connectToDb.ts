@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-// Load MongoDB connection string from environment variables
-const MONGO_URI: string | undefined = process.env.MONGODB_URI;
-if (!MONGO_URI) {
-  throw new Error("MONGODB_URI environment variable is not defined");
-}
+// Mongo URI will be resolved when a connection is attempted. This prevents
+// Next.js from throwing during the build phase when environment variables may
+// not yet be available. The check is performed inside `connectToDb` instead of
+// at module load time.
+let MONGO_URI: string | undefined;
 
 // Maintain a connection status to prevent multiple connections
 let isConnected = false;
@@ -17,6 +17,14 @@ export const connectToDb = async (): Promise<typeof mongoose> => {
   }
 
   try {
+    // Resolve the connection string when a connection is first attempted
+    if (!MONGO_URI) {
+      MONGO_URI = process.env.MONGODB_URI;
+    }
+    if (!MONGO_URI) {
+      throw new Error("MONGODB_URI environment variable is not defined");
+    }
+
     const mongooseInstance = await mongoose.connect(MONGO_URI);
 
     isConnected = true;
